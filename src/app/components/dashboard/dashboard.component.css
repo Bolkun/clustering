@@ -1,0 +1,85 @@
+.container {
+  display: flex;  /* Turns on flexbox mode */
+  height: 100vh;
+  max-height: calc(100vh - 82px); /* [Height of header] */
+  overflow-y: auto;
+}
+
+.sidebar {
+  padding: 0;
+  margin: 0;
+  float: center;
+  background-color: #212529;
+  position: relative;
+  justify-content: center; /* Center the text */
+  align-items: center;     /* Center the text */
+
+  /* Flexbox properties to center contents */
+  display: flex;
+  flex-direction: column;  /* Stack the children vertically */
+  justify-content: center; /* Align children vertically in the center */
+  align-items: center;     /* Align children horizontally in the center */
+  overflow-y: auto;
+}
+
+.content {
+  width: max-content;
+  flex: none;  /* Makes the content take up the remaining width */
+  padding: 20px;
+  margin: 0;
+  position: relative;
+  justify-content: center; /* Center the text */
+  align-items: center;     /* Center the text */
+
+  /* Flexbox properties to center contents */
+  display: flex;
+  flex-direction: column;  /* Stack the children vertically */
+  justify-content: center; /* Align children vertically in the center */
+  align-items: center;     /* Align children horizontally in the center */
+  overflow-y: auto;
+
+  /* background-color: #f7f7f7; */
+  background-color: white;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.side_btn {
+  display: block;
+  background: transparent;
+  color: #fff;
+  border: none;
+  margin-top: 20px;
+  margin-left: 14px;
+  margin-right: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.vertical-text span {
+  font-size: 26px;
+  color: white;
+  margin: 0;  /* This will reset any default margins */
+  line-height: 1; /* Adjust this value to control the vertical spacing */
+  display: block;  /* Stack the letters vertically */
+  text-align: center; /* Align the letters to the center */
+}
+
+.experiment_btn {
+  margin-top: 5px;
+  display: flex;
+  background-color: #212529;
+  text-align: center;
+  padding: 10px;
+  color: #fff;
+  width: 100%;  /* Make the button fit the full width of its container */
+  justify-content: center; /* Center the content of the button if it's flex */
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}

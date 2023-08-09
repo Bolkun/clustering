@@ -1,0 +1,32 @@
+<div class="header-container">
+  <div class="btn" style="pointer-events: none;">
+    <p style="font-size: 26px;">
+      <span style="color: orange;">C</span> l u s t e r i n g
+    </p>
+    <p style="text-transform: uppercase; font-size: 12px;">Archaelogical Sites of Vienna</p>
+  </div>
+  <a routerLink="home" routerLinkActive="active" class="btn">
+    <p style="font-size: 20px;">
+      <fa-icon [icon]="faHome"></fa-icon>
+    </p>
+    <p style="text-transform: uppercase; font-size: 12px;">
+      <span class="header-text"> Home</span>
+    </p>
+  </a>
+  <a routerLink="dashboard" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" class="btn">
+    <p style="font-size: 20px;">
+      <fa-icon [icon]="faDashboard"></fa-icon>
+    </p>
+    <p style="text-transform: uppercase; font-size: 12px;">
+      <span class="header-text"> Dashboard</span>
+    </p>
+  </a>
+  <a routerLink="help" routerLinkActive="active" class="btn">
+    <p style="font-size: 20px;">
+      <fa-icon [icon]="faHelp"></fa-icon>
+    </p>
+    <p style="text-transform: uppercase; font-size: 12px;">
+      <span class="header-text"> Help</span>
+    </p>
+  </a>
+</div>
