@@ -90,16 +90,13 @@
   border: 1px solid black;
   width: 100%; /* Ensure the form is taking the full width */
   border-radius: 5px;
-  flex-wrap: wrap;
 }
 
 #online_form p {
   width: 100%;
   text-align: center;
   font-weight: bold;
-  height: 30px;
   display: flex;        /* Makes the element a flex container */
-  align-items: center;      /* Vertically centers the content */
 }
 
 /* Ensure the form container takes up the full width of the form */
@@ -114,6 +111,7 @@
   flex: 1;  /* Distributes the width evenly among the checkbox columns */
   box-sizing: border-box;
   position: relative;
+  margin-top: 5px;
   margin-bottom: 10px;
 }
 
