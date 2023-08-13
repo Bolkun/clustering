@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GridsterModule } from 'angular-gridster2';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -22,7 +23,8 @@ import { HelpComponent } from './components/help/help.component';
     BrowserModule,
     AppRoutingModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    GridsterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

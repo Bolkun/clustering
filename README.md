@@ -14,6 +14,7 @@ npm install --save @fortawesome/react-fontawesome @fortawesome/free-solid-svg-ic
 npm install @fortawesome/fontawesome-svg-core
 npm install @fortawesome/free-solid-svg-icons
 npm install @fortawesome/angular-fontawesome
+npm install angular-gridster2
 
 
 ## Development server

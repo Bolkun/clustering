@@ -6,6 +6,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl, ValidatorFn } from '@angular/forms';
+import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 
 export function atLeastTwoCheckedValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -50,8 +51,8 @@ export function MaxDecimalPlacesValidator(decimalPlaces: number): ValidatorFn {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  activeTab: null | string = 'tab2';  // Default active tab
-  isContentFlex: boolean = true;
+  activeTab: null | string = 'tab1';  // Default active tab
+  isContentFlex: boolean = false;
   selectedOfflineButtonIndex: number | null = null;
   selectedOnlineButtonIndex: number | null = null;
   form: FormGroup;
@@ -61,6 +62,9 @@ export class DashboardComponent implements OnInit {
   faOnline = faCheck;
   faSidebarVisible = faEye;
   faSidebarUnvisible = faEyeSlash;
+
+  options: GridsterConfig;
+  dashboard: GridsterItem[];
   
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -73,6 +77,23 @@ export class DashboardComponent implements OnInit {
       minPts_dbscan: [10, [Validators.required, Validators.min(2), Validators.max(2503), WholeNumberValidator()]],
       n_agnes: [4, [Validators.required, Validators.min(2), Validators.max(10), WholeNumberValidator()]]
     }, { validators: atLeastTwoCheckedValidator() });
+
+    this.options = {
+      draggable: { enabled: true },
+      resizable: { enabled: true },
+      swap: true,
+      displayGrid: 'none',
+      pushItems: false
+    };
+
+    this.dashboard = [
+      {cols: 2, rows: 2, y: 0, x: 0, content: "Item 1"},
+      {cols: 2, rows: 1, y: 0, x: 2, content: "Item 2"},
+      {cols: 2, rows: 1, y: 1, x: 2, content: "Item 3"},
+      {cols: 1, rows: 1, y: 2, x: 0, content: "Item 4"},
+      {cols: 1, rows: 1, y: 2, x: 1, content: "Item 5"},
+      {cols: 2, rows: 1, y: 2, x: 2, content: "Item 6"}
+    ];
   }
 
   ngOnInit(): void {}
@@ -104,4 +125,5 @@ export class DashboardComponent implements OnInit {
       console.warn('Form is invalid');
     }
   }
+  
 }

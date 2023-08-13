@@ -130,5 +130,16 @@
       </form>
     </div>
   </div>
-  
+  <div class="dashboard">
+
+    <gridster [options]="options">
+      <gridster-item *ngFor="let item of dashboard" [item]="item">
+        <div>
+          {{item['content']}}
+        </div>
+      </gridster-item>
+    </gridster>
+    
+
+  </div>
 </div>
