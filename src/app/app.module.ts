@@ -11,13 +11,16 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { MapComponent } from './components/map/map.component';
 import { IgxGeographicMapModule } from "igniteui-angular-maps";
-import { IgxDataChartInteractivityModule } from "igniteui-angular-charts";
+import { ScatterChartComponent } from './components/scatter-chart/scatter-chart.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IgxLegendModule, IgxDataChartCoreModule, IgxDataChartScatterModule, IgxDataChartScatterCoreModule, IgxDataChartInteractivityModule, IgxDataChartAnnotationModule, IgxItemToolTipLayerModule } from 'igniteui-angular-charts';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    MapComponent
+    MapComponent,
+    ScatterChartComponent
   ],
   imports: [
     BrowserModule,
@@ -27,9 +30,18 @@ import { IgxDataChartInteractivityModule } from "igniteui-angular-charts";
     GridsterModule,
     HttpClientModule,
     IgxGeographicMapModule,
-    IgxDataChartInteractivityModule
+    IgxDataChartInteractivityModule,
+    BrowserAnimationsModule,
+    IgxLegendModule,
+    IgxDataChartCoreModule,
+    IgxDataChartScatterModule,
+    IgxDataChartScatterCoreModule,
+    IgxDataChartInteractivityModule,
+    IgxDataChartAnnotationModule,
+    IgxItemToolTipLayerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

@@ -65,7 +65,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
     const datierungindex = 8;
 
     return this.csvData
-      .filter(row => row[shapeIndex].startsWith('POINT'))
+      .filter((_, index) => index !== 0)
       .map(row => {
           const shapeString = row[shapeIndex];
           const coords = this.extractCoordinates(shapeString);

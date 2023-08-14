@@ -5,6 +5,17 @@
     </p>
     <p style="text-transform: uppercase; font-size: 12px;">Archaelogical Sites of Vienna</p>
   </div>
+  <a class="btn" (click)="startViewDisplay()">
+    <p style="font-size: 20px;">
+      <fa-icon 
+        [style.color]="selectedOfflineButtonIndex === null && selectedOnlineButtonIndex === null ? 'orange' : 'inherit'"
+        [icon]="faHome">
+      </fa-icon>
+    </p>
+    <p style="text-transform: uppercase; font-size: 12px;">
+      <span class="header-text"> Home</span>
+    </p>
+  </a>
   <a class="btn" (click)="toggleContentDisplay()">
     <p style="font-size: 20px;">
       <fa-icon 
@@ -137,7 +148,7 @@
     <gridster [options]="options">
       <gridster-item *ngFor="let item of dashboard" [item]="item">
         <!-- Map of Points -->
-        <div id="item4" class="scrollable-content" *ngIf="item['content'] === 'Item 4' && csvData">
+        <div class="item scrollable-content" *ngIf="item['content'] === 'Item 4' && csvData">
           <table>
             <thead>
                 <tr>
@@ -150,7 +161,7 @@
           </div>
         </div>
         <!-- Map of Bezirke -->
-        <div id="item5" class="scrollable-content" *ngIf="item['content'] === 'Item 5' && csvData">
+        <div class="item scrollable-content" *ngIf="item['content'] === 'Item 5' && csvData">
           <table>
             <thead>
                 <tr>
@@ -162,7 +173,7 @@
         </div>
         <!-- CSV -->
         <div class="scrollable-content no-drag" *ngIf="item['content'] === 'Item 6' && csvData">
-          <button style="display: none;" (click)="exportCsvData()">Export CSV</button>
+          <button style="display: none;" (click)="eventExportCsvData()">Export CSV</button>
           <table>
               <thead>
                   <tr>
@@ -182,7 +193,80 @@
                   </ng-container>
               </tbody>
           </table>
-      </div>
+        </div>
+        <!-- FUNDE-->
+        <div class="item scrollable-content" *ngIf="item['content'] === 'PCA_kMeans' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                    <th>FUNDE (k-Means) PCA</th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="exportCsvData" [x]="12" [y]="13" [points]="16"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'PCA_DBSCAN' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                    <th>FUNDE (DBSCAN) PCA</th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'PCA_AGNES' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                    <th>FUNDE (AGNES) PCA</th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'UMAP_kMeans' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                    <th>FUNDE (k-Means) UMAP</th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'UMAP_DBSCAN' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                    <th>FUNDE (DBSCAN) UMAP</th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'UMAP_AGNES' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                    <th>FUNDE (AGNES) UMAP</th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            
+          </div>
+        </div>
       </gridster-item>
     </gridster>
   </div>

@@ -8,6 +8,10 @@ Angular CLI: 16.1.8
 Package Manager: npm 9.8.1
 OS: win32 x64
 
+## CSV
+
+After python all CSV files were cleaned in https://open-innovations.github.io/CSVCleaner/ , beacause some rows were damaged by viewing in graph (only 1), it also removes 1 row at end, I think SHAPE column was datetime of type and not string, which must be changed!
+
 ## Libraries
 
 npm install --save @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
@@ -20,6 +24,7 @@ npm install @types/d3 --save-dev
 npm install topojson-client --save
 npm install @types/topojson-client --save-dev
 
+ng add igniteui-angular
 npm install --save igniteui-angular-core
 npm install --save igniteui-angular-charts
 npm install --save igniteui-angular-maps
