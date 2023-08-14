@@ -1,39 +1,41 @@
+<div class="header-container">
+  <div class="btn" style="pointer-events: none;">
+    <p style="font-size: 26px;">
+      <span style="color: orange;">C</span> l u s t e r i n g
+    </p>
+    <p style="text-transform: uppercase; font-size: 12px;">Archaelogical Sites of Vienna</p>
+  </div>
+  <a class="btn" (click)="toggleContentDisplay()">
+    <p style="font-size: 20px;">
+      <fa-icon 
+        [style.color]="isContentFlex ? 'orange' : 'inherit'" [icon]="faSidebarVisible"
+        [icon]="isContentFlex ? faSidebarVisible : faSidebarUnvisible">
+      </fa-icon>
+    </p>
+    <p style="text-transform: uppercase; font-size: 12px;">
+      <span class="header-text"> Menu</span>
+    </p>
+  </a>
+  <a class="btn" (click)="activeTab = 'tab1'">
+    <fa-icon [icon]="faOffline" style="font-size: 12px; color: red; position: absolute; margin-left: -14px; margin-top: 14px;"></fa-icon>
+    <p style="font-size: 20px;">
+      <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab1' ? 'orange' : 'inherit'"></fa-icon>
+    </p>
+    <p style="text-transform: uppercase; font-size: 12px;">
+      <span class="header-text"> Offline</span>
+    </p>
+  </a>
+  <a class="btn" (click)="activeTab = 'tab2'">
+    <fa-icon [icon]="faOnline" style="font-size: 12px; color: green; position: absolute; margin-left: -14px; margin-top: 14px;"></fa-icon>
+    <p style="font-size: 20px;">
+      <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab2' ? 'orange' : 'inherit'"></fa-icon>
+    </p>
+    <p style="text-transform: uppercase; font-size: 12px;">
+      <span class="header-text"> Online</span>
+    </p>
+  </a>
+</div>
 <div class="container">
-  <div class="sidebar">
-    <button class="side_btn" (click)="toggleContentDisplay()">
-      <p style="font-size: 25px;">
-        <fa-icon 
-          [style.color]="isContentFlex ? 'orange' : 'inherit'" [icon]="faSidebarVisible"
-          [icon]="isContentFlex ? faSidebarVisible : faSidebarUnvisible">
-        </fa-icon>
-      </p>
-    </button>
-    <div class="vertical-text" style="margin-top: 15px;">
-      <span style="color: orange;">E</span>
-      <span>x</span>
-      <span>p</span>
-      <span>e</span>
-      <span>r</span>
-      <span>i</span>
-      <span>m</span>
-      <span>e</span>
-      <span>n</span>
-      <span>t</span>
-      <span>s</span>
-  </div>
-    <button class="side_btn" (click)="activeTab = 'tab1'">
-      <fa-icon [icon]="faOffline" style="font-size: 24px; color: red; position: absolute; margin-left: -24px; margin-top: 15px;"></fa-icon>
-      <p style="font-size: 32px;">
-        <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab1' ? 'orange' : 'inherit'"></fa-icon>
-      </p>
-    </button>
-    <button class="side_btn" (click)="activeTab = 'tab2'">
-      <fa-icon [icon]="faOnline" style="font-size: 24px; color: green; position: absolute; margin-left: -24px; margin-top: 15px;"></fa-icon>
-      <p style="font-size: 32px;">
-        <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab2' ? 'orange' : 'inherit'"></fa-icon>
-      </p>
-    </button>
-  </div>
   <div class="content" [style.display]="isContentFlex ? 'flex' : 'none'">
     <div *ngIf="activeTab === 'tab1'">
       <h1 style="color: #212529">Offline</h1>

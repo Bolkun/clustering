@@ -1,5 +1,11 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 // https://fontawesome.com/v4/icons
+import { faHome } from '@fortawesome/free-solid-svg-icons'; 
+import { faSign } from '@fortawesome/free-solid-svg-icons';
+import { faQuestion } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -60,6 +66,12 @@ export class DashboardComponent implements OnInit {
   selectedOnlineButtonIndex: number | null = null;
   form: FormGroup;
   // Icons
+  faHome = faHome;
+  faDashboard = faSign;
+  faHelp = faQuestion;
+  faMenu = faBook;
+  faMenuClosed = faCaretDown;
+  faMenuOpened = faCaretUp;
   faGlobe = faGlobe;
   faOffline = faTimes;
   faOnline = faCheck;
