@@ -1,0 +1,18 @@
+<ng-template #tooltipTemplate let-item="item">
+  <div class="tooltip-content">
+    <span>ObjectID: </span> {{ item.objectid }}<br>
+    <span>Shape</span><br>
+     - Lon: {{ item.longitude }}<br>
+     - Lat: {{ item.latitude }}<br>
+    <span>District: </span> {{ item.bez + ' ' + item.bez_names }}<br>
+    <span>Street: </span> {{ item.strName + ' ' + item.hnr + ' ' + item.hnrBis}}<br>
+    <span>Category: </span> {{ item.fundkategorie }}<br>
+    <span>Findings: </span> {{ titlecasePipe.transform(item.funde) }}<br>
+    <span>Date: </span> {{ item.datierung }}<br>
+  </div>
+</ng-template>
+
+<igx-geographic-map #map
+    height="340px"
+    zoomable="true" >
+</igx-geographic-map>

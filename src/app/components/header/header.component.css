@@ -33,7 +33,6 @@
   width: 100%;
 }
 
-/* When the screen is less than max-width pixels wide */
 @media screen and (max-width: 618px) {
   .header-text {
     display: none;

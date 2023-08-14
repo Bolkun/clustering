@@ -15,6 +15,14 @@ npm install @fortawesome/fontawesome-svg-core
 npm install @fortawesome/free-solid-svg-icons
 npm install @fortawesome/angular-fontawesome
 npm install angular-gridster2
+npm install d3 --save
+npm install @types/d3 --save-dev
+npm install topojson-client --save
+npm install @types/topojson-client --save-dev
+
+npm install --save igniteui-angular-core
+npm install --save igniteui-angular-charts
+npm install --save igniteui-angular-maps
 
 
 ## Development server

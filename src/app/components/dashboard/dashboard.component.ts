@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 // https://fontawesome.com/v4/icons
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +7,8 @@ import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl, ValidatorFn } from '@angular/forms';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
+import { HttpClient } from '@angular/common/http';
+import { MappingService } from 'src/app/services/mapping.service';
 
 export function atLeastTwoCheckedValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -51,22 +53,25 @@ export function MaxDecimalPlacesValidator(decimalPlaces: number): ValidatorFn {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  activeTab: null | string = 'tab1';  // Default active tab
+  // Sidebar
+  activeTab: null | string = 'tab1';
   isContentFlex: boolean = false;
   selectedOfflineButtonIndex: number | null = null;
   selectedOnlineButtonIndex: number | null = null;
   form: FormGroup;
-
+  // Icons
   faGlobe = faGlobe;
   faOffline = faTimes;
   faOnline = faCheck;
   faSidebarVisible = faEye;
   faSidebarUnvisible = faEyeSlash;
-
+  // Grid
   options: GridsterConfig;
   dashboard: GridsterItem[];
+  // CSV
+  csvData: string[][];
   
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private mappingService: MappingService, private element: ElementRef) {
     this.form = this.fb.group({
       FUNDE_N: [false],
       BEZ_N: [true],
@@ -79,24 +84,37 @@ export class DashboardComponent implements OnInit {
     }, { validators: atLeastTwoCheckedValidator() });
 
     this.options = {
-      draggable: { enabled: true },
+      draggable: { enabled: true, ignoreContentClass: 'no-drag'},
       resizable: { enabled: true },
       swap: true,
       displayGrid: 'none',
       pushItems: false
     };
-
     this.dashboard = [
-      {cols: 2, rows: 2, y: 0, x: 0, content: "Item 1"},
-      {cols: 2, rows: 1, y: 0, x: 2, content: "Item 2"},
-      {cols: 2, rows: 1, y: 1, x: 2, content: "Item 3"},
-      {cols: 1, rows: 1, y: 2, x: 0, content: "Item 4"},
-      {cols: 1, rows: 1, y: 2, x: 1, content: "Item 5"},
-      {cols: 2, rows: 1, y: 2, x: 2, content: "Item 6"}
+      // {cols: 2, rows: 2, y: 0, x: 0, content: "Item 1"},  // k-Means
+      // {cols: 2, rows: 1, y: 0, x: 2, content: "Item 2"},  // DBSCAN
+      // {cols: 2, rows: 1, y: 1, x: 2, content: "Item 3"},  // AGNES
+      // {cols: 1, rows: 1, y: 2, x: 0, content: "Item 4"},  // Map of Points
+      // {cols: 1, rows: 1, y: 2, x: 1, content: "Item 5"},  // Map of Bezirke
+      // {cols: 2, rows: 1, y: 2, x: 2, content: "Item 6"}   // CSV Data
+
+      // {cols: 2, rows: 2, y: 0, x: 0, content: "Item 1"},  // k-Means
+      // {cols: 2, rows: 2, y: 0, x: 2, content: "Item 2"},  // DBSCAN
+      // {cols: 2, rows: 2, y: 2, x: 2, content: "Item 3"},  // AGNES
+      // {cols: 1, rows: 2, y: 2, x: 0, content: "Item 4"},  // Map of Points
+      // {cols: 1, rows: 2, y: 2, x: 1, content: "Item 5"},  // Map of Bezirke
+      // {cols: 4, rows: 2, y: 4, x: 0, content: "Item 6"}   // CSV Data
+
+      // Start
+      {cols: 2, rows: 4, y: 0, x: 0, content: "Item 4"},  // Map of Points
+      {cols: 2, rows: 4, y: 0, x: 2, content: "Item 5"},  // Map of Bezirke
+      {cols: 4, rows: 4, y: 4, x: 0, content: "Item 6"}   // CSV Data
     ];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadCsvData();
+  }
 
   get isContentVisible(): boolean {
     return this.activeTab === 'tab1' || this.activeTab === 'tab2';
@@ -110,6 +128,54 @@ export class DashboardComponent implements OnInit {
     // Clear buttons off Online test
     this.selectedOnlineButtonIndex = null;
     this.selectedOfflineButtonIndex = index;
+  }
+
+  loadCsvData() {
+    this.http.get('assets/csv/data_preparation/cleaned_archaelogical_sites_of_wien.csv', { responseType: 'text' })
+    .subscribe(data => {
+      const rawData = this.csvTo2DArray(data, ",", [0, 1, 2, 4, 5, 6, 7, 9, 10]);
+      const fundKategorieMappedData = this.mappingService.mapFundKategorie(rawData);
+      this.csvData = this.mappingService.mapDatierung(fundKategorieMappedData);
+      // const bezMappedData = this.mappingService.mapBez(fundKategorieMappedData);
+      // this.csvData = this.mappingService.mapDatierung(bezMappedData);
+    });
+  }
+  
+  private csvTo2DArray(csv: string, delimiter: string = ",", columnsToKeep: number[] = []): string[][] {
+    let lines = csv.split("\n");
+
+    // Filter out any empty lines or lines with only delimiters
+    lines = lines.filter(line => line.trim() !== "" && line.split(delimiter).some(cell => cell.trim() !== ""));
+
+    // Convert the filtered lines to a 2D array and add row numeration
+    return lines.map(line => 
+      line.split(delimiter).filter((_, index) => columnsToKeep.includes(index))
+    );
+  }
+
+  capitalizeEachWord(value: string): string {
+    if (!value) {
+      return '';
+    }
+    return value.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+  }
+  
+
+  exportCsvData() {
+    const csvContent = this.arrayToCsv(this.csvData);
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'exported_data.csv';
+    anchor.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  private arrayToCsv(data: string[][]): string {
+      return data.map(row => row.join(",")).join("\n");
   }
 
   submit(index: number) {
