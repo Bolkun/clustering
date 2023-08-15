@@ -7,9 +7,9 @@
     <span>Shape: </span>{{ item.shape }}<br>
     <span>District: </span> {{ item.bez + ' ' + item.bez_names }}<br>
     <span>Street: </span> {{ item.strName + ' ' + item.hnr + ' ' + item.hnrBis}}<br>
-    <span>Category: </span> {{ item.fundkategorie }}<br>
-    <span>Findings: </span> {{ titlecasePipe.transform(item.funde) }}<br>
-    <span>Date: </span> {{ item.datierung }}<br>
+    <span>Category: </span> {{ item.fundkategorie + ' ' + item.fundkategorie_names }}<br>
+    <span>Findings: </span> {{ titlecasePipe.transform(item.funde_names) }}<br>
+    <span>Date: </span> {{ item.datierung + ' ' + item.datierung_names }}<br>
   </div>
 </ng-template>
 <div class="center-container">

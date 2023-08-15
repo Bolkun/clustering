@@ -10,7 +10,7 @@ OS: win32 x64
 
 ## CSV
 
-After python all CSV files were cleaned in https://open-innovations.github.io/CSVCleaner/ , beacause some rows were damaged by viewing in graph (only 1), it also removes 1 row at end, I think SHAPE column was datetime of type and not string, which must be changed!
+After python all CSV files were cleaned in https://open-innovations.github.io/CSVCleaner/ , beacause some rows were damaged by viewing in graph (only 1), it also removes 1 row at end, I think SHAPE column was datetime of type and not string, which must be changed! And fix header of csv (delete commas) 
 
 ## Libraries
 

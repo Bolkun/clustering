@@ -224,6 +224,41 @@ gridster-item {
   border: 1px solid #212529;
 }
 
+.position-relative {
+  position: relative;
+}
+
+.absolute-right {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+}
+
+.position-relative button {
+  background: transparent;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.close-button {
+  position: absolute;
+  top: -3px;
+  right: -8px;
+  text-align: center;
+  color: #212529;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 28px;
+  font-family: "Exo", sans-serif;
+}
+
 .scrollable-content {
   height: 100%;
   width: 100%;
@@ -302,3 +337,4 @@ th, td {
   object-fit: contain;
   display: block;
 }
+

@@ -15,6 +15,8 @@ export class ScatterChartComponent implements OnInit {
   @Input() x: number;
   @Input() y: number;
   @Input() points: number;
+  @Input() x_title: string;
+  @Input() y_title: string;
 
   @ViewChild("chart", { static: true }) public chart: IgxDataChartComponent;
   @ViewChild('tooltipTemplate', { static: true }) public tooltipTemplate: TemplateRef<any>;
@@ -39,7 +41,7 @@ export class ScatterChartComponent implements OnInit {
     const hnrBisIndex = 6;
     const fundkategorieIndex = 7;
     const fundeIndex = 9;
-    const datierungindex = 10;
+    const datierungIndex = 10;
 
     this.scatterData = this.csvData
       .filter((_, index) => index !== 0)  // Skip the first row
@@ -56,18 +58,21 @@ export class ScatterChartComponent implements OnInit {
           hnr: row[hnrIndex],
           hnrBis: row[hnrBisIndex],
           fundkategorie: row[fundkategorieIndex],
-          funde: row[fundeIndex],
-          datierung: row[datierungindex],
+          fundkategorie_names: this.mappingService.mapFundKategorieString(row[fundkategorieIndex]),
+          // funde: row[fundeIndex],
+          funde_names: this.mappingService.mapFundeString(row[fundeIndex]),
+          datierung: row[datierungIndex],
+          datierung_names: this.mappingService.mapDatierungString(row[datierungIndex]),
         };
       });
   }
 
   drawScatterChart(): void {
     const xAxis = new IgxNumericXAxisComponent();
-    xAxis.title = "Principal Component 1";
+    xAxis.title = this.x_title;
 
     const yAxis = new IgxNumericYAxisComponent();
-    yAxis.title = "Principal Component 2";
+    yAxis.title = this.y_title;
 
     const colors: { [key: string]: string } = {
       '-1': '#808080', // Grey

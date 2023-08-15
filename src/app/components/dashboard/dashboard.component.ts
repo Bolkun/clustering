@@ -10,6 +10,7 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faDatabase } from '@fortawesome/free-solid-svg-icons';
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl, ValidatorFn } from '@angular/forms';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
@@ -67,6 +68,7 @@ export class DashboardComponent implements OnInit {
   form: FormGroup;
   // Icons
   faHome = faHome;
+  faDatabase = faDatabase;
   faDashboard = faSign;
   faHelp = faQuestion;
   faMenu = faBook;
@@ -116,15 +118,30 @@ export class DashboardComponent implements OnInit {
     this.loadExportCsvData();
     this.load2_ExportCsvData();
 
-    this.setSelectedButton(0);
+    this.setSelectedButton(4);
   }
 
-  get isContentVisible(): boolean {
-    return this.activeTab === 'tab1' || this.activeTab === 'tab2';
+  toggleOfflineMenu(): void {
+    if(this.isContentFlex === true) {
+      this.activeTab = 'tab1';
+    } else {
+      this.activeTab = 'tab1';
+      this.isContentFlex = true;
+    }
+  }
+
+  toggleOnlineMenu(): void {
+    if(this.isContentFlex === true) {
+      this.activeTab = 'tab2';
+    } else {
+      this.activeTab = 'tab2';
+      this.isContentFlex = true;
+    }
   }
 
   toggleContentDisplay(): void {
     this.isContentFlex = !this.isContentFlex;
+    this.activeTab = null;
   }
 
   startViewDisplay() {
@@ -135,6 +152,13 @@ export class DashboardComponent implements OnInit {
       {cols: 2, rows: 4, y: 0, x: 2, content: "Item 5"},  // Map of Bezirke
       {cols: 4, rows: 4, y: 4, x: 0, content: "Item 6"}   // CSV Data
     ];
+  }
+
+  removeItem(item: GridsterItem) {
+    const index = this.dashboard.indexOf(item);
+    if (index > -1) {
+      this.dashboard.splice(index, 1);
+    }
   }
 
   setSelectedButton(index: number): void {
@@ -181,23 +205,58 @@ export class DashboardComponent implements OnInit {
   }
 
   handleBezNDatierungN(): void {
-    
+    this.dashboard = [
+      // First row
+      {cols: 6, rows: 2, y: 0, x: 0, content: "BezDatierung_kMeans"},
+      // Second row
+      {cols: 6, rows: 2, y: 2, x: 0, content: "BezDatierung_DBSCAN"},  
+      // Third row
+      {cols: 6, rows: 2, y: 4, x: 0, content: "BezDatierung_AGNES"}, 
+    ];
   }
 
   handleBezNFundeN(): void {
-    
+    this.dashboard = [
+      // First row
+      {cols: 6, rows: 2, y: 0, x: 0, content: "BezFunde_kMeans"},
+      // Second row
+      {cols: 6, rows: 2, y: 2, x: 0, content: "BezFunde_DBSCAN"},  
+      // Third row
+      {cols: 6, rows: 2, y: 4, x: 0, content: "BezFunde_AGNES"}, 
+    ];
   }
 
   handleBezNFundkategorieN(): void {
-    
+    this.dashboard = [
+      // First row
+      {cols: 6, rows: 2, y: 0, x: 0, content: "BezFundkategorie_kMeans"},
+      // Second row
+      {cols: 6, rows: 2, y: 2, x: 0, content: "BezFundkategorie_DBSCAN"},  
+      // Third row
+      {cols: 6, rows: 2, y: 4, x: 0, content: "BezFundkategorie_AGNES"}, 
+    ];
   }
 
   handleBezNFundeNDatierungN(): void {
-    
+    this.dashboard = [
+      // First row
+      {cols: 6, rows: 2, y: 0, x: 0, content: "BezFundeDatierung_kMeans"},
+      // Second row
+      {cols: 6, rows: 2, y: 2, x: 0, content: "BezFundeDatierung_DBSCAN"},  
+      // Third row
+      {cols: 6, rows: 2, y: 4, x: 0, content: "BezFundeDatierung_AGNES"}, 
+    ];
   }
 
   handleBezNFundeNDatierungNFundkategorieN(): void {
-    
+    this.dashboard = [
+      // First row
+      {cols: 6, rows: 2, y: 0, x: 0, content: "BezFundeDatierungFundkategorie_kMeans"},
+      // Second row
+      {cols: 6, rows: 2, y: 2, x: 0, content: "BezFundeDatierungFundkategorie_DBSCAN"},  
+      // Third row
+      {cols: 6, rows: 2, y: 4, x: 0, content: "BezFundeDatierungFundkategorie_AGNES"}, 
+    ];
   }
 
   loadCsvData() {
@@ -216,8 +275,10 @@ export class DashboardComponent implements OnInit {
     .subscribe(data => {
       const columnsToKeep = Array.from({length: 33}, (_, i) => i); // 33 columns
       const rawData = this.csvTo2DArray(data, ",", columnsToKeep);
-      const fundKategorieMappedData = this.mappingService.mapFundKategorie(rawData);
-      this.exportCsvData = this.mappingService.mapDatierung(fundKategorieMappedData);
+      // const fundKategorieMappedData = this.mappingService.mapFundKategorie(rawData);
+      // const bezMappedData = this.mappingService.mapBez(fundKategorieMappedData);
+      // this.exportCsvData = this.mappingService.mapDatierung(bezMappedData);
+      this.exportCsvData = rawData
     });
   }
 
@@ -226,8 +287,7 @@ export class DashboardComponent implements OnInit {
     .subscribe(data => {
       const columnsToKeep = Array.from({length: 22}, (_, i) => i); // 22 columns
       const rawData = this.csvTo2DArray(data, ",", columnsToKeep);
-      const fundKategorieMappedData = this.mappingService.mapFundKategorie(rawData);
-      this.export2_CsvData = this.mappingService.mapDatierung(fundKategorieMappedData);
+      this.export2_CsvData = rawData;
     });
   }
   

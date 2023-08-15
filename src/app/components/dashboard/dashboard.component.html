@@ -9,25 +9,14 @@
     <p style="font-size: 20px;">
       <fa-icon 
         [style.color]="selectedOfflineButtonIndex === null && selectedOnlineButtonIndex === null ? 'orange' : 'inherit'"
-        [icon]="faHome">
+        [icon]="faDatabase">
       </fa-icon>
     </p>
     <p style="text-transform: uppercase; font-size: 12px;">
-      <span class="header-text"> Home</span>
+      <span class="header-text"> Data</span>
     </p>
   </a>
-  <a class="btn" (click)="toggleContentDisplay()">
-    <p style="font-size: 20px;">
-      <fa-icon 
-        [style.color]="isContentFlex ? 'orange' : 'inherit'" [icon]="faSidebarVisible"
-        [icon]="isContentFlex ? faSidebarVisible : faSidebarUnvisible">
-      </fa-icon>
-    </p>
-    <p style="text-transform: uppercase; font-size: 12px;">
-      <span class="header-text"> Menu</span>
-    </p>
-  </a>
-  <a class="btn" (click)="activeTab = 'tab1'">
+  <a class="btn" (click)="toggleOfflineMenu()">
     <fa-icon [icon]="faOffline" style="font-size: 12px; color: red; position: absolute; margin-left: -14px; margin-top: 14px;"></fa-icon>
     <p style="font-size: 20px;">
       <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab1' ? 'orange' : 'inherit'"></fa-icon>
@@ -36,7 +25,7 @@
       <span class="header-text"> Offline</span>
     </p>
   </a>
-  <a class="btn" (click)="activeTab = 'tab2'">
+  <a class="btn" (click)="toggleOnlineMenu()">
     <fa-icon [icon]="faOnline" style="font-size: 12px; color: green; position: absolute; margin-left: -14px; margin-top: 14px;"></fa-icon>
     <p style="font-size: 20px;">
       <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab2' ? 'orange' : 'inherit'"></fa-icon>
@@ -49,10 +38,11 @@
 <div class="container">
   <div class="content" [style.display]="isContentFlex ? 'flex' : 'none'">
     <div *ngIf="activeTab === 'tab1'">
+      <a class="close-button btn" (click)="toggleContentDisplay()">X</a>
       <h1 style="color: #212529">Offline</h1>
       <p>Here are some examples produced in python</p>
       <div style="margin-top: 15px;">
-        <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 0 ? 'orange' : 'white'" (click)="setSelectedButton(0)">FUNDE</button>
+        <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 0 ? 'orange' : 'white'" (click)="setSelectedButton(0)">FUNDE_N</button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 1 ? 'orange' : 'white'" (click)="setSelectedButton(1)">BEZ_N, DATIERUNG_N</button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 2 ? 'orange' : 'white'" (click)="setSelectedButton(2)">BEZ_N, FUNDE_N</button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 3 ? 'orange' : 'white'" (click)="setSelectedButton(3)">BEZ_N, FUNDKATEGORIE_N</button>
@@ -61,6 +51,7 @@
       </div>
     </div>
     <div *ngIf="activeTab === 'tab2'">
+      <a class="close-button btn" (click)="toggleContentDisplay()">X</a>
       <h1 style="color: #212529">Online</h1>
       <p>Produce your own examples with tensorflow.js</p>
       <form id="online_form" [formGroup]="form" (ngSubmit)="submit(0)">
@@ -152,7 +143,10 @@
           <table>
             <thead>
                 <tr>
-                    <th>Map of Discovery Sites</th>
+                  <th class="position-relative">
+                    Map of Discovery Sites
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
                 </tr>
             </thead>
           </table>
@@ -165,20 +159,27 @@
           <table>
             <thead>
                 <tr>
-                    <th>Districts</th>
+                  <th class="position-relative">
+                    Districts
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
                 </tr>
             </thead>
           </table>
           <img id="img_bezirke" src="assets/img/bezirke-wien.png">
         </div>
         <!-- CSV -->
-        <div class="scrollable-content no-drag" *ngIf="item['content'] === 'Item 6' && csvData">
+        <!-- <div class="scrollable-content no-drag" *ngIf="item['content'] === 'Item 6' && csvData"> -->
+        <div class="scrollable-content" *ngIf="item['content'] === 'Item 6' && csvData">
           <button style="display: none;" (click)="eventExportCsvData()">Export CSV</button>
           <table>
               <thead>
                   <tr>
-                      <th>N</th>
-                      <th *ngFor="let header of csvData[0]">{{ header }}</th>
+                    <th class="position-relative">N</th>
+                    <th class="position-relative" *ngFor="let header of csvData[0]">{{ header }}</th>
+                    <th class="position-relative">
+                      <button class="absolute-right" (click)="removeItem(item)">X</button>
+                    </th>
                   </tr>
               </thead>
               <tbody>
@@ -199,72 +200,225 @@
           <table>
             <thead>
                 <tr>
-                    <th>FUNDE (k-Means) PCA</th>
+                  <th class="position-relative">
+                    FUNDE (k-Means) PCA
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
                 </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="12" [y]="13" [points]="16"></app-scatter-chart>
+            <app-scatter-chart [csvData]="exportCsvData" [x]="12" [y]="13" [points]="16" [x_title]="'Principal Component 1'" [y_title]="'Principal Component 2'"></app-scatter-chart>
           </div>
         </div>
         <div class="item scrollable-content" *ngIf="item['content'] === 'PCA_DBSCAN' && exportCsvData">
           <table>
             <thead>
                 <tr>
-                    <th>FUNDE (DBSCAN) PCA</th>
+                  <th class="position-relative">
+                    FUNDE (DBSCAN) PCA
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
                 </tr>
             </thead>
           </table>
           <div class="graph">
-            
+            <app-scatter-chart [csvData]="exportCsvData" [x]="17" [y]="18" [points]="21" [x_title]="'Principal Component 1'" [y_title]="'Principal Component 2'"></app-scatter-chart>
           </div>
         </div>
         <div class="item scrollable-content" *ngIf="item['content'] === 'PCA_AGNES' && exportCsvData">
           <table>
             <thead>
                 <tr>
-                    <th>FUNDE (AGNES) PCA</th>
+                  <th class="position-relative">
+                    FUNDE (AGNES) PCA
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
                 </tr>
             </thead>
           </table>
           <div class="graph">
-            
+            <app-scatter-chart [csvData]="exportCsvData" [x]="22" [y]="23" [points]="26" [x_title]="'Principal Component 1'" [y_title]="'Principal Component 2'"></app-scatter-chart>
           </div>
         </div>
         <div class="item scrollable-content" *ngIf="item['content'] === 'UMAP_kMeans' && exportCsvData">
           <table>
             <thead>
                 <tr>
-                    <th>FUNDE (k-Means) UMAP</th>
+                  <th class="position-relative">
+                    FUNDE (k-Means) UMAP
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
                 </tr>
             </thead>
           </table>
           <div class="graph">
-            
+            <app-scatter-chart [csvData]="exportCsvData" [x]="14" [y]="15" [points]="16" [x_title]="'UMAP Component 1'" [y_title]="'UMAP Component 2'"></app-scatter-chart>
           </div>
         </div>
         <div class="item scrollable-content" *ngIf="item['content'] === 'UMAP_DBSCAN' && exportCsvData">
           <table>
             <thead>
                 <tr>
-                    <th>FUNDE (DBSCAN) UMAP</th>
+                  <th class="position-relative">
+                    FUNDE (DBSCAN) UMAP
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
                 </tr>
             </thead>
           </table>
           <div class="graph">
-            
+            <app-scatter-chart [csvData]="exportCsvData" [x]="19" [y]="20" [points]="21" [x_title]="'UMAP Component 1'" [y_title]="'UMAP Component 2'"></app-scatter-chart>
           </div>
         </div>
         <div class="item scrollable-content" *ngIf="item['content'] === 'UMAP_AGNES' && exportCsvData">
           <table>
             <thead>
                 <tr>
-                    <th>FUNDE (AGNES) UMAP</th>
+                  <th class="position-relative">
+                    FUNDE (AGNES) UMAP
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
                 </tr>
             </thead>
           </table>
           <div class="graph">
-            
+            <app-scatter-chart [csvData]="exportCsvData" [x]="24" [y]="25" [points]="26" [x_title]="'UMAP Component 1'" [y_title]="'UMAP Component 2'"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezDatierung_kMeans' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, DATIERUNG (k-Means)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="10" [points]="30" [x_title]="'BEZ'" [y_title]="'DATIERUNG'"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezDatierung_DBSCAN' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, DATIERUNG (DBSCAN)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="10" [points]="31" [x_title]="'BEZ'" [y_title]="'DATIERUNG'"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezDatierung_AGNES' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, DATIERUNG (AGNES)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="10" [points]="32" [x_title]="'BEZ'" [y_title]="'DATIERUNG'"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundkategorie_kMeans' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDKATEGORIE (k-Means)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="7" [points]="27" [x_title]="'BEZ'" [y_title]="'FUNDKATEGORIE'"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundkategorie_DBSCAN' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDKATEGORIE (DBSCAN)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="7" [points]="28" [x_title]="'BEZ'" [y_title]="'FUNDKATEGORIE'"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundkategorie_AGNES' && exportCsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDKATEGORIE (AGNES)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="7" [points]="29" [x_title]="'BEZ'" [y_title]="'FUNDKATEGORIE'"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFunde_kMeans' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDE (k-Means)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="export2_CsvData" [x]="2" [y]="9" [points]="13" [x_title]="'BEZ'" [y_title]="'FUNDE'"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFunde_DBSCAN' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    <span style="color: red;">Failed Experiment with BEZ, FUNDE (DBSCAN)!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="export2_CsvData" [x]="2" [y]="9" [points]="14" [x_title]="'BEZ'" [y_title]="'FUNDE'"></app-scatter-chart>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFunde_AGNES' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDE (AGNES)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-scatter-chart [csvData]="export2_CsvData" [x]="2" [y]="9" [points]="15" [x_title]="'BEZ'" [y_title]="'FUNDE'"></app-scatter-chart>
           </div>
         </div>
       </gridster-item>
