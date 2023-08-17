@@ -17,11 +17,11 @@ export class ScatterChartComponent implements OnInit {
   @Input() points: number;
   @Input() x_title: string;
   @Input() y_title: string;
+  @Input() points_arr: string[] = [];
 
   @ViewChild("chart", { static: true }) public chart: IgxDataChartComponent;
   @ViewChild('tooltipTemplate', { static: true }) public tooltipTemplate: TemplateRef<any>;
   @ViewChild("legend", { static: true }) public legend: IgxLegendComponent;
-
 
   scatterData: { x: number, y: number, point: string }[] = [];
 
@@ -41,16 +41,27 @@ export class ScatterChartComponent implements OnInit {
     const hnrBisIndex = 6;
     const fundkategorieIndex = 7;
     const fundeIndex = 9;
-    const datierungIndex = 10;
+    let datierungIndex = 0;
+    if(this.csvData.length == 6690) {
+      datierungIndex = 11;
+    } else {
+      datierungIndex = 10;
+    }
 
     this.scatterData = this.csvData
       .filter((_, index) => index !== 0)  // Skip the first row
-      .map(row => {
+      .filter(row => { // some points has normalized data in it, csv parsing not so good!
+        const xIsInt = Number.isInteger(parseFloat(row[this.x]));
+        const yIsInt = Number.isInteger(parseFloat(row[this.y]));
+        return (xIsInt && yIsInt) || (!xIsInt && !yIsInt);
+      })
+      .map((row, rowIndex) => {
+        let pointValue = (this.points == -1) ? this.points_arr[rowIndex] : row[this.points];
         return {
           objectid: row[objectIdIndex],
           x: parseFloat(row[this.x]),
           y: parseFloat(row[this.y]),
-          point: row[this.points],
+          point: pointValue,
           shape: row[shapeIndex],
           bez: row[bezIndex],
           bez_names: this.mappingService.mapBezString(row[bezIndex]),

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, SimpleChanges } from '@angular/core';
 // https://fontawesome.com/v4/icons
 import { faHome } from '@fortawesome/free-solid-svg-icons'; 
 import { faSign } from '@fortawesome/free-solid-svg-icons';
@@ -23,7 +23,7 @@ export function atLeastTwoCheckedValidator(): ValidatorFn {
       return null;
     }
 
-    const selectedCheckboxes = ['FUNDE_N', 'BEZ_N', 'DATIERUNG_N', 'FUNDKATEGORIE_N']
+    const selectedCheckboxes = ['FUNDE', 'BEZ', 'DATIERUNG', 'FUNDKATEGORIE']
       .map(key => control.get(key).value)
       .filter(Boolean).length;
 
@@ -61,7 +61,7 @@ export function MaxDecimalPlacesValidator(decimalPlaces: number): ValidatorFn {
 })
 export class DashboardComponent implements OnInit {
   // Sidebar
-  activeTab: null | string = 'tab1';
+  activeTab: null | string = 'tab2';
   isContentFlex: boolean = true;
   selectedOfflineButtonIndex: number | null = null;
   selectedOnlineButtonIndex: number | null = null;
@@ -86,13 +86,26 @@ export class DashboardComponent implements OnInit {
   csvData: string[][];
   exportCsvData: string[][];
   export2_CsvData: string[][];
+  // Online
+  boxCount: any;
+  o_x_title: any;
+  o_y_title: any;
+  o_z_title: any;
+  o_d_title: any;
+  o_x_column: any;
+  o_y_column: any;
+  o_z_column: any;
+  o_d_column: any;
+  kMeans_points: string[] = [];
+  DBSCAN_points: string[] = [];
+  AGNES_points: string[] = [];
   
   constructor(private fb: FormBuilder, private http: HttpClient, private mappingService: MappingService, private element: ElementRef) {
     this.form = this.fb.group({
-      FUNDE_N: [false],
-      BEZ_N: [true],
-      DATIERUNG_N: [true],
-      FUNDKATEGORIE_N: [false],
+      FUNDE: [false],
+      DATIERUNG: [true],
+      BEZ: [true],
+      FUNDKATEGORIE: [false],
       n_kMeans: [3, [Validators.required, Validators.min(2), Validators.max(10), WholeNumberValidator()]],
       eps_dbscan: [0.1, [Validators.required, Validators.min(0.01), Validators.max(10), MaxDecimalPlacesValidator(4)]],
       minPts_dbscan: [10, [Validators.required, Validators.min(2), Validators.max(2503), WholeNumberValidator()]],
@@ -325,13 +338,100 @@ export class DashboardComponent implements OnInit {
       return data.map(row => row.join(",")).join("\n");
   }
 
+  mapCsvColumns(name: string) {
+    if(name === 'FUNDE') return 9;
+    if(name === 'BEZ') return 2;
+    if(name === 'DATIERUNG') return 11;
+    if(name === 'FUNDKATEGORIE') return 7;
+    return null;
+  }
+
+  setCorrectAxis(form: any, boxCount:any) {
+    if (boxCount == 2) {
+      if (form['BEZ'] && form['DATIERUNG']) {
+        // x=BEZ, y=DATIERUNG
+        this.o_x_title = 'BEZ';
+        this.o_y_title = 'DATIERUNG';
+      } else if (form['BEZ'] && form['FUNDE']) {
+        // x=BEZ, y=FUNDE
+        this.o_x_title = 'BEZ';
+        this.o_y_title = 'FUNDE';
+      } else if (form['BEZ'] && form['FUNDKATEGORIE']) {
+        // x=BEZ, y=FUNDKATEGORIE
+        this.o_x_title = 'BEZ';
+        this.o_y_title = 'FUNDKATEGORIE';
+      }
+    }
+  }
+
   submit(index: number) {
     if (this.form.valid) {
       // Clear buttons off Offline test
       this.selectedOfflineButtonIndex = null;
       this.selectedOnlineButtonIndex = index;
       // Process the form data
-      console.log(this.form.value);
+      this.boxCount = Object.values(this.form.value).filter(value => value === true).length; // Number of Objects set to true
+      const checkedBoxes = Object.entries(this.form.value)
+                                 .filter(([key, value]) => value === true)
+                                 .map(([key]) => key); // Checkboxes names set to true
+      this.o_x_title = checkedBoxes[0];
+      this.o_y_title = checkedBoxes[1];
+      this.o_z_title = checkedBoxes[2];
+      this.o_d_title = checkedBoxes[3];
+      this.setCorrectAxis(this.form.value, this.boxCount);  // Based on offline graphs
+      this.o_x_column = this.mapCsvColumns(this.o_x_title);
+      this.o_y_column = this.mapCsvColumns(this.o_y_title);
+      this.o_z_column = this.mapCsvColumns(this.o_z_title);
+      this.o_d_column = this.mapCsvColumns(this.o_d_title);
+      if (this.boxCount === 2) {
+        this.dashboard = [
+          {cols: 6, rows: 2, y: 0, x: 0, content: "2D_Online_kMeans"},
+          {cols: 6, rows: 2, y: 2, x: 0, content: "2D_Online_DBSCAN"},
+          {cols: 6, rows: 2, y: 4, x: 0, content: "2D_Online_AGNES"},
+        ];
+      } else {
+        this.dashboard = [
+          {cols: 2, rows: 6, y: 0, x: 0, content: "3D4D_Online_kMeans"},
+          {cols: 2, rows: 6, y: 2, x: 0, content: "3D4D_Online_DBSCAN"},
+          {cols: 2, rows: 6, y: 4, x: 0, content: "3D4D_Online_AGNES"},
+        ];
+      }
+
+      // kMeans
+      let halfPoint = Math.floor(this.export2_CsvData.length / 2);
+      this.kMeans_points = this.export2_CsvData
+        .filter((_, index) => index !== 0)  // Skip the first row
+        .map((row, rowIndex) => {
+            if (rowIndex < halfPoint) {
+                return '0';
+            } else {
+              return '1';
+            }
+        })
+      // DBSCAN
+      halfPoint = Math.floor(this.export2_CsvData.length / 2);
+      this.DBSCAN_points = this.export2_CsvData
+        .filter((_, index) => index !== 0)  // Skip the first row
+        .map((row, rowIndex) => {
+            if (rowIndex < halfPoint) {
+                return '0';
+            } else {
+              return '1';
+            }
+        })
+      // AGNES
+      halfPoint = Math.floor(this.export2_CsvData.length / 2);
+      this.AGNES_points = this.export2_CsvData
+        .filter((_, index) => index !== 0)  // Skip the first row
+        .map((row, rowIndex) => {
+            if (rowIndex < halfPoint) {
+                return '0';
+            } else {
+              return '1';
+            }
+        })
+      
+      // console.log(this.form.value);
     } else {
       // Display a general message or loop through controls to show individual error messages
       this.selectedOnlineButtonIndex = null;

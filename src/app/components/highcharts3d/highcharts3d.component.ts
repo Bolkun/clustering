@@ -22,6 +22,7 @@ export class Highcharts3dComponent implements OnInit {
   @Input() y_title: string;
   @Input() z_title: string;
   @Input() d_title: string;
+  @Input() points_arr: string[] = [];
 
   highcharts = Highcharts;
   chartOptions: Highcharts.Options;
@@ -68,10 +69,22 @@ export class Highcharts3dComponent implements OnInit {
 
     const sampleRate = 7;  // Only take every 7th point
 
+    if (this.points == -1) {
+      this.points_arr = this.points_arr.filter((_, index) => index % sampleRate === 0);
+    }
+  
     let groupedData: { [key: string]: { data: any[], color: string } } = {};
     this.csvData
       .filter((_, index) => index !== 0 && index % sampleRate === 0)  // Ignore the first row and take every nth row
-      .forEach(row => {
+      .filter(row => { // some points has normalized data in it, csv parsing not so good!
+        const xIsInt = Number.isInteger(parseFloat(row[this.x]));
+        const yIsInt = Number.isInteger(parseFloat(row[this.y]));
+        const zIsInt = Number.isInteger(parseFloat(row[this.z]));
+        return (xIsInt && yIsInt && zIsInt) || (!xIsInt && !yIsInt && !zIsInt);
+      })
+      .forEach((row, rowIndex) => {
+        let pointValue = (this.points == -1) ? this.points_arr[rowIndex] : row[this.points];
+        
         const point = {
             x: parseFloat(row[this.x]),
             y: parseFloat(row[this.y]),
@@ -79,9 +92,9 @@ export class Highcharts3dComponent implements OnInit {
             marker: {
               symbol: this.getMarkerSymbol(row[this.d]) // set marker shape based on FUNDKATEGORIE
             },
-            color: this.colors[row[this.points]],
+            color: this.colors[pointValue],
             objectid: row[objectIdIndex],
-            cluster: row[this.points],
+            cluster: pointValue,
             shape: row[shapeIndex],
             bez: row[bezIndex],
             bez_names: this.mappingService.mapBezString(row[bezIndex]),
@@ -95,7 +108,7 @@ export class Highcharts3dComponent implements OnInit {
             datierung_names: this.mappingService.mapDatierungString(row[datierungIndex]),
         };
 
-        const clusterValue = row[this.points];
+        const clusterValue = pointValue;
         if (!groupedData[clusterValue]) {
           groupedData[clusterValue] = {
               data: [],

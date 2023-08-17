@@ -58,19 +58,19 @@
         <p>Data</p>
         <div class="checkbox-column">
           <label>
-            <input type="checkbox" formControlName="FUNDE_N">
+            <input type="checkbox" formControlName="FUNDE">
             FUNDE
           </label>
           <label>
-            <input  type="checkbox" formControlName="BEZ_N">
-            BEZ
-          </label>
-          <label>
-            <input type="checkbox" formControlName="DATIERUNG_N">
+            <input type="checkbox" formControlName="DATIERUNG">
             DATIERUNG
           </label>
           <label>
-            <input type="checkbox" formControlName="FUNDKATEGORIE_N">
+            <input  type="checkbox" formControlName="BEZ">
+            BEZ
+          </label>
+          <label>
+            <input type="checkbox" formControlName="FUNDKATEGORIE">
             FUNDKATEGORIE
           </label>
           <span class="error_message2" *ngIf="form.hasError('atLeastTwoRequired')">
@@ -511,6 +511,95 @@
           </table>
           <div class="graph">
             <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [d]="7" [points]="21" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'" [d_title]="'FUNDKATEGORIE'"></app-highcharts3d>
+          </div>
+        </div>
+
+        <!-- ONLINE -->
+        <div class="item scrollable-content" *ngIf="item['content'] === '2D_Online_kMeans' || item['content'] === '3D4D_Online_kMeans' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th *ngIf="boxCount === 2" class="position-relative">
+                    {{ o_x_title }}, {{ o_y_title }} (k-Means)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                  <th *ngIf="boxCount === 3" class="position-relative">
+                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (k-Means)<span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                  <th *ngIf="boxCount === 4" class="position-relative">
+                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }}, {{ o_d_title }} (k-Means)<span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div *ngIf="boxCount === 2" class="graph">
+            <app-scatter-chart [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [points]="-1" [points_arr]="kMeans_points" [x_title]="o_x_title" [y_title]="o_y_title"></app-scatter-chart>
+          </div>
+          <div *ngIf="boxCount === 3" class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [points]="-1" [points_arr]="kMeans_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title"></app-highcharts3d>
+          </div>
+          <div *ngIf="boxCount === 4" class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [d]="o_d_column" [points]="-1" [points_arr]="kMeans_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === '2D_Online_DBSCAN' || item['content'] === '3D4D_Online_DBSCAN' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th *ngIf="boxCount === 2" class="position-relative">
+                    {{ o_x_title }}, {{ o_y_title }} (DBSCAN)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                  <th *ngIf="boxCount === 3" class="position-relative">
+                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (DBSCAN)<span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                  <th *ngIf="boxCount === 4" class="position-relative">
+                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }}, {{ o_d_title }} (DBSCAN)<span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div *ngIf="boxCount === 2" class="graph">
+            <app-scatter-chart [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [points]="-1" [points_arr]="DBSCAN_points" [x_title]="o_x_title" [y_title]="o_y_title"></app-scatter-chart>
+          </div>
+          <div *ngIf="boxCount === 3" class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [points]="-1" [points_arr]="DBSCAN_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title"></app-highcharts3d>
+          </div>
+          <div *ngIf="boxCount === 4" class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [d]="o_d_column" [points]="-1" [points_arr]="DBSCAN_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === '2D_Online_AGNES' || item['content'] === '3D4D_Online_AGNES' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th *ngIf="boxCount === 2" class="position-relative">
+                    {{ o_x_title }}, {{ o_y_title }} (AGNES)
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                  <th *ngIf="boxCount === 3" class="position-relative">
+                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (AGNES)<span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                  <th *ngIf="boxCount === 4" class="position-relative">
+                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }}, {{ o_d_title }} (AGNES)<span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div *ngIf="boxCount === 2" class="graph">
+            <app-scatter-chart [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [points]="-1" [points_arr]="AGNES_points" [x_title]="o_x_title" [y_title]="o_y_title"></app-scatter-chart>
+          </div>
+          <div *ngIf="boxCount === 3" class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [points]="-1" [points_arr]="AGNES_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title"></app-highcharts3d>
+          </div>
+          <div *ngIf="boxCount === 4" class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [d]="o_d_column" [points]="-1" [points_arr]="AGNES_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
           </div>
         </div>
       </gridster-item>
