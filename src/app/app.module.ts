@@ -8,19 +8,22 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-
 import { MapComponent } from './components/map/map.component';
-import { IgxGeographicMapModule } from "igniteui-angular-maps";
 import { ScatterChartComponent } from './components/scatter-chart/scatter-chart.component';
+import { Highcharts3dComponent } from './components/highcharts3d/highcharts3d.component';
+
+import { IgxGeographicMapModule } from "igniteui-angular-maps";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IgxLegendModule, IgxDataChartCoreModule, IgxDataChartScatterModule, IgxDataChartScatterCoreModule, IgxDataChartInteractivityModule, IgxDataChartAnnotationModule, IgxItemToolTipLayerModule } from 'igniteui-angular-charts';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     MapComponent,
-    ScatterChartComponent
+    ScatterChartComponent,
+    Highcharts3dComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,8 @@ import { IgxLegendModule, IgxDataChartCoreModule, IgxDataChartScatterModule, Igx
     IgxDataChartScatterCoreModule,
     IgxDataChartInteractivityModule,
     IgxDataChartAnnotationModule,
-    IgxItemToolTipLayerModule
+    IgxItemToolTipLayerModule,
+    HighchartsChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]

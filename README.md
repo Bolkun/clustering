@@ -29,6 +29,9 @@ npm install --save igniteui-angular-core
 npm install --save igniteui-angular-charts
 npm install --save igniteui-angular-maps
 
+npm install highcharts --save
+npm install highcharts-angular --save
+
 
 ## Development server
 

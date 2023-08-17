@@ -421,6 +421,98 @@
             <app-scatter-chart [csvData]="export2_CsvData" [x]="2" [y]="9" [points]="15" [x_title]="'BEZ'" [y_title]="'FUNDE'"></app-scatter-chart>
           </div>
         </div>
+        <!-- BEZ FUNDE DATIERUNG -->
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierung_kMeans' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDE, DATIERUNG (k-Means) <span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [points]="16" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'"></app-highcharts3d>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierung_DBSCAN' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDE, DATIERUNG (DBSCAN) <span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [points]="17" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'"></app-highcharts3d>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierung_AGNES' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDE, DATIERUNG (AGNES) <span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [points]="18" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'"></app-highcharts3d>
+          </div>
+        </div>
+        <!-- BEZ FUNDE DATIERUNG FUNDKATEGORIE -->
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierungFundkategorie_kMeans' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (k-Means) <span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [d]="7" [points]="19" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'" [d_title]="'FUNDKATEGORIE'"></app-highcharts3d>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierungFundkategorie_DBSCAN' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (DBSCAN) <span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [d]="7" [points]="20" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'" [d_title]="'FUNDKATEGORIE'"></app-highcharts3d>
+          </div>
+        </div>
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierungFundkategorie_AGNES' && export2_CsvData">
+          <table>
+            <thead>
+                <tr>
+                  <th class="position-relative">
+                    BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (AGNES) <span style="color: orange;"> - Limited!</span>
+                    <button class="absolute-right" (click)="removeItem(item)">X</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+          <div class="graph">
+            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [d]="7" [points]="21" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'" [d_title]="'FUNDKATEGORIE'"></app-highcharts3d>
+          </div>
+        </div>
       </gridster-item>
     </gridster>
   </div>

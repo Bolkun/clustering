@@ -118,7 +118,7 @@ export class DashboardComponent implements OnInit {
     this.loadExportCsvData();
     this.load2_ExportCsvData();
 
-    this.setSelectedButton(4);
+    this.setSelectedButton(5);
   }
 
   toggleOfflineMenu(): void {
@@ -240,22 +240,22 @@ export class DashboardComponent implements OnInit {
   handleBezNFundeNDatierungN(): void {
     this.dashboard = [
       // First row
-      {cols: 6, rows: 2, y: 0, x: 0, content: "BezFundeDatierung_kMeans"},
+      {cols: 2, rows: 6, y: 0, x: 0, content: "BezFundeDatierung_kMeans"},
       // Second row
-      {cols: 6, rows: 2, y: 2, x: 0, content: "BezFundeDatierung_DBSCAN"},  
+      {cols: 2, rows: 6, y: 2, x: 0, content: "BezFundeDatierung_DBSCAN"},  
       // Third row
-      {cols: 6, rows: 2, y: 4, x: 0, content: "BezFundeDatierung_AGNES"}, 
+      {cols: 2, rows: 6, y: 4, x: 0, content: "BezFundeDatierung_AGNES"}, 
     ];
   }
 
   handleBezNFundeNDatierungNFundkategorieN(): void {
     this.dashboard = [
       // First row
-      {cols: 6, rows: 2, y: 0, x: 0, content: "BezFundeDatierungFundkategorie_kMeans"},
+      {cols: 2, rows: 6, y: 0, x: 0, content: "BezFundeDatierungFundkategorie_kMeans"},
       // Second row
-      {cols: 6, rows: 2, y: 2, x: 0, content: "BezFundeDatierungFundkategorie_DBSCAN"},  
+      {cols: 2, rows: 6, y: 2, x: 0, content: "BezFundeDatierungFundkategorie_DBSCAN"},  
       // Third row
-      {cols: 6, rows: 2, y: 4, x: 0, content: "BezFundeDatierungFundkategorie_AGNES"}, 
+      {cols: 2, rows: 6, y: 4, x: 0, content: "BezFundeDatierungFundkategorie_AGNES"}, 
     ];
   }
 
