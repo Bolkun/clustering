@@ -198,7 +198,8 @@ export class Highcharts3dComponent implements OnInit {
         useHTML: true,
         formatter: function() {
           const point: any = this.point;
-          return `<b>ObjectID: </b>${point.objectid}<br>
+          return `<div style='background-color: white; padding: 5px; color: #212529; font-family: "Exo", sans-serif; font-size: 14px;'>
+                  <b>ObjectID: </b>${point.objectid}<br>
                   <b style="color: orange;">X: </b>${point.x}<br>
                   <b style="color: orange;">Y: </b>${point.y}<br>
                   <b style="color: orange;">Z: </b>${point.z}<br>
@@ -209,7 +210,7 @@ export class Highcharts3dComponent implements OnInit {
                   <b>Category: </b>${point.fundkategorie} ${point.fundkategorie_names}<br>
                   <b>Findings: </b>${self.titlecasePipe.transform(point.funde_names)}<br>
                   <b>Date: </b>${point.datierung} ${point.datierung_names}<br>
-                  `;
+                  </div>`;
         }
       },
       series : this.data

@@ -118,7 +118,7 @@ export class DashboardComponent implements OnInit {
     this.loadExportCsvData();
     this.load2_ExportCsvData();
 
-    this.setSelectedButton(5);
+    // this.setSelectedButton(5);
   }
 
   toggleOfflineMenu(): void {
