@@ -32,6 +32,8 @@ npm install --save igniteui-angular-maps
 npm install highcharts --save
 npm install highcharts-angular --save
 
+npm i kmeans-ts // https://github.com/GoldinGuy/K-Means-TS
+
 
 ## Development server
 

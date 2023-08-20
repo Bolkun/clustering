@@ -16,6 +16,9 @@ import { FormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl, 
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { HttpClient } from '@angular/common/http';
 import { MappingService } from 'src/app/services/mapping.service';
+import * as tf from '@tensorflow/tfjs';
+import kmeans from "kmeans-ts";
+
 
 export function atLeastTwoCheckedValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -111,7 +114,6 @@ export class DashboardComponent implements OnInit {
       minPts_dbscan: [10, [Validators.required, Validators.min(2), Validators.max(2503), WholeNumberValidator()]],
       n_agnes: [4, [Validators.required, Validators.min(2), Validators.max(10), WholeNumberValidator()]]
     }, { validators: atLeastTwoCheckedValidator() });
-
     this.options = {
       draggable: { enabled: true, ignoreContentClass: 'no-drag'},
       resizable: { enabled: true },
@@ -130,8 +132,6 @@ export class DashboardComponent implements OnInit {
     this.loadCsvData();
     this.loadExportCsvData();
     this.load2_ExportCsvData();
-
-    // this.setSelectedButton(5);
   }
 
   toggleOfflineMenu(): void {
@@ -158,8 +158,8 @@ export class DashboardComponent implements OnInit {
   }
 
   startViewDisplay() {
-    this.selectedOfflineButtonIndex = null
-    this.selectedOnlineButtonIndex = null
+    this.selectedOfflineButtonIndex = null;
+    this.selectedOnlineButtonIndex = null;
     this.dashboard = [
       {cols: 2, rows: 4, y: 0, x: 0, content: "Item 4"},  // Map of Points
       {cols: 2, rows: 4, y: 0, x: 2, content: "Item 5"},  // Map of Bezirke
@@ -209,7 +209,6 @@ export class DashboardComponent implements OnInit {
       {cols: 2, rows: 2, y: 0, x: 0, content: "PCA_kMeans"},
       {cols: 2, rows: 2, y: 0, x: 2, content: "PCA_DBSCAN"},
       {cols: 2, rows: 2, y: 0, x: 4, content: "PCA_AGNES"},
-    
       // Second row
       {cols: 2, rows: 2, y: 2, x: 0, content: "UMAP_kMeans"},  
       {cols: 2, rows: 2, y: 2, x: 2, content: "UMAP_DBSCAN"},  
@@ -291,7 +290,7 @@ export class DashboardComponent implements OnInit {
       // const fundKategorieMappedData = this.mappingService.mapFundKategorie(rawData);
       // const bezMappedData = this.mappingService.mapBez(fundKategorieMappedData);
       // this.exportCsvData = this.mappingService.mapDatierung(bezMappedData);
-      this.exportCsvData = rawData
+      this.exportCsvData = rawData;
     });
   }
 
@@ -325,17 +324,15 @@ export class DashboardComponent implements OnInit {
     const csvContent = this.arrayToCsv(this.csvData);
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
-
     const anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = 'exported_data.csv';
     anchor.click();
-
     window.URL.revokeObjectURL(url);
   }
 
   private arrayToCsv(data: string[][]): string {
-      return data.map(row => row.join(",")).join("\n");
+    return data.map(row => row.join(",")).join("\n");
   }
 
   mapCsvColumns(name: string) {
@@ -398,18 +395,26 @@ export class DashboardComponent implements OnInit {
       }
 
       // kMeans
-      let halfPoint = Math.floor(this.export2_CsvData.length / 2);
+      const indices = [
+        this.o_x_column,
+        this.o_y_column,
+        this.o_z_column,
+        this.o_d_column
+      ].filter(index => index !== null);
+
+      const points = this.export2_CsvData.slice(1).map(row => indices.map(index => parseFloat(row[index]))); // Extract data from the selected columns
+
+      const output = kmeans(points, this.form.value.n_kMeans, undefined, 300);
+
+      this.kMeans_points = output.indexes.map(String);
+    
       this.kMeans_points = this.export2_CsvData
-        .filter((_, index) => index !== 0)  // Skip the first row
+        .filter((_, index) => index < 800)  // Skip the first row and give 799 data
         .map((row, rowIndex) => {
-            if (rowIndex < halfPoint) {
-                return '0';
-            } else {
-              return '1';
-            }
+            return output.indexes.map(String)[rowIndex];
         })
-      // DBSCAN
-      halfPoint = Math.floor(this.export2_CsvData.length / 2);
+      // DBSCAN data
+      let halfPoint = Math.floor(this.export2_CsvData.length / 2);
       this.DBSCAN_points = this.export2_CsvData
         .filter((_, index) => index !== 0)  // Skip the first row
         .map((row, rowIndex) => {
@@ -419,7 +424,7 @@ export class DashboardComponent implements OnInit {
               return '1';
             }
         })
-      // AGNES
+      // AGNES data
       halfPoint = Math.floor(this.export2_CsvData.length / 2);
       this.AGNES_points = this.export2_CsvData
         .filter((_, index) => index !== 0)  // Skip the first row
@@ -430,7 +435,6 @@ export class DashboardComponent implements OnInit {
               return '1';
             }
         })
-      
       // console.log(this.form.value);
     } else {
       // Display a general message or loop through controls to show individual error messages
