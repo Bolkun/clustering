@@ -16,8 +16,8 @@ import { FormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl, 
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { HttpClient } from '@angular/common/http';
 import { MappingService } from 'src/app/services/mapping.service';
-import * as tf from '@tensorflow/tfjs';
 import kmeans from "kmeans-ts";
+import * as clustering from 'density-clustering';
 
 
 export function atLeastTwoCheckedValidator(): ValidatorFn {
@@ -110,8 +110,8 @@ export class DashboardComponent implements OnInit {
       BEZ: [true],
       FUNDKATEGORIE: [false],
       n_kMeans: [3, [Validators.required, Validators.min(2), Validators.max(10), WholeNumberValidator()]],
-      eps_dbscan: [0.1, [Validators.required, Validators.min(0.01), Validators.max(10), MaxDecimalPlacesValidator(4)]],
-      minPts_dbscan: [10, [Validators.required, Validators.min(2), Validators.max(2503), WholeNumberValidator()]],
+      eps_dbscan: [3, [Validators.required, Validators.min(0.01), Validators.max(10), MaxDecimalPlacesValidator(4)]],
+      minPts_dbscan: [20, [Validators.required, Validators.min(2), Validators.max(2503), WholeNumberValidator()]],
       n_agnes: [4, [Validators.required, Validators.min(2), Validators.max(10), WholeNumberValidator()]]
     }, { validators: atLeastTwoCheckedValidator() });
     this.options = {
@@ -336,10 +336,10 @@ export class DashboardComponent implements OnInit {
   }
 
   mapCsvColumns(name: string) {
-    if(name === 'FUNDE') return 9;
-    if(name === 'BEZ') return 2;
-    if(name === 'DATIERUNG') return 11;
-    if(name === 'FUNDKATEGORIE') return 7;
+    if(name === 'FUNDE') return 9;          // Normalized 10, ansonsten 9
+    if(name === 'BEZ') return 2;            // Normalized 3, ansonsten 2
+    if(name === 'DATIERUNG') return 11;     // Normalized 12, ansonsten 11
+    if(name === 'FUNDKATEGORIE') return 7;  // Normalized 8, ansonsten 7
     return null;
   }
 
@@ -394,7 +394,6 @@ export class DashboardComponent implements OnInit {
         ];
       }
 
-      // kMeans
       const indices = [
         this.o_x_column,
         this.o_y_column,
@@ -404,28 +403,30 @@ export class DashboardComponent implements OnInit {
 
       const points = this.export2_CsvData.slice(1).map(row => indices.map(index => parseFloat(row[index]))); // Extract data from the selected columns
 
+      // kMeans
       const output = kmeans(points, this.form.value.n_kMeans, undefined, 300);
-
-      this.kMeans_points = output.indexes.map(String);
-    
+      this.kMeans_points = output.indexes.map(String);  // 6689
       this.kMeans_points = this.export2_CsvData
-        .filter((_, index) => index < 800)  // Skip the first row and give 799 data
+        .filter((_, index) => index < 800)  // (index < 800) Skip the first row and give 799 data
         .map((row, rowIndex) => {
             return output.indexes.map(String)[rowIndex];
         })
+        
       // DBSCAN data
-      let halfPoint = Math.floor(this.export2_CsvData.length / 2);
+      const dbscan = new clustering.DBSCAN();
+      const dbscanClusters = dbscan.run(points, this.form.value.eps_dbscan, this.form.value.minPts_dbscan); // dataset, eps, minPts
+      let output2 = new Array(this.export2_CsvData.length - 1).fill(-1); // Initialize the array with -1
+      for (let i = 0; i < dbscanClusters.length; i++) {
+        for (let j = 0; j < dbscanClusters[i].length; j++) {
+          output2[dbscanClusters[i][j]] = i;
+        }
+      }
       this.DBSCAN_points = this.export2_CsvData
-        .filter((_, index) => index !== 0)  // Skip the first row
-        .map((row, rowIndex) => {
-            if (rowIndex < halfPoint) {
-                return '0';
-            } else {
-              return '1';
-            }
-        })
+      .filter((_, index) => index !== 0)  // Skip the first row
+      .map((_, rowIndex) => String(output2[rowIndex]));
+        
       // AGNES data
-      halfPoint = Math.floor(this.export2_CsvData.length / 2);
+      let halfPoint = Math.floor(this.export2_CsvData.length / 2);
       this.AGNES_points = this.export2_CsvData
         .filter((_, index) => index !== 0)  // Skip the first row
         .map((row, rowIndex) => {

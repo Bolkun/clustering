@@ -33,6 +33,8 @@ npm install highcharts --save
 npm install highcharts-angular --save
 
 npm i kmeans-ts // https://github.com/GoldinGuy/K-Means-TS
+npm install density-clustering
+npm i --save-dev @types/density-clustering
 
 
 ## Development server
