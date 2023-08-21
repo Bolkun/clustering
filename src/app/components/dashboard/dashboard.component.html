@@ -40,7 +40,7 @@
     <div *ngIf="activeTab === 'tab1'">
       <a class="close-button btn" (click)="toggleContentDisplay()">X</a>
       <h1 style="color: #212529">Offline</h1>
-      <p>Here are some examples produced in python</p>
+      <p style="color: green;">The examples shown below were produced using<br> the sklearn library in Python. Please note that all<br> experiments were conducted on normalized data.</p>
       <div style="margin-top: 15px;">
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 0 ? 'orange' : 'white'" (click)="setSelectedButton(0)">FUNDE_N</button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 1 ? 'orange' : 'white'" (click)="setSelectedButton(1)">BEZ_N, DATIERUNG_N</button>
@@ -53,7 +53,7 @@
     <div *ngIf="activeTab === 'tab2'">
       <a class="close-button btn" (click)="toggleContentDisplay()">X</a>
       <h1 style="color: #212529">Online</h1>
-      <p>Produce your own examples with tensorflow.js</p>
+      <p style="color: orange;">Test the clustering algorithms for yourself.<br> Please note that the data has been limited<br> to 800 entries and hasn't been normalized,<br> due to computational constraints.</p>
       <form id="online_form" [formGroup]="form" (ngSubmit)="submit(0)">
         <p>Data</p>
         <div class="checkbox-column">
@@ -549,7 +549,7 @@
             <thead>
                 <tr>
                   <th *ngIf="boxCount === 2" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }} (DBSCAN)
+                    {{ o_x_title }}, {{ o_y_title }} (DBSCAN)<span style="color: orange;"> - Limited!</span>
                     <button class="absolute-right" (click)="removeItem(item)">X</button>
                   </th>
                   <th *ngIf="boxCount === 3" class="position-relative">
@@ -578,7 +578,7 @@
             <thead>
                 <tr>
                   <th *ngIf="boxCount === 2" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }} (AGNES)
+                    {{ o_x_title }}, {{ o_y_title }} (AGNES)<span style="color: orange;"> - Limited!</span>
                     <button class="absolute-right" (click)="removeItem(item)">X</button>
                   </th>
                   <th *ngIf="boxCount === 3" class="position-relative">

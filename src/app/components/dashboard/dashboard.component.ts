@@ -18,6 +18,7 @@ import { HttpClient } from '@angular/common/http';
 import { MappingService } from 'src/app/services/mapping.service';
 import kmeans from "kmeans-ts";
 import * as clustering from 'density-clustering';
+import * as hclust from 'ml-hclust';
 
 
 export function atLeastTwoCheckedValidator(): ValidatorFn {
@@ -361,6 +362,31 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  getLeafIndices(cluster: { isLeaf: any; index: any; children: any; }) {
+    let indices: any[] = [];
+    if (cluster.isLeaf) {
+        indices.push(cluster.index);
+    } else {
+        for (let child of cluster.children) {
+            indices = indices.concat(this.getLeafIndices(child));
+        }
+    }
+    return indices;
+  }
+
+  findHeightForClusters(cluster: { height: any; cut: (arg0: any) => any; }, numClusters: any) {
+    const max = cluster.height;
+    const min = 0;
+    const step = 0.01;
+    for (let height = max; height >= min; height -= step) {
+        const clustersAtHeight = cluster.cut(height);
+        if (clustersAtHeight.length === numClusters) {
+            return height;
+        }
+    }
+    return max; // Default to max if not found
+  }
+
   submit(index: number) {
     if (this.form.valid) {
       // Clear buttons off Offline test
@@ -411,32 +437,46 @@ export class DashboardComponent implements OnInit {
         .map((row, rowIndex) => {
             return output.indexes.map(String)[rowIndex];
         })
-        
-      // DBSCAN data
+
+      // Alternative Lösung - jedoch gleiche Ergebnisse!
+      // const kmeans = new clustering.KMEANS();
+      // const kmeansClusters = kmeans.run(points, this.form.value.n_kMeans); // dataset, eps, minPts
+      // let output = new Array(this.export2_CsvData.length - 1).fill(-1); // Initialize the array with -1
+      // for (let i = 0; i < kmeansClusters.length; i++) {
+      //   for (let j = 0; j < kmeansClusters[i].length; j++) {
+      //     output[kmeansClusters[i][j]] = i;
+      //   }
+      // }
+      // this.kMeans_points = this.export2_CsvData
+      // .filter((_, index) => index !== 0)  // Skip the first row
+      // .map((_, rowIndex) => String(output[rowIndex]));
+
+      // DBSCAN
+      let data = points.slice(0, 800);
       const dbscan = new clustering.DBSCAN();
-      const dbscanClusters = dbscan.run(points, this.form.value.eps_dbscan, this.form.value.minPts_dbscan); // dataset, eps, minPts
-      let output2 = new Array(this.export2_CsvData.length - 1).fill(-1); // Initialize the array with -1
+      const dbscanClusters = dbscan.run(data, this.form.value.eps_dbscan, this.form.value.minPts_dbscan); // dataset, eps, minPts
+      let output2 = new Array(data.length).fill(-1); // Initialize the array with -1
       for (let i = 0; i < dbscanClusters.length; i++) {
         for (let j = 0; j < dbscanClusters[i].length; j++) {
           output2[dbscanClusters[i][j]] = i;
         }
       }
       this.DBSCAN_points = this.export2_CsvData
-      .filter((_, index) => index !== 0)  // Skip the first row
-      .map((_, rowIndex) => String(output2[rowIndex]));
-        
-      // AGNES data
-      let halfPoint = Math.floor(this.export2_CsvData.length / 2);
-      this.AGNES_points = this.export2_CsvData
         .filter((_, index) => index !== 0)  // Skip the first row
-        .map((row, rowIndex) => {
-            if (rowIndex < halfPoint) {
-                return '0';
-            } else {
-              return '1';
-            }
-        })
-      // console.log(this.form.value);
+        .map((_, rowIndex) => String(output2[rowIndex]));
+        
+      // AGNES
+      const a_cluster = hclust.agnes(data, { method: 'average' });
+      const cutHeight = this.findHeightForClusters(a_cluster, this.form.value.n_agnes);
+      const clusters = a_cluster.cut(cutHeight);
+      let clusterIndicesArray = clusters.map(cluster => this.getLeafIndices(cluster));
+      let AGNES_points = new Array(data.length).fill(-1);
+      for (let clusterId = 0; clusterId < clusterIndicesArray.length; clusterId++) {
+          for (let index of clusterIndicesArray[clusterId]) {
+              AGNES_points[index] = clusterId;
+          }
+      }
+      this.AGNES_points = AGNES_points.map(String);
     } else {
       // Display a general message or loop through controls to show individual error messages
       this.selectedOnlineButtonIndex = null;
