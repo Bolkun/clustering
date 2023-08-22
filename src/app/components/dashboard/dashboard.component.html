@@ -144,20 +144,20 @@
       <form id="online_form" [formGroup]="form" (ngSubmit)="submit(0)">
         <p>Data</p>
         <div class="checkbox-column">
-          <label>
-            <input type="checkbox" formControlName="FUNDE" />
+          <label for="funde">
+            <input id="funde" type="checkbox" formControlName="FUNDE" />
             FUNDE
           </label>
-          <label>
-            <input type="checkbox" formControlName="DATIERUNG" />
+          <label for="datierung">
+            <input id="datierung" type="checkbox" formControlName="DATIERUNG" />
             DATIERUNG
           </label>
-          <label>
-            <input type="checkbox" formControlName="BEZ" />
+          <label for="bez">
+            <input id="bez" type="checkbox" formControlName="BEZ" />
             BEZ
           </label>
-          <label>
-            <input type="checkbox" formControlName="FUNDKATEGORIE" />
+          <label for="fundkategorie">
+            <input id="fundkategorie" type="checkbox" formControlName="FUNDKATEGORIE" />
             FUNDKATEGORIE
           </label>
           <span
@@ -171,7 +171,7 @@
           <p>k-Means</p>
           <div class="row dbscan2columns">
             <div class="input-container">
-              <label for="kMeans">Number of Clusters</label>
+              <label for="n_kMeans">Number of Clusters</label>
               <input
                 class="inputAlgo"
                 type="number"
@@ -242,7 +242,7 @@
               </div>
             </div>
             <div class="input-container">
-              <label for="eps_dbscan">Minimum Points</label>
+              <label for="minPts_dbscan">Minimum Points</label>
               <input
                 class="inputAlgo"
                 type="number"
@@ -280,7 +280,7 @@
           <p>AGNES</p>
           <div class="row dbscan2columns">
             <div class="input-container">
-              <label for="agnes">Number of Clusters</label>
+              <label for="n_agnes">Number of Clusters</label>
               <input
                 class="inputAlgo"
                 type="number"
