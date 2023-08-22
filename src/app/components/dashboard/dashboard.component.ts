@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 // https://fontawesome.com/v4/icons
 import { faHome } from '@fortawesome/free-solid-svg-icons'; 
 import { faSign } from '@fortawesome/free-solid-svg-icons';
@@ -104,7 +104,7 @@ export class DashboardComponent implements OnInit {
   DBSCAN_points: string[] = [];
   AGNES_points: string[] = [];
   
-  constructor(private fb: FormBuilder, private http: HttpClient, private mappingService: MappingService, private element: ElementRef) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private mappingService: MappingService) {
     this.form = this.fb.group({
       FUNDE: [false],
       DATIERUNG: [true],
@@ -130,6 +130,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.toggleContentDisplay();  // hide sidebar by default
     this.loadCsvData();
     this.loadExportCsvData();
     this.load2_ExportCsvData();

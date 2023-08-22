@@ -4,10 +4,6 @@ import { TitleCasePipe } from '@angular/common';
 import { MappingService } from 'src/app/services/mapping.service';
 import { IgxLegendComponent } from 'igniteui-angular-charts';
 
-interface ColorMapping {
-  [key: string]: string;
-}
-
 @Component({
   selector: 'app-scatter-chart',
   templateUrl: './scatter-chart.component.html',
@@ -82,15 +78,6 @@ export class ScatterChartComponent implements OnInit {
       });
   }
 
-  getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
   drawScatterChart(): void {
     const xAxis = new IgxNumericXAxisComponent();
     xAxis.title = this.x_title;
@@ -98,7 +85,7 @@ export class ScatterChartComponent implements OnInit {
     const yAxis = new IgxNumericYAxisComponent();
     yAxis.title = this.y_title;
 
-    const predefinedColors: ColorMapping = {
+    const colors: { [key: string]: string } = {
       '-1': '#808080', // Grey
       '0': '#0000FF',  // Blue
       '1': '#FF7F00',  // Orange
@@ -112,45 +99,29 @@ export class ScatterChartComponent implements OnInit {
       '9': '#FFC0CB',  // Pink
       '10': '#000000'  // Black
     };
-
-    // Extract all unique pointValues from the scatterData
-    const allPointValues = [...new Set(this.scatterData.map(data => data.point))];
-
-    // For each unique pointValue, if it's not in the predefined color dictionary, generate a random color for it
-    const colors: ColorMapping = {};
-    allPointValues.forEach(pointValue => {
-      colors[pointValue] = predefinedColors[pointValue] || this.getRandomColor();
-    });
-
+  
     this.chart.axes.clear();
     this.chart.series.clear();
     this.chart.axes.add(xAxis);
     this.chart.axes.add(yAxis);
 
-    for (let pointValue of allPointValues) {
-      // If pointValue exceeds predefined colors, generate a random color
-      if (!colors[pointValue]) {
-        colors[pointValue] = this.getRandomColor();
-      }
-
-      if (pointValue !== 'undefined' && pointValue !== undefined) {
-        // Check if there is data for this pointValue before creating a series
-        const filteredData = this.scatterData.filter(data => data.point === pointValue);
-        if (filteredData.length > 0) {
-          const series = new IgxScatterSeriesComponent();
-          series.name = `scatterSeries${pointValue}`;
-          series.title = `Cluster: ${pointValue}`;
-          series.xAxis = xAxis;
-          series.yAxis = yAxis;
-          series.xMemberPath = "x";
-          series.yMemberPath = "y";
-          series.dataSource = filteredData;
-          series.markerBrush = colors[pointValue];
-          series.markerOutline = colors[pointValue];
-          series.tooltipTemplate = this.tooltipTemplate;
-          this.chart.legend = this.legend;
-          this.chart.series.add(series);
-        }
+    for (let pointValue of Object.keys(colors)) {
+      // Check if there is data for this pointValue before creating a series
+      const filteredData = this.scatterData.filter(data => data.point === pointValue);
+      if (filteredData.length > 0) {
+        const series = new IgxScatterSeriesComponent();
+        series.name = `scatterSeries${pointValue}`;
+        series.title = `Cluster: ${pointValue}`;
+        series.xAxis = xAxis;
+        series.yAxis = yAxis;
+        series.xMemberPath = "x";
+        series.yMemberPath = "y";
+        series.dataSource = filteredData;
+        series.markerBrush = colors[pointValue];
+        series.markerOutline = colors[pointValue];
+        series.tooltipTemplate = this.tooltipTemplate;
+        this.chart.legend = this.legend;
+        this.chart.series.add(series);
       }
     }
   }

@@ -40,7 +40,8 @@
     <div *ngIf="activeTab === 'tab1'">
       <a class="close-button btn" (click)="toggleContentDisplay()">X</a>
       <h1 style="color: #212529">Offline</h1>
-      <p style="color: green;">The examples shown below were produced using<br> the sklearn library in Python. Please note that all<br> experiments were conducted on normalized data.</p>
+      <p style="color: green; width: 400px;">The examples shown below were produced using the sklearn library in Python. Please note that all  experiments were conducted on normalized data.</p>
+      <p style="color: orange; width: 400px;">Please note that the 2D plot has a maximum cluster limit of 10. Additionally, due to library issues, the 3D graph has a limitation on the number of displayed points. Only every 7th point is visualized.</p>
       <div style="margin-top: 15px;">
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 0 ? 'orange' : 'white'" (click)="setSelectedButton(0)">FUNDE_N</button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 1 ? 'orange' : 'white'" (click)="setSelectedButton(1)">BEZ_N, DATIERUNG_N</button>
@@ -53,7 +54,8 @@
     <div *ngIf="activeTab === 'tab2'">
       <a class="close-button btn" (click)="toggleContentDisplay()">X</a>
       <h1 style="color: #212529">Online</h1>
-      <p style="color: orange;">Test the clustering algorithms for yourself.<br> Please note that the data has been limited<br> to 800 entries and hasn't been normalized,<br> due to computational constraints.</p>
+      <p style="color: green; width: 400px;">Test the clustering algorithms for yourself.</p>
+      <p style="color: orange; width: 400px;">Please note that the data has been limited to 800 entries and hasn't been normalized, due to computational constraints. The number of clusters is limited to maximum of 10 in 2D plot. Additionally, there are display limitations in the 3D graph because of library issues. Only every 7th point is visualized.</p>
       <form id="online_form" [formGroup]="form" (ngSubmit)="submit(0)">
         <p>Data</p>
         <div class="checkbox-column">
