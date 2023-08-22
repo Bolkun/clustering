@@ -29,8 +29,8 @@ After processing the data with Python, all CSV files were cleaned using [CSVClea
 
 - **Damaged Rows**: Some rows were corrupted when displayed in the graph.
 - **Row Removal**: The cleaner removed one trailing row.
-- **SHAPE Column Type**: The SHAPE column is suspected to be of the datetime type instead of a string, necessitating a type change.
-- **Header Cleanup**: Commas in the CSV headers were removed because the website uses them as delimiters.
+- **SHAPE Column Type**: The SHAPE column is suspected to be of the datetime type instead of a string, type must be changed.
+- **Header Cleanup**: Commas in the CSV headers were removed, because the website uses them as delimiters.
 
 ## Installed libraries
 
