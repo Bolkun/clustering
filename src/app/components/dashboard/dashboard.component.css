@@ -183,7 +183,8 @@ input[type="checkbox"]:checked {
   border: 1px solid grey;
 }
 
-.row label, .row input {
+.row label,
+.row input {
   display: block;
   font-size: 12px;
 }
@@ -287,7 +288,8 @@ thead {
   top: 0;
 }
 
-th, td {
+th,
+td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -337,4 +339,3 @@ th, td {
   object-fit: contain;
   display: block;
 }
-

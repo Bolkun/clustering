@@ -6,12 +6,13 @@
   box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
   font-family: "Exo", sans-serif;
   background-color: #d8d8d8;
   margin: 0;
   padding: 0;
-  height: 100%;  /* Important to ensure the full height */
+  height: 100%; /* Important to ensure the full height */
   /* To avoid scroll from the body */
   /* overflow: hidden;  */
 }

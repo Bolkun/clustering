@@ -1,23 +1,49 @@
 <ng-template #tooltipTemplate let-item="item">
   <div class="tooltip-content">
-    <span>ObjectID: </span> {{ item.objectid }}<br>
-    <span style="color: orange;">X: </span>{{item.x}}<br>
-    <span style="color: orange;">Y: </span>{{item.y}}<br>
-    <span style="color: orange;">Cluster: </span>{{item.point}}<br>
-    <span>Shape: </span>{{ item.shape }}<br>
-    <span>District: </span> {{ item.bez + ' ' + item.bez_names }}<br>
-    <span>Street: </span> {{ item.strName + ' ' + item.hnr + ' ' + item.hnrBis}}<br>
-    <span>Category: </span> {{ item.fundkategorie + ' ' + item.fundkategorie_names }}<br>
-    <span>Findings: </span> {{ titlecasePipe.transform(item.funde_names) }}<br>
-    <span>Date: </span> {{ item.datierung + ' ' + item.datierung_names }}<br>
+    <span>ObjectID:</span>
+    {{ item.objectid }}
+    <br />
+    <span style="color: orange;">X:</span>
+    {{ item.x }}
+    <br />
+    <span style="color: orange;">Y:</span>
+    {{ item.y }}
+    <br />
+    <span style="color: orange;">Cluster:</span>
+    {{ item.point }}
+    <br />
+    <span>Shape:</span>
+    {{ item.shape }}
+    <br />
+    <span>District:</span>
+    {{ item.bez + ' ' + item.bez_names }}
+    <br />
+    <span>Street:</span>
+    {{ item.strName + ' ' + item.hnr + ' ' + item.hnrBis }}
+    <br />
+    <span>Category:</span>
+    {{ item.fundkategorie + ' ' + item.fundkategorie_names }}
+    <br />
+    <span>Findings:</span>
+    {{ titlecasePipe.transform(item.funde_names) }}
+    <br />
+    <span>Date:</span>
+    {{ item.datierung + ' ' + item.datierung_names }}
+    <br />
   </div>
 </ng-template>
 <div class="center-container">
-  <igx-legend #legend orientation="Horizontal" height="100%" width="100%"></igx-legend>
+  <igx-legend
+    #legend
+    orientation="Horizontal"
+    height="100%"
+    width="100%"
+  ></igx-legend>
 </div>
-<igx-data-chart #chart
-    height="400px"
-    isHorizontalZoomEnabled="true"
-    isVerticalZoomEnabled="true"
-    isPanEnabled="true">
-</igx-data-chart>
+<igx-data-chart
+  #chart
+  height="400px"
+  isHorizontalZoomEnabled="true"
+  isVerticalZoomEnabled="true"
+  isPanEnabled="true"
+></igx-data-chart>

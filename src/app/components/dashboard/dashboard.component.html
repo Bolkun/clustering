@@ -1,96 +1,207 @@
 <div class="header-container">
   <div class="btn" style="pointer-events: none;">
     <p style="font-size: 26px;">
-      <span style="color: orange;">C</span> l u s t e r i n g
+      <span style="color: orange;">C</span>
+      l u s t e r i n g
     </p>
-    <p style="text-transform: uppercase; font-size: 12px;">Archaelogical Sites of Vienna</p>
+    <p style="text-transform: uppercase; font-size: 12px;">
+      Archaelogical Sites of Vienna
+    </p>
   </div>
   <a class="btn" (click)="startViewDisplay()">
     <p style="font-size: 20px;">
-      <fa-icon 
-        [style.color]="selectedOfflineButtonIndex === null && selectedOnlineButtonIndex === null ? 'orange' : 'inherit'"
-        [icon]="faDatabase">
-      </fa-icon>
+      <fa-icon
+        [style.color]="
+          selectedOfflineButtonIndex === null &&
+          selectedOnlineButtonIndex === null
+            ? 'orange'
+            : 'inherit'
+        "
+        [icon]="faDatabase"
+      ></fa-icon>
     </p>
     <p style="text-transform: uppercase; font-size: 12px;">
-      <span class="header-text"> Data</span>
+      <span class="header-text">Data</span>
     </p>
   </a>
   <a class="btn" (click)="toggleOfflineMenu()">
-    <fa-icon [icon]="faOffline" style="font-size: 12px; color: red; position: absolute; margin-left: -14px; margin-top: 14px;"></fa-icon>
+    <fa-icon
+      [icon]="faOffline"
+      style="
+        font-size: 12px;
+        color: red;
+        position: absolute;
+        margin-left: -14px;
+        margin-top: 14px;
+      "
+    ></fa-icon>
     <p style="font-size: 20px;">
-      <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab1' ? 'orange' : 'inherit'"></fa-icon>
+      <fa-icon
+        [icon]="faGlobe"
+        [style.color]="activeTab === 'tab1' ? 'orange' : 'inherit'"
+      ></fa-icon>
     </p>
     <p style="text-transform: uppercase; font-size: 12px;">
-      <span class="header-text"> Offline</span>
+      <span class="header-text">Offline</span>
     </p>
   </a>
   <a class="btn" (click)="toggleOnlineMenu()">
-    <fa-icon [icon]="faOnline" style="font-size: 12px; color: green; position: absolute; margin-left: -14px; margin-top: 14px;"></fa-icon>
+    <fa-icon
+      [icon]="faOnline"
+      style="
+        font-size: 12px;
+        color: green;
+        position: absolute;
+        margin-left: -14px;
+        margin-top: 14px;
+      "
+    ></fa-icon>
     <p style="font-size: 20px;">
-      <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab2' ? 'orange' : 'inherit'"></fa-icon>
+      <fa-icon
+        [icon]="faGlobe"
+        [style.color]="activeTab === 'tab2' ? 'orange' : 'inherit'"
+      ></fa-icon>
     </p>
     <p style="text-transform: uppercase; font-size: 12px;">
-      <span class="header-text"> Online</span>
+      <span class="header-text">Online</span>
     </p>
   </a>
 </div>
 <div class="container">
+  <!-- SIDEBAR -->
   <div class="content" [style.display]="isContentFlex ? 'flex' : 'none'">
     <div *ngIf="activeTab === 'tab1'">
       <a class="close-button btn" (click)="toggleContentDisplay()">X</a>
-      <h1 style="color: #212529">Offline</h1>
-      <p style="color: green; width: 400px;">The examples shown below were produced using the sklearn library in Python. Please note that all  experiments were conducted on normalized data.</p>
-      <p style="color: orange; width: 400px;">Please note that the 2D plot has a maximum cluster limit of 10. Additionally, due to library issues, the 3D graph has a limitation on the number of displayed points. Only every 7th point is visualized.</p>
+      <h1 style="color: #212529;">Offline</h1>
+      <p style="color: green; width: 400px;">
+        The examples shown below were produced using the sklearn library in
+        Python. Please note that all experiments were conducted on normalized
+        data.
+      </p>
+      <p style="color: orange; width: 400px;">
+        Please note that the 2D plot has a maximum cluster limit of 10.
+        Additionally, due to library issues, the 3D graph has a limitation on
+        the number of displayed points. Only every 7th point is visualized.
+      </p>
       <div style="margin-top: 15px;">
-        <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 0 ? 'orange' : 'white'" (click)="setSelectedButton(0)">FUNDE_N</button>
-        <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 1 ? 'orange' : 'white'" (click)="setSelectedButton(1)">BEZ_N, DATIERUNG_N</button>
-        <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 2 ? 'orange' : 'white'" (click)="setSelectedButton(2)">BEZ_N, FUNDE_N</button>
-        <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 3 ? 'orange' : 'white'" (click)="setSelectedButton(3)">BEZ_N, FUNDKATEGORIE_N</button>
-        <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 4 ? 'orange' : 'white'" (click)="setSelectedButton(4)">BEZ_N, FUNDE_N, DATIERUNG_N</button>
-        <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 5 ? 'orange' : 'white'" (click)="setSelectedButton(5)">BEZ_N, FUNDE_N, DATIERUNG_N, FUNDKATEGORIE_N</button>
+        <button
+          class="experiment_btn"
+          [style.color]="selectedOfflineButtonIndex === 0 ? 'orange' : 'white'"
+          (click)="setSelectedButton(0)"
+        >
+          FUNDE_N
+        </button>
+        <button
+          class="experiment_btn"
+          [style.color]="selectedOfflineButtonIndex === 1 ? 'orange' : 'white'"
+          (click)="setSelectedButton(1)"
+        >
+          BEZ_N, DATIERUNG_N
+        </button>
+        <button
+          class="experiment_btn"
+          [style.color]="selectedOfflineButtonIndex === 2 ? 'orange' : 'white'"
+          (click)="setSelectedButton(2)"
+        >
+          BEZ_N, FUNDE_N
+        </button>
+        <button
+          class="experiment_btn"
+          [style.color]="selectedOfflineButtonIndex === 3 ? 'orange' : 'white'"
+          (click)="setSelectedButton(3)"
+        >
+          BEZ_N, FUNDKATEGORIE_N
+        </button>
+        <button
+          class="experiment_btn"
+          [style.color]="selectedOfflineButtonIndex === 4 ? 'orange' : 'white'"
+          (click)="setSelectedButton(4)"
+        >
+          BEZ_N, FUNDE_N, DATIERUNG_N
+        </button>
+        <button
+          class="experiment_btn"
+          [style.color]="selectedOfflineButtonIndex === 5 ? 'orange' : 'white'"
+          (click)="setSelectedButton(5)"
+        >
+          BEZ_N, FUNDE_N, DATIERUNG_N, FUNDKATEGORIE_N
+        </button>
       </div>
     </div>
     <div *ngIf="activeTab === 'tab2'">
       <a class="close-button btn" (click)="toggleContentDisplay()">X</a>
-      <h1 style="color: #212529">Online</h1>
-      <p style="color: green; width: 400px;">Test the clustering algorithms for yourself.</p>
-      <p style="color: orange; width: 400px;">Please note that the data has been limited to 800 entries and hasn't been normalized, due to computational constraints. The number of clusters is limited to maximum of 10 in 2D plot. Additionally, there are display limitations in the 3D graph because of library issues. Only every 7th point is visualized.</p>
+      <h1 style="color: #212529;">Online</h1>
+      <p style="color: green; width: 400px;">
+        Test the clustering algorithms for yourself.
+      </p>
+      <p style="color: orange; width: 400px;">
+        Please note that the data has been limited to 800 entries and hasn't
+        been normalized, due to computational constraints. The number of
+        clusters is limited to maximum of 10 in 2D plot. Additionally, there are
+        display limitations in the 3D graph because of library issues. Only
+        every 7th point is visualized.
+      </p>
       <form id="online_form" [formGroup]="form" (ngSubmit)="submit(0)">
         <p>Data</p>
         <div class="checkbox-column">
           <label>
-            <input type="checkbox" formControlName="FUNDE">
+            <input type="checkbox" formControlName="FUNDE" />
             FUNDE
           </label>
           <label>
-            <input type="checkbox" formControlName="DATIERUNG">
+            <input type="checkbox" formControlName="DATIERUNG" />
             DATIERUNG
           </label>
           <label>
-            <input  type="checkbox" formControlName="BEZ">
+            <input type="checkbox" formControlName="BEZ" />
             BEZ
           </label>
           <label>
-            <input type="checkbox" formControlName="FUNDKATEGORIE">
+            <input type="checkbox" formControlName="FUNDKATEGORIE" />
             FUNDKATEGORIE
           </label>
-          <span class="error_message2" *ngIf="form.hasError('atLeastTwoRequired')">
+          <span
+            class="error_message2"
+            *ngIf="form.hasError('atLeastTwoRequired')"
+          >
             Check at least two options.
           </span>
         </div>
         <div class="column-container">
-          <p>k-Means</p>       
+          <p>k-Means</p>
           <div class="row dbscan2columns">
             <div class="input-container">
               <label for="kMeans">Number of Clusters</label>
-              <input class="inputAlgo" type="number" formControlName="n_kMeans" id="n_kMeans" min="2" max="10">
-              <div class="error_message" *ngIf="form.controls['n_kMeans'].errors && form.controls['n_kMeans'].touched">
-                <span *ngIf="form.controls['n_kMeans'].errors['required']">Number of Clusters is required!</span>
-                <span *ngIf="form.controls['n_kMeans'].errors['min']">Minimum k value is 2.</span>
-                <span *ngIf="form.controls['n_kMeans'].errors['max']">Maximum k value is 10.</span>
-                <span *ngIf="form.controls['n_kMeans'].errors['notWholeNumber']">Please enter a whole number.</span>
-              </div>       
+              <input
+                class="inputAlgo"
+                type="number"
+                formControlName="n_kMeans"
+                id="n_kMeans"
+                min="2"
+                max="10"
+              />
+              <div
+                class="error_message"
+                *ngIf="
+                  form.controls['n_kMeans'].errors &&
+                  form.controls['n_kMeans'].touched
+                "
+              >
+                <span *ngIf="form.controls['n_kMeans'].errors['required']">
+                  Number of Clusters is required!
+                </span>
+                <span *ngIf="form.controls['n_kMeans'].errors['min']">
+                  Minimum k value is 2.
+                </span>
+                <span *ngIf="form.controls['n_kMeans'].errors['max']">
+                  Maximum k value is 10.
+                </span>
+                <span
+                  *ngIf="form.controls['n_kMeans'].errors['notWholeNumber']"
+                >
+                  Please enter a whole number.
+                </span>
+              </div>
             </div>
             <div class="input-container"></div>
           </div>
@@ -98,22 +209,71 @@
           <div class="row dbscan2columns">
             <div class="input-container">
               <label for="eps_dbscan">Epsilon</label>
-              <input class="inputAlgo" type="number" formControlName="eps_dbscan" id="eps_dbscan" min="0.01" max="10" step="0.01">
-              <div class="error_message" *ngIf="form.controls['eps_dbscan'].errors && form.controls['eps_dbscan'].touched">
-                <span *ngIf="form.controls['eps_dbscan'].errors['required']">Epsilon is required!</span>
-                <span *ngIf="form.controls['eps_dbscan'].errors['min']">Minimum eps value is 0.01.</span>
-                <span *ngIf="form.controls['eps_dbscan'].errors['max']">Maximum eps value is 10. </span>
-                <span *ngIf="form.controls['eps_dbscan'].errors['tooManyDecimals']">Epsilon can have at most 4 decimal places.</span>
+              <input
+                class="inputAlgo"
+                type="number"
+                formControlName="eps_dbscan"
+                id="eps_dbscan"
+                min="0.01"
+                max="10"
+                step="0.01"
+              />
+              <div
+                class="error_message"
+                *ngIf="
+                  form.controls['eps_dbscan'].errors &&
+                  form.controls['eps_dbscan'].touched
+                "
+              >
+                <span *ngIf="form.controls['eps_dbscan'].errors['required']">
+                  Epsilon is required!
+                </span>
+                <span *ngIf="form.controls['eps_dbscan'].errors['min']">
+                  Minimum eps value is 0.01.
+                </span>
+                <span *ngIf="form.controls['eps_dbscan'].errors['max']">
+                  Maximum eps value is 10.
+                </span>
+                <span
+                  *ngIf="form.controls['eps_dbscan'].errors['tooManyDecimals']"
+                >
+                  Epsilon can have at most 4 decimal places.
+                </span>
               </div>
             </div>
             <div class="input-container">
               <label for="eps_dbscan">Minimum Points</label>
-              <input class="inputAlgo" type="number" formControlName="minPts_dbscan" id="minPts_dbscan" min="2" max="2503">
-              <div class="error_message" *ngIf="form.controls['minPts_dbscan'].errors && form.controls['minPts_dbscan'].touched">
-                <span *ngIf="form.controls['minPts_dbscan'].errors['required']">Minimum Points is required!</span>
-                <span *ngIf="form.controls['minPts_dbscan'].errors['min']">Minimum minPts value is 2.</span>
-                <span *ngIf="form.controls['minPts_dbscan'].errors['max']">Maximum minPts value is 2503.</span>
-                <span *ngIf="form.controls['minPts_dbscan'].errors['notWholeNumber']">Please enter a whole number.</span>
+              <input
+                class="inputAlgo"
+                type="number"
+                formControlName="minPts_dbscan"
+                id="minPts_dbscan"
+                min="2"
+                max="2503"
+              />
+              <div
+                class="error_message"
+                *ngIf="
+                  form.controls['minPts_dbscan'].errors &&
+                  form.controls['minPts_dbscan'].touched
+                "
+              >
+                <span *ngIf="form.controls['minPts_dbscan'].errors['required']">
+                  Minimum Points is required!
+                </span>
+                <span *ngIf="form.controls['minPts_dbscan'].errors['min']">
+                  Minimum minPts value is 2.
+                </span>
+                <span *ngIf="form.controls['minPts_dbscan'].errors['max']">
+                  Maximum minPts value is 2503.
+                </span>
+                <span
+                  *ngIf="
+                    form.controls['minPts_dbscan'].errors['notWholeNumber']
+                  "
+                >
+                  Please enter a whole number.
+                </span>
               </div>
             </div>
           </div>
@@ -121,487 +281,973 @@
           <div class="row dbscan2columns">
             <div class="input-container">
               <label for="agnes">Number of Clusters</label>
-              <input class="inputAlgo" type="number" formControlName="n_agnes" id="n_agnes" min="2" max="10">
-              <div class="error_message" *ngIf="form.controls['n_agnes'].errors && form.controls['n_agnes'].touched">
-                <span *ngIf="form.controls['n_agnes'].errors['required']">Number of Clusters is required!</span>
-                <span *ngIf="form.controls['n_agnes'].errors['min']">Minimum value is 2.</span>
-                <span *ngIf="form.controls['n_agnes'].errors['max']">Maximum value is 10.</span>
-                <span *ngIf="form.controls['n_agnes'].errors['notWholeNumber']">Please enter a whole number.</span>
+              <input
+                class="inputAlgo"
+                type="number"
+                formControlName="n_agnes"
+                id="n_agnes"
+                min="2"
+                max="10"
+              />
+              <div
+                class="error_message"
+                *ngIf="
+                  form.controls['n_agnes'].errors &&
+                  form.controls['n_agnes'].touched
+                "
+              >
+                <span *ngIf="form.controls['n_agnes'].errors['required']">
+                  Number of Clusters is required!
+                </span>
+                <span *ngIf="form.controls['n_agnes'].errors['min']">
+                  Minimum value is 2.
+                </span>
+                <span *ngIf="form.controls['n_agnes'].errors['max']">
+                  Maximum value is 10.
+                </span>
+                <span *ngIf="form.controls['n_agnes'].errors['notWholeNumber']">
+                  Please enter a whole number.
+                </span>
               </div>
             </div>
             <div class="input-container"></div>
           </div>
         </div>
-        <button class="experiment_btn" type="submit" style="margin-top: 10px;" [style.color]="selectedOnlineButtonIndex === 0 ? 'orange' : 'white'">Run</button>
+        <button
+          class="experiment_btn"
+          type="submit"
+          style="margin-top: 10px;"
+          [style.color]="selectedOnlineButtonIndex === 0 ? 'orange' : 'white'"
+        >
+          Run
+        </button>
       </form>
     </div>
   </div>
+  <!-- MAIN -->
   <div class="dashboard">
-    <!-- Grid -->
     <gridster [options]="options">
       <gridster-item *ngFor="let item of dashboard" [item]="item">
-        <!-- Map of Points -->
-        <div class="item scrollable-content" *ngIf="item['content'] === 'Item 4' && csvData">
+        <!-- DATA -->
+        <!-- Map -->
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'Item 4' && csvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    Map of Discovery Sites
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  Map of Discovery Sites
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div id="mapHere">
             <app-map [csvData]="csvData"></app-map>
           </div>
         </div>
-        <!-- Map of Bezirke -->
-        <div class="item scrollable-content" *ngIf="item['content'] === 'Item 5' && csvData">
+        <!-- Bezirke -->
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'Item 5' && csvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    Districts
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  Districts
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
-          <img id="img_bezirke" src="assets/img/bezirke-wien.png">
+          <img id="img_bezirke" src="assets/img/bezirke-wien.png" />
         </div>
         <!-- CSV -->
         <!-- <div class="scrollable-content no-drag" *ngIf="item['content'] === 'Item 6' && csvData"> -->
-        <div class="scrollable-content" *ngIf="item['content'] === 'Item 6' && csvData">
-          <button style="display: none;" (click)="eventExportCsvData()">Export CSV</button>
+        <div
+          class="scrollable-content"
+          *ngIf="item['content'] === 'Item 6' && csvData"
+        >
+          <button style="display: none;" (click)="eventExportCsvData()">
+            Export CSV
+          </button>
           <table>
-              <thead>
-                  <tr>
-                    <th class="position-relative">N</th>
-                    <th class="position-relative" *ngFor="let header of csvData[0]">{{ header }}</th>
-                    <th class="position-relative">
-                      <button class="absolute-right" (click)="removeItem(item)">X</button>
-                    </th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <ng-container *ngFor="let row of csvData; let i = index">
-                      <tr *ngIf="i > 0">
-                          <td>{{ i }}</td>
-                          <ng-container *ngFor="let cell of row; let j = index">
-                            <td *ngIf="csvData[0][j] !== 'FUNDE'">{{ cell }}</td>
-                            <td *ngIf="csvData[0][j] === 'FUNDE'">{{ capitalizeEachWord(cell) }}</td>
-                        </ng-container>
-                      </tr>
+            <thead>
+              <tr>
+                <th class="position-relative">N</th>
+                <th class="position-relative" *ngFor="let header of csvData[0]">
+                  {{ header }}
+                </th>
+                <th class="position-relative">
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let row of csvData; let i = index">
+                <tr *ngIf="i > 0">
+                  <td>{{ i }}</td>
+                  <ng-container *ngFor="let cell of row; let j = index">
+                    <td *ngIf="csvData[0][j] !== 'FUNDE'">{{ cell }}</td>
+                    <td *ngIf="csvData[0][j] === 'FUNDE'">
+                      {{ capitalizeEachWord(cell) }}
+                    </td>
                   </ng-container>
-              </tbody>
+                </tr>
+              </ng-container>
+            </tbody>
           </table>
         </div>
+
+        <!-- OFFLINE -->
         <!-- FUNDE-->
-        <div class="item scrollable-content" *ngIf="item['content'] === 'PCA_kMeans' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'PCA_kMeans' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    FUNDE (k-Means) PCA
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  FUNDE (k-Means) PCA
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="12" [y]="13" [points]="16" [x_title]="'Principal Component 1'" [y_title]="'Principal Component 2'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="12"
+              [y]="13"
+              [points]="16"
+              [x_title]="'Principal Component 1'"
+              [y_title]="'Principal Component 2'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'PCA_DBSCAN' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'PCA_DBSCAN' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    FUNDE (DBSCAN) PCA
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  FUNDE (DBSCAN) PCA
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="17" [y]="18" [points]="21" [x_title]="'Principal Component 1'" [y_title]="'Principal Component 2'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="17"
+              [y]="18"
+              [points]="21"
+              [x_title]="'Principal Component 1'"
+              [y_title]="'Principal Component 2'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'PCA_AGNES' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'PCA_AGNES' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    FUNDE (AGNES) PCA
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  FUNDE (AGNES) PCA
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="22" [y]="23" [points]="26" [x_title]="'Principal Component 1'" [y_title]="'Principal Component 2'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="22"
+              [y]="23"
+              [points]="26"
+              [x_title]="'Principal Component 1'"
+              [y_title]="'Principal Component 2'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'UMAP_kMeans' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'UMAP_kMeans' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    FUNDE (k-Means) UMAP
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  FUNDE (k-Means) UMAP
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="14" [y]="15" [points]="16" [x_title]="'UMAP Component 1'" [y_title]="'UMAP Component 2'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="14"
+              [y]="15"
+              [points]="16"
+              [x_title]="'UMAP Component 1'"
+              [y_title]="'UMAP Component 2'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'UMAP_DBSCAN' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'UMAP_DBSCAN' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    FUNDE (DBSCAN) UMAP
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  FUNDE (DBSCAN) UMAP
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="19" [y]="20" [points]="21" [x_title]="'UMAP Component 1'" [y_title]="'UMAP Component 2'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="19"
+              [y]="20"
+              [points]="21"
+              [x_title]="'UMAP Component 1'"
+              [y_title]="'UMAP Component 2'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'UMAP_AGNES' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'UMAP_AGNES' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    FUNDE (AGNES) UMAP
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  FUNDE (AGNES) UMAP
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="24" [y]="25" [points]="26" [x_title]="'UMAP Component 1'" [y_title]="'UMAP Component 2'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="24"
+              [y]="25"
+              [points]="26"
+              [x_title]="'UMAP Component 1'"
+              [y_title]="'UMAP Component 2'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezDatierung_kMeans' && exportCsvData">
+        <!-- BEZ DATIERUNG -->
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'BezDatierung_kMeans' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, DATIERUNG (k-Means)
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, DATIERUNG (k-Means)
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="10" [points]="30" [x_title]="'BEZ'" [y_title]="'DATIERUNG'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="2"
+              [y]="10"
+              [points]="30"
+              [x_title]="'BEZ'"
+              [y_title]="'DATIERUNG'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezDatierung_DBSCAN' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'BezDatierung_DBSCAN' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, DATIERUNG (DBSCAN)
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, DATIERUNG (DBSCAN)
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="10" [points]="31" [x_title]="'BEZ'" [y_title]="'DATIERUNG'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="2"
+              [y]="10"
+              [points]="31"
+              [x_title]="'BEZ'"
+              [y_title]="'DATIERUNG'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezDatierung_AGNES' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'BezDatierung_AGNES' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, DATIERUNG (AGNES)
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, DATIERUNG (AGNES)
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="10" [points]="32" [x_title]="'BEZ'" [y_title]="'DATIERUNG'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="2"
+              [y]="10"
+              [points]="32"
+              [x_title]="'BEZ'"
+              [y_title]="'DATIERUNG'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundkategorie_kMeans' && exportCsvData">
+        <!-- BEZ FUNDKATEGORIE -->
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'BezFundkategorie_kMeans' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDKATEGORIE (k-Means)
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDKATEGORIE (k-Means)
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="7" [points]="27" [x_title]="'BEZ'" [y_title]="'FUNDKATEGORIE'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="2"
+              [y]="7"
+              [points]="27"
+              [x_title]="'BEZ'"
+              [y_title]="'FUNDKATEGORIE'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundkategorie_DBSCAN' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'BezFundkategorie_DBSCAN' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDKATEGORIE (DBSCAN)
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDKATEGORIE (DBSCAN)
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="7" [points]="28" [x_title]="'BEZ'" [y_title]="'FUNDKATEGORIE'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="2"
+              [y]="7"
+              [points]="28"
+              [x_title]="'BEZ'"
+              [y_title]="'FUNDKATEGORIE'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundkategorie_AGNES' && exportCsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'BezFundkategorie_AGNES' && exportCsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDKATEGORIE (AGNES)
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDKATEGORIE (AGNES)
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="exportCsvData" [x]="2" [y]="7" [points]="29" [x_title]="'BEZ'" [y_title]="'FUNDKATEGORIE'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="exportCsvData"
+              [x]="2"
+              [y]="7"
+              [points]="29"
+              [x_title]="'BEZ'"
+              [y_title]="'FUNDKATEGORIE'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFunde_kMeans' && export2_CsvData">
+        <!-- BEZ FUNDE -->
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'BezFunde_kMeans' && export2_CsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDE (k-Means)
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDE (k-Means)
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="export2_CsvData" [x]="2" [y]="9" [points]="13" [x_title]="'BEZ'" [y_title]="'FUNDE'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="export2_CsvData"
+              [x]="2"
+              [y]="9"
+              [points]="13"
+              [x_title]="'BEZ'"
+              [y_title]="'FUNDE'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFunde_DBSCAN' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'BezFunde_DBSCAN' && export2_CsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    <span style="color: red;">Failed Experiment with BEZ, FUNDE (DBSCAN)!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  <span style="color: red;">
+                    Failed Experiment with BEZ, FUNDE (DBSCAN)!
+                  </span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="export2_CsvData" [x]="2" [y]="9" [points]="14" [x_title]="'BEZ'" [y_title]="'FUNDE'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="export2_CsvData"
+              [x]="2"
+              [y]="9"
+              [points]="14"
+              [x_title]="'BEZ'"
+              [y_title]="'FUNDE'"
+            ></app-scatter-chart>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFunde_AGNES' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'BezFunde_AGNES' && export2_CsvData"
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDE (AGNES)
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDE (AGNES)
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-scatter-chart [csvData]="export2_CsvData" [x]="2" [y]="9" [points]="15" [x_title]="'BEZ'" [y_title]="'FUNDE'"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="export2_CsvData"
+              [x]="2"
+              [y]="9"
+              [points]="15"
+              [x_title]="'BEZ'"
+              [y_title]="'FUNDE'"
+            ></app-scatter-chart>
           </div>
         </div>
         <!-- BEZ FUNDE DATIERUNG -->
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierung_kMeans' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="
+            item['content'] === 'BezFundeDatierung_kMeans' && export2_CsvData
+          "
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDE, DATIERUNG (k-Means) <span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDE, DATIERUNG (k-Means)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [points]="16" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="9"
+              [y]="11"
+              [z]="2"
+              [points]="16"
+              [x_title]="'FUNDE'"
+              [y_title]="'DATIERUNG'"
+              [z_title]="'BEZ'"
+            ></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierung_DBSCAN' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="
+            item['content'] === 'BezFundeDatierung_DBSCAN' && export2_CsvData
+          "
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDE, DATIERUNG (DBSCAN) <span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDE, DATIERUNG (DBSCAN)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [points]="17" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="9"
+              [y]="11"
+              [z]="2"
+              [points]="17"
+              [x_title]="'FUNDE'"
+              [y_title]="'DATIERUNG'"
+              [z_title]="'BEZ'"
+            ></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierung_AGNES' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="
+            item['content'] === 'BezFundeDatierung_AGNES' && export2_CsvData
+          "
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDE, DATIERUNG (AGNES) <span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDE, DATIERUNG (AGNES)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [points]="18" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="9"
+              [y]="11"
+              [z]="2"
+              [points]="18"
+              [x_title]="'FUNDE'"
+              [y_title]="'DATIERUNG'"
+              [z_title]="'BEZ'"
+            ></app-highcharts3d>
           </div>
         </div>
         <!-- BEZ FUNDE DATIERUNG FUNDKATEGORIE -->
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierungFundkategorie_kMeans' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="
+            item['content'] === 'BezFundeDatierungFundkategorie_kMeans' &&
+            export2_CsvData
+          "
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (k-Means) <span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (k-Means)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [d]="7" [points]="19" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'" [d_title]="'FUNDKATEGORIE'"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="9"
+              [y]="11"
+              [z]="2"
+              [d]="7"
+              [points]="19"
+              [x_title]="'FUNDE'"
+              [y_title]="'DATIERUNG'"
+              [z_title]="'BEZ'"
+              [d_title]="'FUNDKATEGORIE'"
+            ></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierungFundkategorie_DBSCAN' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="
+            item['content'] === 'BezFundeDatierungFundkategorie_DBSCAN' &&
+            export2_CsvData
+          "
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (DBSCAN) <span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (DBSCAN)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [d]="7" [points]="20" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'" [d_title]="'FUNDKATEGORIE'"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="9"
+              [y]="11"
+              [z]="2"
+              [d]="7"
+              [points]="20"
+              [x_title]="'FUNDE'"
+              [y_title]="'DATIERUNG'"
+              [z_title]="'BEZ'"
+              [d_title]="'FUNDKATEGORIE'"
+            ></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierungFundkategorie_AGNES' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="
+            item['content'] === 'BezFundeDatierungFundkategorie_AGNES' &&
+            export2_CsvData
+          "
+        >
           <table>
             <thead>
-                <tr>
-                  <th class="position-relative">
-                    BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (AGNES) <span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th class="position-relative">
+                  BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (AGNES)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="9" [y]="11" [z]="2" [d]="7" [points]="21" [x_title]="'FUNDE'" [y_title]="'DATIERUNG'" [z_title]="'BEZ'" [d_title]="'FUNDKATEGORIE'"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="9"
+              [y]="11"
+              [z]="2"
+              [d]="7"
+              [points]="21"
+              [x_title]="'FUNDE'"
+              [y_title]="'DATIERUNG'"
+              [z_title]="'BEZ'"
+              [d_title]="'FUNDKATEGORIE'"
+            ></app-highcharts3d>
           </div>
         </div>
 
         <!-- ONLINE -->
-        <div class="item scrollable-content" *ngIf="item['content'] === '2D_Online_kMeans' || item['content'] === '3D4D_Online_kMeans' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="
+            item['content'] === '2D_Online_kMeans' ||
+            (item['content'] === '3D4D_Online_kMeans' && export2_CsvData)
+          "
+        >
           <table>
             <thead>
-                <tr>
-                  <th *ngIf="boxCount === 2" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }} (k-Means) <span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                  <th *ngIf="boxCount === 3" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (k-Means)<span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                  <th *ngIf="boxCount === 4" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }}, {{ o_d_title }} (k-Means)<span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th *ngIf="boxCount === 2" class="position-relative">
+                  {{ o_x_title }}, {{ o_y_title }} (k-Means)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+                <th *ngIf="boxCount === 3" class="position-relative">
+                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (k-Means)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+                <th *ngIf="boxCount === 4" class="position-relative">
+                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }},
+                  {{ o_d_title }} (k-Means)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div *ngIf="boxCount === 2" class="graph">
-            <app-scatter-chart [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [points]="-1" [points_arr]="kMeans_points" [x_title]="o_x_title" [y_title]="o_y_title"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="export2_CsvData"
+              [x]="o_x_column"
+              [y]="o_y_column"
+              [points]="-1"
+              [points_arr]="kMeans_points"
+              [x_title]="o_x_title"
+              [y_title]="o_y_title"
+            ></app-scatter-chart>
           </div>
           <div *ngIf="boxCount === 3" class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [points]="-1" [points_arr]="kMeans_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="o_x_column"
+              [y]="o_y_column"
+              [z]="o_z_column"
+              [points]="-1"
+              [points_arr]="kMeans_points"
+              [x_title]="o_x_title"
+              [y_title]="o_y_title"
+              [z_title]="o_z_title"
+            ></app-highcharts3d>
           </div>
           <div *ngIf="boxCount === 4" class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [d]="o_d_column" [points]="-1" [points_arr]="kMeans_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="o_x_column"
+              [y]="o_y_column"
+              [z]="o_z_column"
+              [d]="o_d_column"
+              [points]="-1"
+              [points_arr]="kMeans_points"
+              [x_title]="o_x_title"
+              [y_title]="o_y_title"
+              [z_title]="o_z_title"
+              [d_title]="o_d_title"
+            ></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === '2D_Online_DBSCAN' || item['content'] === '3D4D_Online_DBSCAN' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="
+            item['content'] === '2D_Online_DBSCAN' ||
+            (item['content'] === '3D4D_Online_DBSCAN' && export2_CsvData)
+          "
+        >
           <table>
             <thead>
-                <tr>
-                  <th *ngIf="boxCount === 2" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }} (DBSCAN)<span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                  <th *ngIf="boxCount === 3" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (DBSCAN)<span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                  <th *ngIf="boxCount === 4" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }}, {{ o_d_title }} (DBSCAN)<span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th *ngIf="boxCount === 2" class="position-relative">
+                  {{ o_x_title }}, {{ o_y_title }} (DBSCAN)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+                <th *ngIf="boxCount === 3" class="position-relative">
+                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (DBSCAN)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+                <th *ngIf="boxCount === 4" class="position-relative">
+                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }},
+                  {{ o_d_title }} (DBSCAN)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div *ngIf="boxCount === 2" class="graph">
-            <app-scatter-chart [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [points]="-1" [points_arr]="DBSCAN_points" [x_title]="o_x_title" [y_title]="o_y_title"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="export2_CsvData"
+              [x]="o_x_column"
+              [y]="o_y_column"
+              [points]="-1"
+              [points_arr]="DBSCAN_points"
+              [x_title]="o_x_title"
+              [y_title]="o_y_title"
+            ></app-scatter-chart>
           </div>
           <div *ngIf="boxCount === 3" class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [points]="-1" [points_arr]="DBSCAN_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="o_x_column"
+              [y]="o_y_column"
+              [z]="o_z_column"
+              [points]="-1"
+              [points_arr]="DBSCAN_points"
+              [x_title]="o_x_title"
+              [y_title]="o_y_title"
+              [z_title]="o_z_title"
+            ></app-highcharts3d>
           </div>
           <div *ngIf="boxCount === 4" class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [d]="o_d_column" [points]="-1" [points_arr]="DBSCAN_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="o_x_column"
+              [y]="o_y_column"
+              [z]="o_z_column"
+              [d]="o_d_column"
+              [points]="-1"
+              [points_arr]="DBSCAN_points"
+              [x_title]="o_x_title"
+              [y_title]="o_y_title"
+              [z_title]="o_z_title"
+              [d_title]="o_d_title"
+            ></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="item['content'] === '2D_Online_AGNES' || item['content'] === '3D4D_Online_AGNES' && export2_CsvData">
+        <div
+          class="item scrollable-content"
+          *ngIf="
+            item['content'] === '2D_Online_AGNES' ||
+            (item['content'] === '3D4D_Online_AGNES' && export2_CsvData)
+          "
+        >
           <table>
             <thead>
-                <tr>
-                  <th *ngIf="boxCount === 2" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }} (AGNES)<span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                  <th *ngIf="boxCount === 3" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (AGNES)<span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                  <th *ngIf="boxCount === 4" class="position-relative">
-                    {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }}, {{ o_d_title }} (AGNES)<span style="color: orange;"> - Limited!</span>
-                    <button class="absolute-right" (click)="removeItem(item)">X</button>
-                  </th>
-                </tr>
+              <tr>
+                <th *ngIf="boxCount === 2" class="position-relative">
+                  {{ o_x_title }}, {{ o_y_title }} (AGNES)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+                <th *ngIf="boxCount === 3" class="position-relative">
+                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (AGNES)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+                <th *ngIf="boxCount === 4" class="position-relative">
+                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }},
+                  {{ o_d_title }} (AGNES)
+                  <span style="color: orange;">- Limited!</span>
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
             </thead>
           </table>
           <div *ngIf="boxCount === 2" class="graph">
-            <app-scatter-chart [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [points]="-1" [points_arr]="AGNES_points" [x_title]="o_x_title" [y_title]="o_y_title"></app-scatter-chart>
+            <app-scatter-chart
+              [csvData]="export2_CsvData"
+              [x]="o_x_column"
+              [y]="o_y_column"
+              [points]="-1"
+              [points_arr]="AGNES_points"
+              [x_title]="o_x_title"
+              [y_title]="o_y_title"
+            ></app-scatter-chart>
           </div>
           <div *ngIf="boxCount === 3" class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [points]="-1" [points_arr]="AGNES_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="o_x_column"
+              [y]="o_y_column"
+              [z]="o_z_column"
+              [points]="-1"
+              [points_arr]="AGNES_points"
+              [x_title]="o_x_title"
+              [y_title]="o_y_title"
+              [z_title]="o_z_title"
+            ></app-highcharts3d>
           </div>
           <div *ngIf="boxCount === 4" class="graph">
-            <app-highcharts3d [csvData]="export2_CsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [d]="o_d_column" [points]="-1" [points_arr]="AGNES_points" [x_title]="o_x_title" [y_title]="o_y_title" [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
+            <app-highcharts3d
+              [csvData]="export2_CsvData"
+              [x]="o_x_column"
+              [y]="o_y_column"
+              [z]="o_z_column"
+              [d]="o_d_column"
+              [points]="-1"
+              [points_arr]="AGNES_points"
+              [x_title]="o_x_title"
+              [y_title]="o_y_title"
+              [z_title]="o_z_title"
+              [d_title]="o_d_title"
+            ></app-highcharts3d>
           </div>
         </div>
       </gridster-item>

@@ -1,17 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MappingService {
-
   private FUNDKATEGORIE_MAPPING: { [key: string]: string } = {
     '1': 'Einzel-, Streufund',
     '2': 'Siedlungsbefund',
     '3': 'Grabbefund',
     '4': 'Negativbefund',
-    '5': 'Fossilfund'
-  };
+    '5': 'Fossilfund',
+  }
 
   private BEZ_MAPPING: { [key: string]: string } = {
     '1': 'Innere Stadt',
@@ -36,8 +35,8 @@ export class MappingService {
     '20': 'Brigittenau',
     '21': 'Floridsdorf',
     '22': 'Donaustadt',
-    '23': 'Liesing'
-  };
+    '23': 'Liesing',
+  }
 
   private DATIERUNG_MAPPING: { [key: string]: string } = {
     '1': 'Bronzezeit/Mittelalter/Neuzeit',
@@ -72,8 +71,8 @@ export class MappingService {
     '30': 'Spätlatènezeit',
     '31': 'Spätneolithikum',
     '32': 'Urgeschichte',
-    '33': 'unbekannt'
-  };
+    '33': 'unbekannt',
+  }
 
   private FUNDE_MAPPING: { [key: string]: string } = {
     '1': 'abbaugeräte',
@@ -810,52 +809,59 @@ export class MappingService {
     '732': 'zwiebelknopffibel',
     '733': 'öllampe',
     '734': 'öse',
-    '735': 'ösenstift'
+    '735': 'ösenstift',
   }
 
   mapFunde(data: string[][]): string[][] {
-    return this.mapColumnValues(data, 'FUNDE', this.FUNDE_MAPPING);
+    return this.mapColumnValues(data, 'FUNDE', this.FUNDE_MAPPING)
   }
 
   mapFundeString(value: string): string {
-    return this.FUNDE_MAPPING[value] || value;
+    return this.FUNDE_MAPPING[value] || value
   }
 
   mapFundKategorie(data: string[][]): string[][] {
-    return this.mapColumnValues(data, 'FUNDKATEGORIE', this.FUNDKATEGORIE_MAPPING);
+    return this.mapColumnValues(
+      data,
+      'FUNDKATEGORIE',
+      this.FUNDKATEGORIE_MAPPING,
+    )
   }
 
   mapFundKategorieString(value: string): string {
-    return this.FUNDKATEGORIE_MAPPING[value] || value;
+    return this.FUNDKATEGORIE_MAPPING[value] || value
   }
 
   mapBez(data: string[][]): string[][] {
-    return this.mapColumnValues(data, 'BEZ', this.BEZ_MAPPING);
+    return this.mapColumnValues(data, 'BEZ', this.BEZ_MAPPING)
   }
 
   mapBezString(value: string): string {
-    return this.BEZ_MAPPING[value] || value;
+    return this.BEZ_MAPPING[value] || value
   }
 
   mapDatierung(data: string[][]): string[][] {
-    return this.mapColumnValues(data, 'DATIERUNG', this.DATIERUNG_MAPPING);
+    return this.mapColumnValues(data, 'DATIERUNG', this.DATIERUNG_MAPPING)
   }
 
   mapDatierungString(value: string): string {
-    return this.DATIERUNG_MAPPING[value] || value;
+    return this.DATIERUNG_MAPPING[value] || value
   }
 
-  mapColumnValues(data: string[][], columnName: string, valueMapping: {[key: string]: string}): string[][] {
-    const columnIndex = data[0].indexOf(columnName);
+  mapColumnValues(
+    data: string[][],
+    columnName: string,
+    valueMapping: { [key: string]: string },
+  ): string[][] {
+    const columnIndex = data[0].indexOf(columnName)
 
     if (columnIndex === -1) {
-        return data;
+      return data
     }
 
-    return data.map(row => {
-        row[columnIndex] = valueMapping[row[columnIndex]] || row[columnIndex];
-        return row;
-    });
+    return data.map((row) => {
+      row[columnIndex] = valueMapping[row[columnIndex]] || row[columnIndex]
+      return row
+    })
   }
-
 }
