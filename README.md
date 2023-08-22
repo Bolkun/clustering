@@ -1,41 +1,61 @@
 # Clustering
+A web app designed to conduct both offline and online clustering experiments using a dataset of archaeological sites in Vienna.
 
+**Offline:**
+- FUNDE_N (PCA, UMAP)
+- BEZ_N, DATIERUNG_N
+- BEZ_N, FUNDE_N
+- BEZ_N, FUNDKATEGORIE_N
+- BEZ_N, FUNDE_N, DATIERUNG_N
+- BEZ_N, FUNDE_N, DATIERUNG_N, FUNDKATEGORIE_N
+
+**Online:**
+- k-Means 
+- DBSCAN
+- AGNES
+
+Clustering is based on a combination of the columns: BEZ, FUNDE, DATIERUNG and FUNDKATEGORIE.
 
 ## System
 
-Node.js: 18.17.0
-Angular CLI: 16.1.8
-Package Manager: npm 9.8.1
-OS: win32 x64
+- **Node.js**: 18.17.0
+- **Angular CLI**: 16.1.8
+- **Package Manager**: npm 9.8.1
+- **OS**: win32 x64
 
-## CSV
+## CSV Data Cleaning
 
-After python all CSV files were cleaned in https://open-innovations.github.io/CSVCleaner/ , beacause some rows were damaged by viewing in graph (only 1), it also removes 1 row at end, I think SHAPE column was datetime of type and not string, which must be changed! And fix header of csv (delete commas) 
+After processing the data with Python, all CSV files were cleaned using [CSVCleaner](https://open-innovations.github.io/CSVCleaner/). Here are the key points from the cleaning process:
 
-## Libraries
+- **Damaged Rows**: Some rows were corrupted when displayed in the graph.
+- **Row Removal**: The cleaner removed one trailing row.
+- **SHAPE Column Type**: The SHAPE column is suspected to be of the datetime type instead of a string, necessitating a type change.
+- **Header Cleanup**: Commas in the CSV headers were removed because the website uses them as delimiters.
 
-npm install --save @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
-npm install @fortawesome/fontawesome-svg-core
-npm install @fortawesome/free-solid-svg-icons
-npm install @fortawesome/angular-fontawesome
-npm install angular-gridster2
-npm install d3 --save
-npm install @types/d3 --save-dev
-npm install topojson-client --save
-npm install @types/topojson-client --save-dev
+## Installed libraries
 
-ng add igniteui-angular
-npm install --save igniteui-angular-core
-npm install --save igniteui-angular-charts
-npm install --save igniteui-angular-maps
+**General:**
+- npm install --save @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
+- npm install @fortawesome/fontawesome-svg-core
+- npm install @fortawesome/free-solid-svg-icons
+- npm install @fortawesome/angular-fontawesome
+- npm install angular-gridster2
+- npm install topojson-client --save
+- npm install @types/topojson-client --save-dev
 
-npm install highcharts --save
-npm install highcharts-angular --save
+**Graphs:**
+- ng add igniteui-angular
+- npm install --save igniteui-angular-core
+- npm install --save igniteui-angular-charts
+- npm install --save igniteui-angular-maps
+- npm install highcharts --save
+- npm install highcharts-angular --save
 
-npm i kmeans-ts // https://github.com/GoldinGuy/K-Means-TS
-npm install density-clustering
-npm i --save-dev @types/density-clustering
-npm install ml-hclust
+**Clustering:**
+- npm i kmeans-ts // [K-Means-TS GitHub Repository](https://github.com/GoldinGuy/K-Means-TS)
+- npm install density-clustering
+- npm i --save-dev @types/density-clustering
+- npm install ml-hclust
 
 ## Development server
 
