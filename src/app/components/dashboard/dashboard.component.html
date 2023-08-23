@@ -78,53 +78,66 @@
         Python. Please note that all experiments were conducted on normalized
         data.
       </p>
-      <p style="color: orange; width: 400px;">
-        Please note that the 2D plot has a maximum cluster limit of 10.
-        Additionally, due to library issues, the 3D graph has a limitation on
-        the number of displayed points. Only every 7th point is visualized.
-      </p>
       <div style="margin-top: 15px;">
         <button
           class="experiment_btn"
           [style.color]="selectedOfflineButtonIndex === 0 ? 'orange' : 'white'"
           (click)="setSelectedButton(0)"
         >
-          FUNDE_N
+          <ng-container *ngIf="!isLoading0">
+            FUNDE_N
+          </ng-container>
+          <span *ngIf="isLoading0" class="rotating">⟳</span>
         </button>
         <button
           class="experiment_btn"
           [style.color]="selectedOfflineButtonIndex === 1 ? 'orange' : 'white'"
           (click)="setSelectedButton(1)"
         >
-          BEZ_N, DATIERUNG_N
+          <ng-container *ngIf="!isLoading1">
+            BEZ_N, DATIERUNG_N
+          </ng-container>
+          <span *ngIf="isLoading1" class="rotating">⟳</span>
         </button>
         <button
           class="experiment_btn"
           [style.color]="selectedOfflineButtonIndex === 2 ? 'orange' : 'white'"
           (click)="setSelectedButton(2)"
         >
-          BEZ_N, FUNDE_N
+          <ng-container *ngIf="!isLoading2">
+            BEZ_N, FUNDE_N
+          </ng-container>
+          <span *ngIf="isLoading2" class="rotating">⟳</span>
         </button>
         <button
           class="experiment_btn"
           [style.color]="selectedOfflineButtonIndex === 3 ? 'orange' : 'white'"
           (click)="setSelectedButton(3)"
         >
-          BEZ_N, FUNDKATEGORIE_N
+          <ng-container *ngIf="!isLoading3">
+            BEZ_N, FUNDKATEGORIE_N
+          </ng-container>
+          <span *ngIf="isLoading3" class="rotating">⟳</span>
         </button>
         <button
           class="experiment_btn"
           [style.color]="selectedOfflineButtonIndex === 4 ? 'orange' : 'white'"
           (click)="setSelectedButton(4)"
         >
-          BEZ_N, FUNDE_N, DATIERUNG_N
+          <ng-container *ngIf="!isLoading4">
+            BEZ_N, FUNDE_N, DATIERUNG_N
+          </ng-container>
+          <span *ngIf="isLoading4" class="rotating">⟳</span>
         </button>
         <button
           class="experiment_btn"
           [style.color]="selectedOfflineButtonIndex === 5 ? 'orange' : 'white'"
           (click)="setSelectedButton(5)"
         >
-          BEZ_N, FUNDE_N, DATIERUNG_N, FUNDKATEGORIE_N
+          <ng-container *ngIf="!isLoading5">
+            BEZ_N, FUNDE_N, DATIERUNG_N, FUNDKATEGORIE_N
+          </ng-container>
+          <span *ngIf="isLoading5" class="rotating">⟳</span>
         </button>
       </div>
     </div>
@@ -135,11 +148,10 @@
         Test the clustering algorithms for yourself.
       </p>
       <p style="color: orange; width: 400px;">
-        Please note that the data has been limited to 800 entries and hasn't
-        been normalized, due to computational constraints. The number of
-        clusters is limited to maximum of 10 in 2D plot. Additionally, there are
-        display limitations in the 3D graph because of library issues. Only
-        every 7th point is visualized.
+        Please note that the data is limited to 800 points and has not been
+        normalized due to computational constraints. This means clustering
+        algorithms operate only on this subset of data. For the 2D plot, the
+        maximum number of clusters visualized is set to 10.
       </p>
       <form id="online_form" [formGroup]="form" (ngSubmit)="submit(0)">
         <p>Data</p>
@@ -323,7 +335,10 @@
           style="margin-top: 10px;"
           [style.color]="selectedOnlineButtonIndex === 0 ? 'orange' : 'white'"
         >
-          Run
+          <ng-container *ngIf="!isLoadingOnline">
+            Run
+          </ng-container>
+          <span *ngIf="isLoadingOnline" class="rotating">⟳</span>
         </button>
       </form>
     </div>
@@ -778,7 +793,9 @@
                 <th class="position-relative">
                   <span>
                     BEZ, FUNDE (DBSCAN)
-                    <span style="color: orange;">- Limited!</span>
+                    <span style="color: orange;">
+                      - Only 10 out of 149 clusters is visualized!
+                    </span>
                   </span>
                   <button class="absolute-right" (click)="removeItem(item)">
                     X
@@ -854,6 +871,7 @@
               [x_title]="'FUNDE'"
               [y_title]="'DATIERUNG'"
               [z_title]="'BEZ'"
+              [test]="'offline'"
             ></app-highcharts3d>
           </div>
         </div>
@@ -885,6 +903,7 @@
               [x_title]="'FUNDE'"
               [y_title]="'DATIERUNG'"
               [z_title]="'BEZ'"
+              [test]="'offline'"
             ></app-highcharts3d>
           </div>
         </div>
@@ -916,6 +935,7 @@
               [x_title]="'FUNDE'"
               [y_title]="'DATIERUNG'"
               [z_title]="'BEZ'"
+              [test]="'offline'"
             ></app-highcharts3d>
           </div>
         </div>
@@ -951,6 +971,7 @@
               [y_title]="'DATIERUNG'"
               [z_title]="'BEZ'"
               [d_title]="'FUNDKATEGORIE'"
+              [test]="'offline'"
             ></app-highcharts3d>
           </div>
         </div>
@@ -985,6 +1006,7 @@
               [y_title]="'DATIERUNG'"
               [z_title]="'BEZ'"
               [d_title]="'FUNDKATEGORIE'"
+              [test]="'offline'"
             ></app-highcharts3d>
           </div>
         </div>
@@ -1019,6 +1041,7 @@
               [y_title]="'DATIERUNG'"
               [z_title]="'BEZ'"
               [d_title]="'FUNDKATEGORIE'"
+              [test]="'offline'"
             ></app-highcharts3d>
           </div>
         </div>

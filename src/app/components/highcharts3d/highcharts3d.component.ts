@@ -2,8 +2,8 @@ import { Component, OnInit, Input } from '@angular/core'
 import { TitleCasePipe } from '@angular/common'
 import { MappingService } from 'src/app/services/mapping.service'
 import * as Highcharts from 'highcharts'
-import highcharts3D from 'highcharts/highcharts-3d.src'
-highcharts3D(Highcharts)
+import Highcharts3d from 'highcharts/highcharts-3d'
+Highcharts3d(Highcharts)
 import HighchartsBoost from 'highcharts/modules/boost'
 HighchartsBoost(Highcharts)
 
@@ -24,6 +24,7 @@ export class Highcharts3dComponent implements OnInit {
   @Input() y_title: string
   @Input() z_title: string
   @Input() d_title: string
+  @Input() test: string = null
   @Input() points_arr: string[] = []
 
   highcharts = Highcharts
@@ -72,17 +73,14 @@ export class Highcharts3dComponent implements OnInit {
     const fundeIndex = 9
     const datierungIndex = 11
 
-    const sampleRate = 7 // Only take every 7th point
-
-    if (this.points == -1) {
-      this.points_arr = this.points_arr.filter(
-        (_, index) => index % sampleRate === 0,
-      )
+    // Only for online tests
+    if (this.test == null) {
+      this.csvData = this.csvData.slice(0, 800)
     }
 
     let groupedData: { [key: string]: { data: any[]; color: string } } = {}
     this.csvData
-      .filter((_, index) => index !== 0 && index % sampleRate === 0) // Ignore the first row and take every nth row
+      .filter((_, index) => index !== 0) // Ignore the first row
       .filter((row) => {
         // some points has normalized data in it, csv parsing not so good!
         const xIsInt = Number.isInteger(parseFloat(row[this.x]))

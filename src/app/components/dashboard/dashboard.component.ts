@@ -112,6 +112,14 @@ export class DashboardComponent implements OnInit {
   kMeans_points: string[] = []
   DBSCAN_points: string[] = []
   AGNES_points: string[] = []
+  // Button
+  isLoading0 = false
+  isLoading1 = false
+  isLoading2 = false
+  isLoading3 = false
+  isLoading4 = false
+  isLoading5 = false
+  isLoadingOnline = false
 
   constructor(
     private fb: FormBuilder,
@@ -225,6 +233,12 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  spinnerAsync(): Promise<any> {
+    return new Promise((resolve) => {
+      setTimeout(resolve, 2000) // For demonstration purposes, a delay of 2 seconds
+    })
+  }
+
   setSelectedButton(index: number): void {
     // Clear buttons off Online test
     this.selectedOnlineButtonIndex = null
@@ -255,89 +269,113 @@ export class DashboardComponent implements OnInit {
   }
 
   handleFunde(): void {
-    this.dashboard = [
-      // First row
-      { cols: 2, rows: 2, y: 0, x: 0, content: 'PCA_kMeans' },
-      { cols: 2, rows: 2, y: 0, x: 2, content: 'PCA_DBSCAN' },
-      { cols: 2, rows: 2, y: 0, x: 4, content: 'PCA_AGNES' },
-      // Second row
-      { cols: 2, rows: 2, y: 2, x: 0, content: 'UMAP_kMeans' },
-      { cols: 2, rows: 2, y: 2, x: 2, content: 'UMAP_DBSCAN' },
-      { cols: 2, rows: 2, y: 2, x: 4, content: 'UMAP_AGNES' },
-    ]
+    this.isLoading0 = true
+    this.spinnerAsync().then(() => {
+      this.dashboard = [
+        // First row
+        { cols: 2, rows: 2, y: 0, x: 0, content: 'PCA_kMeans' },
+        { cols: 2, rows: 2, y: 0, x: 2, content: 'PCA_DBSCAN' },
+        { cols: 2, rows: 2, y: 0, x: 4, content: 'PCA_AGNES' },
+        // Second row
+        { cols: 2, rows: 2, y: 2, x: 0, content: 'UMAP_kMeans' },
+        { cols: 2, rows: 2, y: 2, x: 2, content: 'UMAP_DBSCAN' },
+        { cols: 2, rows: 2, y: 2, x: 4, content: 'UMAP_AGNES' },
+      ]
+      this.isLoading0 = false // Reset the loading state after the task is done
+    })
   }
 
   handleBezNDatierungN(): void {
-    this.dashboard = [
-      // First row
-      { cols: 6, rows: 2, y: 0, x: 0, content: 'BezDatierung_kMeans' },
-      // Second row
-      { cols: 6, rows: 2, y: 2, x: 0, content: 'BezDatierung_DBSCAN' },
-      // Third row
-      { cols: 6, rows: 2, y: 4, x: 0, content: 'BezDatierung_AGNES' },
-    ]
+    this.isLoading1 = true
+    this.spinnerAsync().then(() => {
+      this.dashboard = [
+        // First row
+        { cols: 6, rows: 2, y: 0, x: 0, content: 'BezDatierung_kMeans' },
+        // Second row
+        { cols: 6, rows: 2, y: 2, x: 0, content: 'BezDatierung_DBSCAN' },
+        // Third row
+        { cols: 6, rows: 2, y: 4, x: 0, content: 'BezDatierung_AGNES' },
+      ]
+      this.isLoading1 = false // Reset the loading state after the task is done
+    })
   }
 
   handleBezNFundeN(): void {
-    this.dashboard = [
-      // First row
-      { cols: 6, rows: 2, y: 0, x: 0, content: 'BezFunde_kMeans' },
-      // Second row
-      { cols: 6, rows: 2, y: 2, x: 0, content: 'BezFunde_DBSCAN' },
-      // Third row
-      { cols: 6, rows: 2, y: 4, x: 0, content: 'BezFunde_AGNES' },
-    ]
+    this.isLoading2 = true
+    this.spinnerAsync().then(() => {
+      this.dashboard = [
+        // First row
+        { cols: 6, rows: 2, y: 0, x: 0, content: 'BezFunde_kMeans' },
+        // Second row
+        { cols: 6, rows: 2, y: 2, x: 0, content: 'BezFunde_DBSCAN' },
+        // Third row
+        { cols: 6, rows: 2, y: 4, x: 0, content: 'BezFunde_AGNES' },
+      ]
+      this.isLoading2 = false // Reset the loading state after the task is done
+    })
   }
 
   handleBezNFundkategorieN(): void {
-    this.dashboard = [
-      // First row
-      { cols: 6, rows: 2, y: 0, x: 0, content: 'BezFundkategorie_kMeans' },
-      // Second row
-      { cols: 6, rows: 2, y: 2, x: 0, content: 'BezFundkategorie_DBSCAN' },
-      // Third row
-      { cols: 6, rows: 2, y: 4, x: 0, content: 'BezFundkategorie_AGNES' },
-    ]
+    this.isLoading3 = true
+    this.spinnerAsync().then(() => {
+      this.dashboard = [
+        // First row
+        { cols: 6, rows: 2, y: 0, x: 0, content: 'BezFundkategorie_kMeans' },
+        // Second row
+        { cols: 6, rows: 2, y: 2, x: 0, content: 'BezFundkategorie_DBSCAN' },
+        // Third row
+        { cols: 6, rows: 2, y: 4, x: 0, content: 'BezFundkategorie_AGNES' },
+      ]
+      this.isLoading3 = false // Reset the loading state after the task is done
+    })
   }
 
   handleBezNFundeNDatierungN(): void {
-    this.dashboard = [
-      // First row
-      { cols: 2, rows: 6, y: 0, x: 0, content: 'BezFundeDatierung_kMeans' },
-      // Second row
-      { cols: 2, rows: 6, y: 0, x: 2, content: 'BezFundeDatierung_DBSCAN' },
-      // Third row
-      { cols: 2, rows: 6, y: 0, x: 4, content: 'BezFundeDatierung_AGNES' },
-    ]
+    this.isLoading4 = true
+    this.spinnerAsync().then(() => {
+      this.dashboard = [
+        // First row
+        { cols: 2, rows: 6, y: 0, x: 0, content: 'BezFundeDatierung_kMeans' },
+        // Second row
+        { cols: 2, rows: 6, y: 0, x: 2, content: 'BezFundeDatierung_DBSCAN' },
+        // Third row
+        { cols: 2, rows: 6, y: 0, x: 4, content: 'BezFundeDatierung_AGNES' },
+      ]
+      this.isLoading4 = false // Reset the loading state after the task is done
+    })
   }
 
   handleBezNFundeNDatierungNFundkategorieN(): void {
-    this.dashboard = [
-      // First row
-      {
-        cols: 2,
-        rows: 6,
-        y: 0,
-        x: 0,
-        content: 'BezFundeDatierungFundkategorie_kMeans',
-      },
-      // Second row
-      {
-        cols: 2,
-        rows: 6,
-        y: 0,
-        x: 2,
-        content: 'BezFundeDatierungFundkategorie_DBSCAN',
-      },
-      // Third row
-      {
-        cols: 2,
-        rows: 6,
-        y: 0,
-        x: 4,
-        content: 'BezFundeDatierungFundkategorie_AGNES',
-      },
-    ]
+    this.isLoading5 = true
+    this.spinnerAsync().then(() => {
+      this.dashboard = [
+        // First row
+        {
+          cols: 2,
+          rows: 6,
+          y: 0,
+          x: 0,
+          content: 'BezFundeDatierungFundkategorie_kMeans',
+        },
+        // Second row
+        {
+          cols: 2,
+          rows: 6,
+          y: 0,
+          x: 2,
+          content: 'BezFundeDatierungFundkategorie_DBSCAN',
+        },
+        // Third row
+        {
+          cols: 2,
+          rows: 6,
+          y: 0,
+          x: 4,
+          content: 'BezFundeDatierungFundkategorie_AGNES',
+        },
+      ]
+      this.isLoading5 = false // Reset the loading state after the task is done
+    })
   }
 
   loadCsvData() {
@@ -492,116 +530,120 @@ export class DashboardComponent implements OnInit {
   }
 
   submit(index: number) {
-    if (this.form.valid) {
-      // Clear buttons off Offline test
-      this.selectedOfflineButtonIndex = null
-      this.selectedOnlineButtonIndex = index
-      // Process the form data
-      this.boxCount = Object.values(this.form.value).filter(
-        (value) => value === true,
-      ).length // Number of Objects set to true
-      const checkedBoxes = Object.entries(this.form.value)
-        .filter(([key, value]) => value === true)
-        .map(([key]) => key) // Checkboxes names set to true
-      this.o_x_title = checkedBoxes[0]
-      this.o_y_title = checkedBoxes[1]
-      this.o_z_title = checkedBoxes[2]
-      this.o_d_title = checkedBoxes[3]
-      this.setCorrectAxis(this.form.value, this.boxCount) // Based on offline graphs
-      this.o_x_column = this.mapCsvColumns(this.o_x_title)
-      this.o_y_column = this.mapCsvColumns(this.o_y_title)
-      this.o_z_column = this.mapCsvColumns(this.o_z_title)
-      this.o_d_column = this.mapCsvColumns(this.o_d_title)
-      if (this.boxCount === 2) {
-        this.dashboard = [
-          { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Online_kMeans' },
-          { cols: 6, rows: 2, y: 2, x: 0, content: '2D_Online_DBSCAN' },
-          { cols: 6, rows: 2, y: 4, x: 0, content: '2D_Online_AGNES' },
-        ]
+    this.isLoadingOnline = true
+    this.spinnerAsync().then(() => {
+      if (this.form.valid) {
+        // Clear buttons off Offline test
+        this.selectedOfflineButtonIndex = null
+        this.selectedOnlineButtonIndex = index
+        // Process the form data
+        this.boxCount = Object.values(this.form.value).filter(
+          (value) => value === true,
+        ).length // Number of Objects set to true
+        const checkedBoxes = Object.entries(this.form.value)
+          .filter(([key, value]) => value === true)
+          .map(([key]) => key) // Checkboxes names set to true
+        this.o_x_title = checkedBoxes[0]
+        this.o_y_title = checkedBoxes[1]
+        this.o_z_title = checkedBoxes[2]
+        this.o_d_title = checkedBoxes[3]
+        this.setCorrectAxis(this.form.value, this.boxCount) // Based on offline graphs
+        this.o_x_column = this.mapCsvColumns(this.o_x_title)
+        this.o_y_column = this.mapCsvColumns(this.o_y_title)
+        this.o_z_column = this.mapCsvColumns(this.o_z_title)
+        this.o_d_column = this.mapCsvColumns(this.o_d_title)
+        if (this.boxCount === 2) {
+          this.dashboard = [
+            { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Online_kMeans' },
+            { cols: 6, rows: 2, y: 2, x: 0, content: '2D_Online_DBSCAN' },
+            { cols: 6, rows: 2, y: 4, x: 0, content: '2D_Online_AGNES' },
+          ]
+        } else {
+          this.dashboard = [
+            { cols: 2, rows: 6, y: 0, x: 0, content: '3D4D_Online_kMeans' },
+            { cols: 2, rows: 6, y: 0, x: 2, content: '3D4D_Online_DBSCAN' },
+            { cols: 2, rows: 6, y: 0, x: 4, content: '3D4D_Online_AGNES' },
+          ]
+        }
+
+        const indices = [
+          this.o_x_column,
+          this.o_y_column,
+          this.o_z_column,
+          this.o_d_column,
+        ].filter((index) => index !== null)
+
+        const points = this.export2_CsvData
+          .slice(1)
+          .map((row) => indices.map((index) => parseFloat(row[index]))) // Extract data from the selected columns
+
+        // kMeans
+        const output = kmeans(points, this.form.value.n_kMeans, undefined, 300)
+        this.kMeans_points = output.indexes.map(String) // 6689
+        this.kMeans_points = this.export2_CsvData
+          .filter((_, index) => index < 800) // (index < 800) Skip the first row and give 799 data
+          .map((row, rowIndex) => {
+            return output.indexes.map(String)[rowIndex]
+          })
+
+        // Alternative Lösung - jedoch gleiche Ergebnisse!
+        // const kmeans = new clustering.KMEANS();
+        // const kmeansClusters = kmeans.run(points, this.form.value.n_kMeans); // dataset, eps, minPts
+        // let output = new Array(this.export2_CsvData.length - 1).fill(-1); // Initialize the array with -1
+        // for (let i = 0; i < kmeansClusters.length; i++) {
+        //   for (let j = 0; j < kmeansClusters[i].length; j++) {
+        //     output[kmeansClusters[i][j]] = i;
+        //   }
+        // }
+        // this.kMeans_points = this.export2_CsvData
+        // .filter((_, index) => index !== 0)  // Skip the first row
+        // .map((_, rowIndex) => String(output[rowIndex]));
+
+        // DBSCAN
+        let data = points.slice(0, 800)
+        const dbscan = new clustering.DBSCAN()
+        const dbscanClusters = dbscan.run(
+          data,
+          this.form.value.eps_dbscan,
+          this.form.value.minPts_dbscan,
+        ) // dataset, eps, minPts
+        let output2 = new Array(data.length).fill(-1) // Initialize the array with -1
+        for (let i = 0; i < dbscanClusters.length; i++) {
+          for (let j = 0; j < dbscanClusters[i].length; j++) {
+            output2[dbscanClusters[i][j]] = i
+          }
+        }
+        this.DBSCAN_points = this.export2_CsvData
+          .filter((_, index) => index !== 0) // Skip the first row
+          .map((_, rowIndex) => String(output2[rowIndex]))
+
+        // AGNES
+        const a_cluster = hclust.agnes(data, { method: 'average' })
+        const cutHeight = this.findHeightForClusters(
+          a_cluster,
+          this.form.value.n_agnes,
+        )
+        const clusters = a_cluster.cut(cutHeight)
+        let clusterIndicesArray = clusters.map((cluster) =>
+          this.getLeafIndices(cluster),
+        )
+        let AGNES_points = new Array(data.length).fill(-1)
+        for (
+          let clusterId = 0;
+          clusterId < clusterIndicesArray.length;
+          clusterId++
+        ) {
+          for (let index of clusterIndicesArray[clusterId]) {
+            AGNES_points[index] = clusterId
+          }
+        }
+        this.AGNES_points = AGNES_points.map(String)
       } else {
-        this.dashboard = [
-          { cols: 2, rows: 6, y: 0, x: 0, content: '3D4D_Online_kMeans' },
-          { cols: 2, rows: 6, y: 0, x: 2, content: '3D4D_Online_DBSCAN' },
-          { cols: 2, rows: 6, y: 0, x: 4, content: '3D4D_Online_AGNES' },
-        ]
+        // Display a general message or loop through controls to show individual error messages
+        this.selectedOnlineButtonIndex = null
+        console.warn('Form is invalid')
       }
-
-      const indices = [
-        this.o_x_column,
-        this.o_y_column,
-        this.o_z_column,
-        this.o_d_column,
-      ].filter((index) => index !== null)
-
-      const points = this.export2_CsvData
-        .slice(1)
-        .map((row) => indices.map((index) => parseFloat(row[index]))) // Extract data from the selected columns
-
-      // kMeans
-      const output = kmeans(points, this.form.value.n_kMeans, undefined, 300)
-      this.kMeans_points = output.indexes.map(String) // 6689
-      this.kMeans_points = this.export2_CsvData
-        .filter((_, index) => index < 800) // (index < 800) Skip the first row and give 799 data
-        .map((row, rowIndex) => {
-          return output.indexes.map(String)[rowIndex]
-        })
-
-      // Alternative Lösung - jedoch gleiche Ergebnisse!
-      // const kmeans = new clustering.KMEANS();
-      // const kmeansClusters = kmeans.run(points, this.form.value.n_kMeans); // dataset, eps, minPts
-      // let output = new Array(this.export2_CsvData.length - 1).fill(-1); // Initialize the array with -1
-      // for (let i = 0; i < kmeansClusters.length; i++) {
-      //   for (let j = 0; j < kmeansClusters[i].length; j++) {
-      //     output[kmeansClusters[i][j]] = i;
-      //   }
-      // }
-      // this.kMeans_points = this.export2_CsvData
-      // .filter((_, index) => index !== 0)  // Skip the first row
-      // .map((_, rowIndex) => String(output[rowIndex]));
-
-      // DBSCAN
-      let data = points.slice(0, 800)
-      const dbscan = new clustering.DBSCAN()
-      const dbscanClusters = dbscan.run(
-        data,
-        this.form.value.eps_dbscan,
-        this.form.value.minPts_dbscan,
-      ) // dataset, eps, minPts
-      let output2 = new Array(data.length).fill(-1) // Initialize the array with -1
-      for (let i = 0; i < dbscanClusters.length; i++) {
-        for (let j = 0; j < dbscanClusters[i].length; j++) {
-          output2[dbscanClusters[i][j]] = i
-        }
-      }
-      this.DBSCAN_points = this.export2_CsvData
-        .filter((_, index) => index !== 0) // Skip the first row
-        .map((_, rowIndex) => String(output2[rowIndex]))
-
-      // AGNES
-      const a_cluster = hclust.agnes(data, { method: 'average' })
-      const cutHeight = this.findHeightForClusters(
-        a_cluster,
-        this.form.value.n_agnes,
-      )
-      const clusters = a_cluster.cut(cutHeight)
-      let clusterIndicesArray = clusters.map((cluster) =>
-        this.getLeafIndices(cluster),
-      )
-      let AGNES_points = new Array(data.length).fill(-1)
-      for (
-        let clusterId = 0;
-        clusterId < clusterIndicesArray.length;
-        clusterId++
-      ) {
-        for (let index of clusterIndicesArray[clusterId]) {
-          AGNES_points[index] = clusterId
-        }
-      }
-      this.AGNES_points = AGNES_points.map(String)
-    } else {
-      // Display a general message or loop through controls to show individual error messages
-      this.selectedOnlineButtonIndex = null
-      console.warn('Form is invalid')
-    }
+      this.isLoadingOnline = false
+    })
   }
 }
