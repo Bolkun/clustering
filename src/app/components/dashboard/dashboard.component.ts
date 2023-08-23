@@ -182,6 +182,7 @@ export class DashboardComponent implements OnInit {
     this.loadCsvData()
     this.loadExportCsvData()
     this.load2_ExportCsvData()
+    //this.setSelectedButton(5)
   }
 
   toggleOfflineMenu(): void {
@@ -304,9 +305,9 @@ export class DashboardComponent implements OnInit {
       // First row
       { cols: 2, rows: 6, y: 0, x: 0, content: 'BezFundeDatierung_kMeans' },
       // Second row
-      { cols: 2, rows: 6, y: 2, x: 0, content: 'BezFundeDatierung_DBSCAN' },
+      { cols: 2, rows: 6, y: 0, x: 2, content: 'BezFundeDatierung_DBSCAN' },
       // Third row
-      { cols: 2, rows: 6, y: 4, x: 0, content: 'BezFundeDatierung_AGNES' },
+      { cols: 2, rows: 6, y: 0, x: 4, content: 'BezFundeDatierung_AGNES' },
     ]
   }
 
@@ -324,16 +325,16 @@ export class DashboardComponent implements OnInit {
       {
         cols: 2,
         rows: 6,
-        y: 2,
-        x: 0,
+        y: 0,
+        x: 2,
         content: 'BezFundeDatierungFundkategorie_DBSCAN',
       },
       // Third row
       {
         cols: 2,
         rows: 6,
-        y: 4,
-        x: 0,
+        y: 0,
+        x: 4,
         content: 'BezFundeDatierungFundkategorie_AGNES',
       },
     ]
@@ -520,8 +521,8 @@ export class DashboardComponent implements OnInit {
       } else {
         this.dashboard = [
           { cols: 2, rows: 6, y: 0, x: 0, content: '3D4D_Online_kMeans' },
-          { cols: 2, rows: 6, y: 2, x: 0, content: '3D4D_Online_DBSCAN' },
-          { cols: 2, rows: 6, y: 4, x: 0, content: '3D4D_Online_AGNES' },
+          { cols: 2, rows: 6, y: 0, x: 2, content: '3D4D_Online_DBSCAN' },
+          { cols: 2, rows: 6, y: 0, x: 4, content: '3D4D_Online_AGNES' },
         ]
       }
 

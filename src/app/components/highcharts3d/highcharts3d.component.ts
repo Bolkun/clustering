@@ -4,6 +4,8 @@ import { MappingService } from 'src/app/services/mapping.service'
 import * as Highcharts from 'highcharts'
 import highcharts3D from 'highcharts/highcharts-3d.src'
 highcharts3D(Highcharts)
+import HighchartsBoost from 'highcharts/modules/boost'
+HighchartsBoost(Highcharts)
 
 @Component({
   selector: 'app-highcharts3d',
@@ -42,8 +44,8 @@ export class Highcharts3dComponent implements OnInit {
     '4': '#FF00FF', // Magenta
     '5': '#00FFFF', // Cyan
     '6': '#FFFF00', // Yellow
-    '7': '#8B4513', // Brown (Saddle Brown)
-    '8': '#EE82EE', // Violet (Violet color name)
+    '7': '#8B4513', // Brown
+    '8': '#EE82EE', // Violet
     '9': '#FFC0CB', // Pink
     '10': '#000000', // Black
   }
@@ -164,8 +166,8 @@ export class Highcharts3dComponent implements OnInit {
       '1': 'circle',
       '2': 'square',
       '3': 'diamond',
-      '4': 'x',
-      '5': 'cross',
+      '4': 'triangle', // no x
+      '5': 'triangle-down', // no cross
     }
     return markers[fundkategorie as '1' | '2' | '3' | '4' | '5'] || 'circle' // default to circle if not found
   }
@@ -173,7 +175,50 @@ export class Highcharts3dComponent implements OnInit {
   private setChartOptions(): void {
     const self = this
     this.chartOptions = {
+      accessibility: {
+        enabled: false,
+      },
+      boost: {
+        useGPUTranslations: true,
+        usePreallocated: true,
+      },
+      plotOptions: {
+        series: {
+          turboThreshold: this.csvData.length, // render more points, default 1000
+          shadow: false,
+          animation: false,
+          states: {
+            hover: {
+              enabled: false,
+            },
+          },
+        },
+      },
       chart: {
+        events: {
+          render: function () {
+            if (self.d_title) {
+              const chart: any = this
+              // Check if the custom label already exists, if so, destroy it to avoid duplicates
+              if (chart.customLegendLabel) {
+                chart.customLegendLabel.destroy()
+              }
+              // Placing the text below the last legend item
+              const legend = chart.legend
+              const legendBottom =
+                legend.group.translateY + legend.lastItemY + legend.itemHeight
+              // Add custom label
+              chart.customLegendLabel = chart.renderer
+                .text(
+                  'Fundkategorie symbols: ●, ■, ♦, ▲, ▼',
+                  legend.group.translateX,
+                  legendBottom + 20,
+                )
+                .css({ fontSize: '0.8em', color: 'rgb(51, 51, 51)' })
+                .add()
+            }
+          },
+        },
         type: 'scatter',
         marginBottom: 100,
         marginRight: 5,

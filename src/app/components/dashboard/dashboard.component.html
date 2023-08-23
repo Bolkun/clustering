@@ -157,7 +157,11 @@
             BEZ
           </label>
           <label for="fundkategorie">
-            <input id="fundkategorie" type="checkbox" formControlName="FUNDKATEGORIE" />
+            <input
+              id="fundkategorie"
+              type="checkbox"
+              formControlName="FUNDKATEGORIE"
+            />
             FUNDKATEGORIE
           </label>
           <span
@@ -772,8 +776,9 @@
             <thead>
               <tr>
                 <th class="position-relative">
-                  <span style="color: red;">
-                    Failed Experiment with BEZ, FUNDE (DBSCAN)!
+                  <span>
+                    BEZ, FUNDE (DBSCAN)
+                    <span style="color: orange;">- Limited!</span>
                   </span>
                   <button class="absolute-right" (click)="removeItem(item)">
                     X
@@ -832,7 +837,6 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG (k-Means)
-                  <span style="color: orange;">- Limited!</span>
                   <button class="absolute-right" (click)="removeItem(item)">
                     X
                   </button>
@@ -864,7 +868,6 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG (DBSCAN)
-                  <span style="color: orange;">- Limited!</span>
                   <button class="absolute-right" (click)="removeItem(item)">
                     X
                   </button>
@@ -896,7 +899,6 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG (AGNES)
-                  <span style="color: orange;">- Limited!</span>
                   <button class="absolute-right" (click)="removeItem(item)">
                     X
                   </button>
@@ -930,7 +932,6 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (k-Means)
-                  <span style="color: orange;">- Limited!</span>
                   <button class="absolute-right" (click)="removeItem(item)">
                     X
                   </button>
@@ -965,7 +966,6 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (DBSCAN)
-                  <span style="color: orange;">- Limited!</span>
                   <button class="absolute-right" (click)="removeItem(item)">
                     X
                   </button>
@@ -1000,7 +1000,6 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (AGNES)
-                  <span style="color: orange;">- Limited!</span>
                   <button class="absolute-right" (click)="removeItem(item)">
                     X
                   </button>
