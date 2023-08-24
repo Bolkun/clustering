@@ -5,7 +5,7 @@
       l u s t e r i n g
     </p>
     <p style="text-transform: uppercase; font-size: 12px;">
-      Archaelogical Sites of Vienna
+      Archaeological Sites of Vienna
     </p>
   </div>
   <a class="btn" (click)="startViewDisplay()">
@@ -387,6 +387,33 @@
             </thead>
           </table>
           <img id="img_bezirke" src="assets/img/bezirke-wien.png" />
+        </div>
+        <!-- Help -->
+        <div
+          id="helpContainer"
+          class="item scrollable-content"
+          *ngIf="item['content'] === 'Item Help'"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th class="position-relative">
+                  Help
+                  <button class="absolute-right" (click)="removeItem(item)">
+                    X
+                  </button>
+                </th>
+              </tr>
+            </thead>
+          </table>
+          <iframe
+            id="yt"
+            src="https://www.youtube.com/embed/Ns-zKx8Rx_w?si=V283M56Uw0Y5dvca"
+            showinfo="0"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
         </div>
         <!-- CSV -->
         <!-- <div class="scrollable-content no-drag" *ngIf="item['content'] === 'Item 6' && csvData"> -->
