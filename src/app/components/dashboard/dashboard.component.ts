@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit {
           [
             Validators.required,
             Validators.min(0.01),
-            Validators.max(10),
+            Validators.max(20),
             MaxDecimalPlacesValidator(4),
           ],
         ],
