@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core'
   providedIn: 'root',
 })
 export class MappingService {
-  private FUNDKATEGORIE_MAPPING: { [key: string]: string } = {
+  public FUNDKATEGORIE_MAPPING: { [key: string]: string } = {
     '1': 'Einzel-, Streufund',
     '2': 'Siedlungsbefund',
     '3': 'Grabbefund',
@@ -12,7 +12,7 @@ export class MappingService {
     '5': 'Fossilfund',
   }
 
-  private BEZ_MAPPING: { [key: string]: string } = {
+  public BEZ_MAPPING: { [key: string]: string } = {
     '1': 'Innere Stadt',
     '2': 'Leopoldstadt',
     '3': 'Landstraße',
@@ -38,7 +38,7 @@ export class MappingService {
     '23': 'Liesing',
   }
 
-  private DATIERUNG_MAPPING: { [key: string]: string } = {
+  public DATIERUNG_MAPPING: { [key: string]: string } = {
     '1': 'Bronzezeit/Mittelalter/Neuzeit',
     '2': 'Eiszeit/Mittelalter',
     '3': 'Frühmittelalter',
@@ -74,7 +74,7 @@ export class MappingService {
     '33': 'unbekannt',
   }
 
-  private FUNDE_MAPPING: { [key: string]: string } = {
+  public FUNDE_MAPPING: { [key: string]: string } = {
     '1': 'abbaugeräte',
     '2': 'abbaustelle',
     '3': 'abbruchhorizont',

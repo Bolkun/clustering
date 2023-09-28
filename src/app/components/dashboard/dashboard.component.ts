@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { FormControl } from '@angular/forms';
 // https://fontawesome.com/v4/icons
 import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { faSign } from '@fortawesome/free-solid-svg-icons'
@@ -12,6 +13,11 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { faDatabase } from '@fortawesome/free-solid-svg-icons'
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faLaptop } from '@fortawesome/free-solid-svg-icons'
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faPencilSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import {
   FormBuilder,
   FormGroup,
@@ -76,9 +82,14 @@ export class DashboardComponent implements OnInit {
   // Sidebar
   activeTab: null | string = 'tab2'
   isContentFlex: boolean = true
+  isFormVisible: boolean = false
   selectedOfflineButtonIndex: number | null = null
   selectedOnlineButtonIndex: number | null = null
+  selectedWorkButtonIndex: number | null = null
   form: FormGroup
+  work_form: FormGroup
+  csv_form: FormGroup
+  csv_form_length: number
   // Icons
   faHome = faHome
   faDatabase = faDatabase
@@ -92,6 +103,12 @@ export class DashboardComponent implements OnInit {
   faOnline = faCheck
   faSidebarVisible = faEye
   faSidebarUnvisible = faEyeSlash
+  faLaptop = faLaptop
+  faEdit = faPencilSquare
+  faEditSingle = faPencil
+  faDelete = faTrash
+  faAdd = faPlusSquare
+
   // Grid
   options: GridsterConfig
   dashboard: GridsterItem[]
@@ -99,6 +116,7 @@ export class DashboardComponent implements OnInit {
   csvData: string[][]
   exportCsvData: string[][]
   export2_CsvData: string[][]
+  workCsvData: string[][]
   // Online
   boxCount: any
   o_x_title: any
@@ -120,11 +138,12 @@ export class DashboardComponent implements OnInit {
   isLoading4 = false
   isLoading5 = false
   isLoadingOnline = false
+  fileNames: string[] = ['work_archaelogical_sites_of_wien.csv'];
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private mappingService: MappingService,
+    public mappingService: MappingService,
   ) {
     this.form = this.fb.group(
       {
@@ -132,6 +151,53 @@ export class DashboardComponent implements OnInit {
         DATIERUNG: [true],
         BEZ: [true],
         FUNDKATEGORIE: [false],
+        n_kMeans: [
+          3,
+          [
+            Validators.required,
+            Validators.min(2),
+            Validators.max(10),
+            WholeNumberValidator(),
+          ],
+        ],
+        eps_dbscan: [
+          3,
+          [
+            Validators.required,
+            Validators.min(0.01),
+            Validators.max(20),
+            MaxDecimalPlacesValidator(4),
+          ],
+        ],
+        minPts_dbscan: [
+          20,
+          [
+            Validators.required,
+            Validators.min(2),
+            Validators.max(2503),
+            WholeNumberValidator(),
+          ],
+        ],
+        n_agnes: [
+          4,
+          [
+            Validators.required,
+            Validators.min(2),
+            Validators.max(10),
+            WholeNumberValidator(),
+          ],
+        ],
+      },
+      { validators: atLeastTwoCheckedValidator() },
+    )
+    this.work_form = this.fb.group(
+      {
+        selectedDatasetControl: [this.fileNames[0]],
+        FUNDE: [false],
+        DATIERUNG: [true],
+        BEZ: [true],
+        FUNDKATEGORIE: [false],
+        selectedAlgoControl: ['kmeans'],
         n_kMeans: [
           3,
           [
@@ -188,10 +254,41 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.toggleContentDisplay() // hide sidebar by default
+    // Load Data
     this.loadCsvData()
     this.loadExportCsvData()
     this.load2_ExportCsvData()
-    //this.setSelectedButton(5)
+    this.loadWorkCsvData()
+    // Test
+    this.toggleWorkMenu()
+    this.work(0);
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (!input?.files?.[0]) {
+      return;
+    }
+
+    const file: File = input.files[0];
+    if (file) {
+      this.fileNames[0] = file.name;
+      this.isLoadingOnline = false;
+    }
+    const reader: FileReader = new FileReader();
+
+    reader.readAsText(file);
+
+    reader.onload = (e) => {
+      const csv = reader.result as string;
+      this.processCsvData(csv);
+    };
+  }
+
+  processCsvData(csv: string) {
+    // Your CSV processing logic here
+    //console.log(csv);
   }
 
   toggleOfflineMenu(): void {
@@ -212,14 +309,28 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  toggleWorkMenu(): void {
+    if (this.isContentFlex === true) {
+      this.activeTab = 'tab3'
+    } else {
+      this.activeTab = 'tab3'
+      this.isContentFlex = true
+    }
+  }
+
   toggleContentDisplay(): void {
     this.isContentFlex = !this.isContentFlex
     this.activeTab = null
   }
 
+  toggleFormVisibility(): void {
+    this.isFormVisible = !this.isFormVisible;
+  }
+
   startViewDisplay() {
     this.selectedOfflineButtonIndex = null
     this.selectedOnlineButtonIndex = null
+    this.selectedWorkButtonIndex = null
     this.dashboard = [
       { cols: 2, rows: 4, y: 0, x: 0, content: 'Item 4' }, // Map of Points
       { cols: 1, rows: 4, y: 0, x: 2, content: 'Item 5' }, // Map of Bezirke
@@ -244,6 +355,7 @@ export class DashboardComponent implements OnInit {
   setSelectedButton(index: number): void {
     // Clear buttons off Online test
     this.selectedOnlineButtonIndex = null
+    this.selectedWorkButtonIndex = null
 
     this.selectedOfflineButtonIndex = index
     switch (index) {
@@ -434,7 +546,86 @@ export class DashboardComponent implements OnInit {
       })
   }
 
-  private csvTo2DArray(
+  loadWorkCsvData() {
+    this.http
+      .get('assets/csv/work/work_archaelogical_sites_of_wien.csv', {
+        responseType: 'text',
+      })
+      .subscribe((data) => {
+        let columnsToKeep = [];
+        let rawData: any
+
+        if (this.fileNames[0] == 'work_archaelogical_sites_of_wien.csv') {
+          columnsToKeep = Array.from({ length: 9 }, (_, i) => i)
+          rawData = this.csvTo2DArray(data, ',', columnsToKeep)
+          this.workCsvData = rawData.slice(0, 801);
+        } else {
+          columnsToKeep = Array.from({ length: 10 }, (_, i) => i)
+          rawData = this.csvTo2DArray(data, ',', columnsToKeep)
+          this.workCsvData = rawData
+        }
+        this.initializeForm();
+      });
+  }
+
+  initializeForm(): void {
+    this.csv_form = this.fb.group(
+      {
+        addObjectId: [this.getLastObjectId() + 1,
+        [
+          Validators.required,
+          WholeNumberValidator(),
+        ],
+        ],
+        addLon: ['16.372476253911756',
+          [
+            Validators.required,
+          ],
+        ],
+        addLat: ['48.2091131160875',
+          [
+            Validators.required,
+          ],
+        ],
+        selectedBez: ['1',
+          [
+            Validators.required,
+          ],
+        ],
+        addStrasse: ['Stephansplatz'],
+        addNummer: ['8'], // münze, keramik
+        addExtra: [''],
+        selectedFundkategorie: ['1',
+          [
+            Validators.required,
+          ],
+        ],
+        selectedFunde: ['1',
+          [
+            Validators.required,
+          ],
+        ],
+        selectedDatierung: ['1',
+          [
+            Validators.required,
+          ],
+        ],
+      }
+    )
+  }
+
+  getLastRowNumber() {
+    return this.workCsvData.length - 1;
+  }
+
+  getLastObjectId(): number {
+    const lastRow = this.workCsvData[this.workCsvData.length - 1];
+    const objectIdIndex = this.workCsvData[0].indexOf('OBJECTID');
+
+    return parseInt(lastRow[objectIdIndex], 10);
+  }
+
+  csvTo2DArray(
     csv: string,
     delimiter: string = ',',
     columnsToKeep: number[] = [],
@@ -462,26 +653,43 @@ export class DashboardComponent implements OnInit {
       .join(' ')
   }
 
-  eventExportCsvData() {
-    const csvContent = this.arrayToCsv(this.csvData)
+  getCurrentDatetime(): string {
+    const now = new Date();
+    return now.getFullYear() +
+      ("0" + (now.getMonth() + 1)).slice(-2) +
+      ("0" + now.getDate()).slice(-2) + "_" +
+      ("0" + now.getHours()).slice(-2) +
+      ("0" + now.getMinutes()).slice(-2) +
+      ("0" + now.getSeconds()).slice(-2);
+  }
+
+  exportCsv() {
+    const csvContent = this.arrayToCsv(this.workCsvData)
     const blob = new Blob([csvContent], { type: 'text/csv' })
     const url = window.URL.createObjectURL(blob)
+
     const anchor = document.createElement('a')
+    const currentDatetime = this.getCurrentDatetime();
     anchor.href = url
-    anchor.download = 'exported_data.csv'
+    anchor.download = `${currentDatetime}_data.csv`;
     anchor.click()
+
     window.URL.revokeObjectURL(url)
   }
 
-  private arrayToCsv(data: string[][]): string {
+  arrayToCsv(data: string[][]): string {
     return data.map((row) => row.join(',')).join('\n')
   }
 
-  mapCsvColumns(name: string) {
-    if (name === 'FUNDE') return 9 // Normalized 10, ansonsten 9
-    if (name === 'BEZ') return 2 // Normalized 3, ansonsten 2
-    if (name === 'DATIERUNG') return 11 // Normalized 12, ansonsten 11
-    if (name === 'FUNDKATEGORIE') return 7 // Normalized 8, ansonsten 7
+  getColumnIndex(columnName: string, csvData: any): number {
+    return csvData[0].indexOf(columnName)
+  }
+
+  mapCsvColumns(name: string, csvData: any) {
+    if (name === 'FUNDE') return this.getColumnIndex('FUNDE', csvData)
+    if (name === 'BEZ') return this.getColumnIndex('BEZ', csvData)
+    if (name === 'DATIERUNG') return this.getColumnIndex('DATIERUNG', csvData)
+    if (name === 'FUNDKATEGORIE') return this.getColumnIndex('FUNDKATEGORIE', csvData)
     return null
   }
 
@@ -537,6 +745,7 @@ export class DashboardComponent implements OnInit {
       if (this.form.valid) {
         // Clear buttons off Offline test
         this.selectedOfflineButtonIndex = null
+        this.selectedWorkButtonIndex = null
         this.selectedOnlineButtonIndex = index
         // Process the form data
         this.boxCount = Object.values(this.form.value).filter(
@@ -550,10 +759,10 @@ export class DashboardComponent implements OnInit {
         this.o_z_title = checkedBoxes[2]
         this.o_d_title = checkedBoxes[3]
         this.setCorrectAxis(this.form.value, this.boxCount) // Based on offline graphs
-        this.o_x_column = this.mapCsvColumns(this.o_x_title)
-        this.o_y_column = this.mapCsvColumns(this.o_y_title)
-        this.o_z_column = this.mapCsvColumns(this.o_z_title)
-        this.o_d_column = this.mapCsvColumns(this.o_d_title)
+        this.o_x_column = this.mapCsvColumns(this.o_x_title, this.export2_CsvData)
+        this.o_y_column = this.mapCsvColumns(this.o_y_title, this.export2_CsvData)
+        this.o_z_column = this.mapCsvColumns(this.o_z_title, this.export2_CsvData)
+        this.o_d_column = this.mapCsvColumns(this.o_d_title, this.export2_CsvData)
         if (this.boxCount === 2) {
           this.dashboard = [
             { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Online_kMeans' },
@@ -648,4 +857,184 @@ export class DashboardComponent implements OnInit {
       this.isLoadingOnline = false
     })
   }
+
+  work(index: number) {
+    this.isLoadingOnline = true
+    this.spinnerAsync().then(() => {
+      if (this.work_form.valid) {
+        // Clear buttons off Offline test
+        this.selectedOfflineButtonIndex = null
+        this.selectedWorkButtonIndex = null
+        this.selectedOnlineButtonIndex = index
+        // Process the form data
+        this.boxCount = Object.values(this.work_form.value).filter(
+          (value) => value === true,
+        ).length // Number of Objects set to true
+        const checkedBoxes = Object.entries(this.work_form.value)
+          .filter(([key, value]) => value === true)
+          .map(([key]) => key) // Checkboxes names set to true
+        this.o_x_title = checkedBoxes[0]
+        this.o_y_title = checkedBoxes[1]
+        this.o_z_title = checkedBoxes[2]
+        this.o_d_title = checkedBoxes[3]
+        this.setCorrectAxis(this.work_form.value, this.boxCount) // Based on offline graphs
+        this.o_x_column = this.mapCsvColumns(this.o_x_title, this.workCsvData)
+        this.o_y_column = this.mapCsvColumns(this.o_y_title, this.workCsvData)
+        this.o_z_column = this.mapCsvColumns(this.o_z_title, this.workCsvData)
+        this.o_d_column = this.mapCsvColumns(this.o_d_title, this.workCsvData)
+        if (this.boxCount === 2) {
+          if (this.work_form.get('selectedAlgoControl').value === 'kmeans') {
+            this.dashboard = [
+              { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Work_kMeans' },
+              { cols: 6, rows: 2, y: 2, x: 0, content: 'CSV_Edit' }
+            ]
+          }
+          if (this.work_form.get('selectedAlgoControl').value === 'dbscan') {
+            this.dashboard = [
+              { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Work_DBSCAN' }
+            ]
+          }
+          if (this.work_form.get('selectedAlgoControl').value === 'agnes') {
+            this.dashboard = [
+              { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Work_AGNES' }
+            ]
+          }
+        } else {
+          if (this.work_form.get('selectedAlgoControl').value === 'kmeans') {
+            this.dashboard = [
+              { cols: 6, rows: 2, y: 0, x: 0, content: '3D4D_Work_kMeans' }
+            ]
+          }
+          if (this.work_form.get('selectedAlgoControl').value === 'dbscan') {
+            this.dashboard = [
+              { cols: 6, rows: 2, y: 0, x: 0, content: '3D4D_Work_DBSCAN' }
+            ]
+          }
+          if (this.work_form.get('selectedAlgoControl').value === 'agnes') {
+            this.dashboard = [
+              { cols: 6, rows: 2, y: 0, x: 0, content: '3D4D_Work_AGNES' }
+            ]
+          }
+        }
+
+        const indices = [
+          this.o_x_column,
+          this.o_y_column,
+          this.o_z_column,
+          this.o_d_column,
+        ].filter((index) => index !== null)
+
+        const points = this.workCsvData
+          .slice(1)
+          .map((row) => indices.map((index) => parseFloat(row[index]))) // Extract data from the selected columns
+
+        let data = points //.slice(0, 800)
+
+        // kMeans
+        if (this.work_form.get('selectedAlgoControl').value === 'kmeans') {
+          const output = kmeans(data, this.work_form.value.n_kMeans, undefined, 300)
+          this.kMeans_points = this.workCsvData
+            .filter((_, index) => index !== 0) // Skip the first row
+            .map((_, rowIndex) => String(output.indexes[rowIndex]));
+        }
+
+        // DBSCAN
+        if (this.work_form.get('selectedAlgoControl').value === 'dbscan') {
+          const dbscan = new clustering.DBSCAN()
+          const dbscanClusters = dbscan.run(
+            data,
+            this.work_form.value.eps_dbscan,
+            this.work_form.value.minPts_dbscan,
+          ) // dataset, eps, minPts
+          let output2 = new Array(data.length).fill(-1) // Initialize the array with -1
+          for (let i = 0; i < dbscanClusters.length; i++) {
+            for (let j = 0; j < dbscanClusters[i].length; j++) {
+              output2[dbscanClusters[i][j]] = i
+            }
+          }
+          this.DBSCAN_points = this.workCsvData
+            .filter((_, index) => index !== 0) // Skip the first row
+            .map((_, rowIndex) => String(output2[rowIndex]))
+        }
+
+        // AGNES
+        if (this.work_form.get('selectedAlgoControl').value === 'agnes') {
+          const a_cluster = hclust.agnes(data, { method: 'average' })
+          const cutHeight = this.findHeightForClusters(
+            a_cluster,
+            this.work_form.value.n_agnes,
+          )
+          const clusters = a_cluster.cut(cutHeight)
+          let clusterIndicesArray = clusters.map((cluster) =>
+            this.getLeafIndices(cluster),
+          )
+          let AGNES_points = new Array(data.length).fill(-1)
+          for (
+            let clusterId = 0;
+            clusterId < clusterIndicesArray.length;
+            clusterId++
+          ) {
+            for (let index of clusterIndicesArray[clusterId]) {
+              AGNES_points[index] = clusterId
+            }
+          }
+          this.AGNES_points = AGNES_points.map(String)
+        }
+      } else {
+        // Display a general message or loop through controls to show individual error messages
+        this.selectedOnlineButtonIndex = null
+
+        // // Identify the invalid controls
+        // const invalid = [];
+        // const controls = this.work_form.controls;
+        // for (const name in controls) {
+        //     if (controls[name].invalid) {
+        //         invalid.push(name);
+        //     }
+        // }
+        // console.warn('Invalid controls:', invalid);
+
+        console.warn('Form is invalid')
+      }
+      this.isLoadingOnline = false
+    })
+  }
+
+  csv_add(index: number) {
+    const formValues = this.csv_form.value;
+    const newRow = [
+      formValues.addObjectId,
+      "POINT (" + formValues.addLon + " " + formValues.addLat + ")",  // Assuming you want Lon and Lat as a comma-separated value in a single cell
+      formValues.selectedBez,
+      formValues.addStrasse,
+      formValues.addNummer,
+      formValues.addExtra,
+      formValues.selectedFundkategorie,
+      formValues.selectedFunde,
+      formValues.selectedDatierung
+    ];
+
+    this.workCsvData.push(newRow);
+
+    this.csv_form.patchValue({
+      addObjectId: this.getLastObjectId() + 1
+    });
+  }
+
+  removeData(objectIdToRemove: string): void {
+    const userConfirmed = window.confirm(`Are you sure you want to delete OBJECTID=${objectIdToRemove}?`);
+
+    if (userConfirmed) {
+      this.workCsvData = this.workCsvData.filter(row => row[this.workCsvData[0].indexOf('OBJECTID')] !== objectIdToRemove);
+    }
+  }
+
+  editDataSingle(objectIdToRemove: string): void {
+    // const userConfirmed = window.confirm(`Are you sure you want to delete OBJECTID=${objectIdToRemove}?`);
+
+    // if (userConfirmed) {
+    //   this.workCsvData = this.workCsvData.filter(row => row[this.workCsvData[0].indexOf('OBJECTID')] !== objectIdToRemove);
+    // }
+  }
+
 }

@@ -74,16 +74,20 @@ export class MapComponent implements AfterViewInit, OnChanges {
     this.map.series.add(series)
   }
 
+  getColumnIndex(columnName: string): number {
+    return this.csvData[0].indexOf(columnName)
+  }
+
   private processCsvData() {
-    const objectIdIndex = 0 // OBJECTID column
-    const shapeIndex = 1 // SHAPE column
-    const bezIndex = 2
-    const strNameIndex = 3
-    const hnrIndex = 4
-    const hnrBisIndex = 5
-    const fundkategorieIndex = 6
-    const fundeIndex = 7
-    const datierungindex = 8
+    const objectIdIndex = this.getColumnIndex('OBJECTID')
+    const shapeIndex = this.getColumnIndex('SHAPE')
+    const bezIndex = this.getColumnIndex('BEZ')
+    const strNameIndex = this.getColumnIndex('STRNAM')
+    const hnrIndex = this.getColumnIndex('HNR')
+    const hnrBisIndex = this.getColumnIndex('HNR_BIS')
+    const fundkategorieIndex = this.getColumnIndex('FUNDKATEGORIE')
+    const fundeIndex = this.getColumnIndex('FUNDE')
+    const datierungIndex = this.getColumnIndex('DATIERUNG')
 
     return this.csvData
       .filter((_, index) => index !== 0)
@@ -102,7 +106,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
           hnrBis: row[hnrBisIndex],
           fundkategorie: row[fundkategorieIndex],
           funde: row[fundeIndex],
-          datierung: row[datierungindex],
+          datierung: row[datierungIndex],
         }
       })
   }

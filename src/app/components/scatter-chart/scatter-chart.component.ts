@@ -41,21 +41,20 @@ export class ScatterChartComponent implements OnInit {
     this.drawScatterChart()
   }
 
+  getColumnIndex(columnName: string): number {
+    return this.csvData[0].indexOf(columnName)
+  }
+
   prepareScatterData(): void {
-    const objectIdIndex = 0 // OBJECTID Column
-    const shapeIndex = 1 // SHAPE Column
-    const bezIndex = 2
-    const strNameIndex = 4
-    const hnrIndex = 5
-    const hnrBisIndex = 6
-    const fundkategorieIndex = 7
-    const fundeIndex = 9
-    let datierungIndex = 0
-    if (this.csvData.length == 6690) {
-      datierungIndex = 11
-    } else {
-      datierungIndex = 10
-    }
+    const objectIdIndex = this.getColumnIndex('OBJECTID')
+    const shapeIndex = this.getColumnIndex('SHAPE')
+    const bezIndex = this.getColumnIndex('BEZ')
+    const strNameIndex = this.getColumnIndex('STRNAM')
+    const hnrIndex = this.getColumnIndex('HNR')
+    const hnrBisIndex = this.getColumnIndex('HNR_BIS')
+    const fundkategorieIndex = this.getColumnIndex('FUNDKATEGORIE')
+    const fundeIndex = this.getColumnIndex('FUNDE')
+    const datierungIndex = this.getColumnIndex('DATIERUNG')
 
     this.scatterData = this.csvData
       .filter((_, index) => index !== 0) // Skip the first row

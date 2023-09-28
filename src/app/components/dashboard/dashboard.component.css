@@ -34,6 +34,18 @@
   width: 100%;
 }
 
+.btn_edit {
+  display: inline-block;
+  background: transparent;
+  color: darkgrey;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+
 @media screen and (max-width: 618px) {
   .header-text {
     display: none;
@@ -177,10 +189,14 @@ input[type="checkbox"]:checked {
 
 .inputAlgo {
   padding: 5px;
-  border: 1px solid #ced4da;
   width: 100%;
   height: 30px;
   border: 1px solid grey;
+}
+
+.add {
+  padding: 5px;
+  border: 1px solid #ced4da;
 }
 
 .row label,
@@ -239,7 +255,7 @@ gridster-item {
 
 .position-relative button {
   background: transparent;
-  color: #fff;
+  color: darkgrey;
   border: none;
   border-radius: 5px;
   cursor: pointer;

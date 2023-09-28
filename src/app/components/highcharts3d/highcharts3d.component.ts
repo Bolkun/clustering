@@ -62,16 +62,20 @@ export class Highcharts3dComponent implements OnInit {
     this.setChartOptions()
   }
 
+  getColumnIndex(columnName: string): number {
+    return this.csvData[0].indexOf(columnName)
+  }
+
   prepareData(): void {
-    const objectIdIndex = 0 // OBJECTID Column
-    const shapeIndex = 1 // SHAPE Column
-    const bezIndex = 2
-    const strNameIndex = 4
-    const hnrIndex = 5
-    const hnrBisIndex = 6
-    const fundkategorieIndex = 7
-    const fundeIndex = 9
-    const datierungIndex = 11
+    const objectIdIndex = this.getColumnIndex('OBJECTID')
+    const shapeIndex = this.getColumnIndex('SHAPE')
+    const bezIndex = this.getColumnIndex('BEZ')
+    const strNameIndex = this.getColumnIndex('STRNAM')
+    const hnrIndex = this.getColumnIndex('HNR')
+    const hnrBisIndex = this.getColumnIndex('HNR_BIS')
+    const fundkategorieIndex = this.getColumnIndex('FUNDKATEGORIE')
+    const fundeIndex = this.getColumnIndex('FUNDE')
+    const datierungIndex = this.getColumnIndex('DATIERUNG')
 
     // Only for online tests
     if (this.test == null) {
