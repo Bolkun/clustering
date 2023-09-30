@@ -14,7 +14,7 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { faDatabase } from '@fortawesome/free-solid-svg-icons'
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { faLaptop } from '@fortawesome/free-solid-svg-icons'
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faClone } from '@fortawesome/free-solid-svg-icons';
 import { faPencilSquare } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit {
   // Sidebar
   activeTab: null | string = 'tab2'
   isContentFlex: boolean = true
-  isFormVisible: boolean = false
+  isEditMode: boolean = false;
   selectedOfflineButtonIndex: number | null = null
   selectedOnlineButtonIndex: number | null = null
   selectedWorkButtonIndex: number | null = null
@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit {
   faSidebarUnvisible = faEyeSlash
   faLaptop = faLaptop
   faEdit = faPencilSquare
-  faEditSingle = faPencil
+  faEditSingle = faClone
   faDelete = faTrash
   faAdd = faPlusSquare
 
@@ -323,8 +323,8 @@ export class DashboardComponent implements OnInit {
     this.activeTab = null
   }
 
-  toggleFormVisibility(): void {
-    this.isFormVisible = !this.isFormVisible;
+  toggleCSVEdit(): void {
+    this.isEditMode = !this.isEditMode;
   }
 
   startViewDisplay() {
@@ -554,7 +554,6 @@ export class DashboardComponent implements OnInit {
       .subscribe((data) => {
         let columnsToKeep = [];
         let rawData: any
-
         if (this.fileNames[0] == 'work_archaelogical_sites_of_wien.csv') {
           columnsToKeep = Array.from({ length: 9 }, (_, i) => i)
           rawData = this.csvTo2DArray(data, ',', columnsToKeep)
@@ -621,7 +620,6 @@ export class DashboardComponent implements OnInit {
   getLastObjectId(): number {
     const lastRow = this.workCsvData[this.workCsvData.length - 1];
     const objectIdIndex = this.workCsvData[0].indexOf('OBJECTID');
-
     return parseInt(lastRow[objectIdIndex], 10);
   }
 
@@ -983,28 +981,17 @@ export class DashboardComponent implements OnInit {
       } else {
         // Display a general message or loop through controls to show individual error messages
         this.selectedOnlineButtonIndex = null
-
-        // // Identify the invalid controls
-        // const invalid = [];
-        // const controls = this.work_form.controls;
-        // for (const name in controls) {
-        //     if (controls[name].invalid) {
-        //         invalid.push(name);
-        //     }
-        // }
-        // console.warn('Invalid controls:', invalid);
-
         console.warn('Form is invalid')
       }
       this.isLoadingOnline = false
     })
   }
 
-  csv_add(index: number) {
+  csv_addOrEdit(index: number) {
     const formValues = this.csv_form.value;
     const newRow = [
       formValues.addObjectId,
-      "POINT (" + formValues.addLon + " " + formValues.addLat + ")",  // Assuming you want Lon and Lat as a comma-separated value in a single cell
+      "POINT (" + formValues.addLon + " " + formValues.addLat + ")",
       formValues.selectedBez,
       formValues.addStrasse,
       formValues.addNummer,
@@ -1013,9 +1000,7 @@ export class DashboardComponent implements OnInit {
       formValues.selectedFunde,
       formValues.selectedDatierung
     ];
-
     this.workCsvData.push(newRow);
-
     this.csv_form.patchValue({
       addObjectId: this.getLastObjectId() + 1
     });
@@ -1023,18 +1008,30 @@ export class DashboardComponent implements OnInit {
 
   removeData(objectIdToRemove: string): void {
     const userConfirmed = window.confirm(`Are you sure you want to delete OBJECTID=${objectIdToRemove}?`);
-
     if (userConfirmed) {
       this.workCsvData = this.workCsvData.filter(row => row[this.workCsvData[0].indexOf('OBJECTID')] !== objectIdToRemove);
     }
   }
 
-  editDataSingle(objectIdToRemove: string): void {
-    // const userConfirmed = window.confirm(`Are you sure you want to delete OBJECTID=${objectIdToRemove}?`);
-
-    // if (userConfirmed) {
-    //   this.workCsvData = this.workCsvData.filter(row => row[this.workCsvData[0].indexOf('OBJECTID')] !== objectIdToRemove);
-    // }
+  copyDataSingle(objectIdToEdit: string): void {
+    const rowToEdit = this.workCsvData.find(row => row[this.workCsvData[0].indexOf('OBJECTID')] == objectIdToEdit);
+    if (rowToEdit) {
+      const lonLatMatches = rowToEdit[this.workCsvData[0].indexOf('SHAPE')].match(/POINT \((\d+\.\d+) (\d+\.\d+)\)/);
+      this.csv_form.setValue({
+        addObjectId: rowToEdit[this.workCsvData[0].indexOf('OBJECTID')],
+        addLon: lonLatMatches ? lonLatMatches[1] : '',
+        addLat: lonLatMatches ? lonLatMatches[2] : '',
+        selectedBez: rowToEdit[this.workCsvData[0].indexOf('BEZ')],
+        addStrasse: rowToEdit[this.workCsvData[0].indexOf('STRNAM')],
+        addNummer: rowToEdit[this.workCsvData[0].indexOf('HNR')],
+        addExtra: rowToEdit[this.workCsvData[0].indexOf('HNR_BIS')],
+        selectedFundkategorie: rowToEdit[this.workCsvData[0].indexOf('FUNDKATEGORIE')],
+        selectedFunde: rowToEdit[this.workCsvData[0].indexOf('FUNDE')],
+        selectedDatierung: rowToEdit[this.workCsvData[0].indexOf('DATIERUNG')]
+      });
+    } else {
+      console.error('Row with OBJECTID', objectIdToEdit, 'not found');
+    }
   }
 
 }

@@ -1231,12 +1231,12 @@
         </div>
         <!-- CSV Edit-->
         <div class="scrollable-content no-drag" *ngIf="item['content'] === 'CSV_Edit'">
-          <form id="csv_form" [formGroup]="csv_form" (ngSubmit)="csv_add(0)">
+          <form id="csv_form" [formGroup]="csv_form" (ngSubmit)="csv_addOrEdit(0)">
             <table>
               <thead>
                 <tr>
                   <th>
-                    <a class="btn_edit" (click)="toggleFormVisibility()">
+                    <a class="btn_edit" [style.color]="isEditMode ? 'darkgrey' : 'orange'" (click)="toggleCSVEdit()">
                       <p>
                         <fa-icon [icon]="faEdit"></fa-icon>
                       </p>
@@ -1254,11 +1254,11 @@
                     </button>
                   </th>
                 </tr>
-                <tr>
-                  <th>Add</th>
+                <tr *ngIf="!isEditMode">
+                  <th style="color: green">Add</th>
                   <th>{{ getLastRowNumber() + 1 }}</th>
                   <th>
-                    <input formControlName="addObjectId" class="add" type="text" readonly />
+                    <input formControlName="addObjectId" class="add" type="text"/>
                   </th>
                   <th>
                     <input formControlName="addLon" class="add" type="text" placeholder="Lon" />
@@ -1323,8 +1323,8 @@
                 <ng-container *ngFor="let row of workCsvData; let i = index">
                   <tr *ngIf="i > 0">
                     <td>
-                      <a class="btn_edit" style="color: orange;" (click)="
-                          editDataSingle(
+                      <a *ngIf="!isEditMode" class="btn_edit" style="color: orange;" (click)="
+                        copyDataSingle(
                             row[workCsvData[0].indexOf('OBJECTID')]
                           )
                         ">
@@ -1356,7 +1356,7 @@
                       <td *ngIf="header === 'Clustering'">{{ row[j] }}</td>
                     </ng-container>
                     <td>
-                      <a class="btn_edit" style="color: red;" (click)="
+                      <a *ngIf="!isEditMode" class="btn_edit" style="color: red;" (click)="
                           removeData(row[workCsvData[0].indexOf('OBJECTID')])
                         ">
                         <p>
