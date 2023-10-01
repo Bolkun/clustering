@@ -812,6 +812,12 @@ export class MappingService {
     '735': 'ösenstift',
   }
 
+  sortMapping(VAR_MAPPING: { [key: string]: string }) {
+    return Object.entries(VAR_MAPPING)
+    .sort((a: any, b: any) => +a[0] - +b[0])
+    .map(([key, value]) => ({ key, value }));
+  }
+
   mapFunde(data: string[][]): string[][] {
     return this.mapColumnValues(data, 'FUNDE', this.FUNDE_MAPPING)
   }

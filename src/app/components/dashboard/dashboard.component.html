@@ -1,62 +1,48 @@
 <div class="header-container">
-  <div class="btn" style="pointer-events: none;">
-    <p style="font-size: 26px;">
-      <span style="color: orange;">C</span>
+  <div class="btn" style="pointer-events: none">
+    <p style="font-size: 26px">
+      <span style="color: orange">C</span>
       l u s t e r i n g
     </p>
-    <p style="text-transform: uppercase; font-size: 12px;">
-      Archaeological Sites of Vienna
-    </p>
+    <p style="text-transform: uppercase; font-size: 12px">Archaeological Sites of Vienna</p>
   </div>
   <a class="btn" (click)="startViewDisplay()">
-    <p style="font-size: 20px;">
+    <p style="font-size: 20px">
       <fa-icon [style.color]="
-          selectedOfflineButtonIndex === null &&
-          selectedOnlineButtonIndex === null &&
-          selectedWorkButtonIndex
+          selectedOfflineButtonIndex === null && selectedOnlineButtonIndex === null && selectedWorkButtonIndex
             ? 'orange'
             : 'inherit'
         " [icon]="faDatabase"></fa-icon>
     </p>
-    <p style="text-transform: uppercase; font-size: 12px;">
+    <p style="text-transform: uppercase; font-size: 12px">
       <span class="header-text">Data</span>
     </p>
   </a>
   <a class="btn" (click)="toggleOfflineMenu()">
-    <fa-icon [icon]="faOffline" style="
-        font-size: 12px;
-        color: red;
-        position: absolute;
-        margin-left: -14px;
-        margin-top: 14px;
-      "></fa-icon>
-    <p style="font-size: 20px;">
+    <fa-icon [icon]="faOffline"
+      style="font-size: 12px; color: red; position: absolute; margin-left: -14px; margin-top: 14px"></fa-icon>
+    <p style="font-size: 20px">
       <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab1' ? 'orange' : 'inherit'"></fa-icon>
     </p>
-    <p style="text-transform: uppercase; font-size: 12px;">
+    <p style="text-transform: uppercase; font-size: 12px">
       <span class="header-text">Offline</span>
     </p>
   </a>
   <a class="btn" (click)="toggleOnlineMenu()">
-    <fa-icon [icon]="faOnline" style="
-        font-size: 12px;
-        color: green;
-        position: absolute;
-        margin-left: -14px;
-        margin-top: 14px;
-      "></fa-icon>
-    <p style="font-size: 20px;">
+    <fa-icon [icon]="faOnline"
+      style="font-size: 12px; color: green; position: absolute; margin-left: -14px; margin-top: 14px"></fa-icon>
+    <p style="font-size: 20px">
       <fa-icon [icon]="faGlobe" [style.color]="activeTab === 'tab2' ? 'orange' : 'inherit'"></fa-icon>
     </p>
-    <p style="text-transform: uppercase; font-size: 12px;">
+    <p style="text-transform: uppercase; font-size: 12px">
       <span class="header-text">Online</span>
     </p>
   </a>
   <a class="btn" (click)="toggleWorkMenu()">
-    <p style="font-size: 20px;">
+    <p style="font-size: 20px">
       <fa-icon [icon]="faLaptop" [style.color]="activeTab === 'tab3' ? 'orange' : 'inherit'"></fa-icon>
     </p>
-    <p style="text-transform: uppercase; font-size: 12px;">
+    <p style="text-transform: uppercase; font-size: 12px">
       <span class="header-text">Work</span>
     </p>
   </a>
@@ -66,70 +52,54 @@
   <div class="content" [style.display]="isContentFlex ? 'flex' : 'none'">
     <div *ngIf="activeTab === 'tab1'">
       <a class="close-button btn" (click)="toggleSidebar()">X</a>
-      <h1 style="color: #212529;">Offline</h1>
-      <p style="color: green; width: 400px;">
-        The examples shown below were produced using the sklearn library in
-        Python. Please note that all experiments were conducted on normalized
-        data.
+      <h1 style="color: #212529">Offline</h1>
+      <p style="color: green; width: 400px">
+        The examples shown below were produced using the sklearn library in Python. Please note that all experiments
+        were conducted on normalized data.
       </p>
-      <div style="margin-top: 15px;">
+      <div style="margin-top: 15px">
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 0 ? 'orange' : 'white'"
           (click)="setSelectedButton(0)">
-          <ng-container *ngIf="!isLoading0">
-            FUNDE_N
-          </ng-container>
+          <ng-container *ngIf="!isLoading0"> FUNDE_N </ng-container>
           <span *ngIf="isLoading0" class="rotating">⟳</span>
         </button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 1 ? 'orange' : 'white'"
           (click)="setSelectedButton(1)">
-          <ng-container *ngIf="!isLoading1">
-            BEZ_N, DATIERUNG_N
-          </ng-container>
+          <ng-container *ngIf="!isLoading1"> BEZ_N, DATIERUNG_N </ng-container>
           <span *ngIf="isLoading1" class="rotating">⟳</span>
         </button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 2 ? 'orange' : 'white'"
           (click)="setSelectedButton(2)">
-          <ng-container *ngIf="!isLoading2">
-            BEZ_N, FUNDE_N
-          </ng-container>
+          <ng-container *ngIf="!isLoading2"> BEZ_N, FUNDE_N </ng-container>
           <span *ngIf="isLoading2" class="rotating">⟳</span>
         </button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 3 ? 'orange' : 'white'"
           (click)="setSelectedButton(3)">
-          <ng-container *ngIf="!isLoading3">
-            BEZ_N, FUNDKATEGORIE_N
-          </ng-container>
+          <ng-container *ngIf="!isLoading3"> BEZ_N, FUNDKATEGORIE_N </ng-container>
           <span *ngIf="isLoading3" class="rotating">⟳</span>
         </button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 4 ? 'orange' : 'white'"
           (click)="setSelectedButton(4)">
-          <ng-container *ngIf="!isLoading4">
-            BEZ_N, FUNDE_N, DATIERUNG_N
-          </ng-container>
+          <ng-container *ngIf="!isLoading4"> BEZ_N, FUNDE_N, DATIERUNG_N </ng-container>
           <span *ngIf="isLoading4" class="rotating">⟳</span>
         </button>
         <button class="experiment_btn" [style.color]="selectedOfflineButtonIndex === 5 ? 'orange' : 'white'"
           (click)="setSelectedButton(5)">
-          <ng-container *ngIf="!isLoading5">
-            BEZ_N, FUNDE_N, DATIERUNG_N, FUNDKATEGORIE_N
-          </ng-container>
+          <ng-container *ngIf="!isLoading5"> BEZ_N, FUNDE_N, DATIERUNG_N, FUNDKATEGORIE_N </ng-container>
           <span *ngIf="isLoading5" class="rotating">⟳</span>
         </button>
       </div>
     </div>
     <div *ngIf="activeTab === 'tab2'">
       <a class="close-button btn" (click)="toggleSidebar()">X</a>
-      <h1 style="color: #212529;">Online</h1>
-      <p style="color: green; width: 400px;">
-        Test the clustering algorithms for yourself.
+      <h1 style="color: #212529">Online</h1>
+      <p style="color: green; width: 400px">Test the clustering algorithms for yourself.</p>
+      <p style="color: orange; width: 400px">
+        Please note that the data is limited to 800 points and has not been normalized due to computational constraints.
+        This means clustering algorithms operate only on this subset of data. For the 2D plot, the maximum number of
+        clusters visualized is set to 10.
       </p>
-      <p style="color: orange; width: 400px;">
-        Please note that the data is limited to 800 points and has not been
-        normalized due to computational constraints. This means clustering
-        algorithms operate only on this subset of data. For the 2D plot, the
-        maximum number of clusters visualized is set to 10.
-      </p>
-      <form id="online_form" [formGroup]="form" (ngSubmit)="onlineSubmit(0)">
+      <form id="online_form" [formGroup]="online_form" (ngSubmit)="onlineSubmit(0)">
         <p>Data</p>
         <div class="checkbox-column">
           <label for="funde">
@@ -148,7 +118,7 @@
             <input id="fundkategorie" type="checkbox" formControlName="FUNDKATEGORIE" />
             FUNDKATEGORIE
           </label>
-          <span class="error_message2" *ngIf="form.hasError('atLeastTwoRequired')">
+          <span class="error_message2" *ngIf="online_form.hasError('atLeastTwoRequired')">
             Check at least two options.
           </span>
         </div>
@@ -158,20 +128,14 @@
             <div class="input-container">
               <label for="n_kMeans">Number of Clusters</label>
               <input class="inputAlgo" type="number" formControlName="n_kMeans" id="n_kMeans" min="2" max="10" />
-              <div class="error_message" *ngIf="
-                  form.controls['n_kMeans'].errors &&
-                  form.controls['n_kMeans'].touched
-                ">
-                <span *ngIf="form.controls['n_kMeans'].errors['required']">
+              <div class="error_message"
+                *ngIf="online_form.controls['n_kMeans'].errors && online_form.controls['n_kMeans'].touched">
+                <span *ngIf="online_form.controls['n_kMeans'].errors['required']">
                   Number of Clusters is required!
                 </span>
-                <span *ngIf="form.controls['n_kMeans'].errors['min']">
-                  Minimum k value is 2.
-                </span>
-                <span *ngIf="form.controls['n_kMeans'].errors['max']">
-                  Maximum k value is 10.
-                </span>
-                <span *ngIf="form.controls['n_kMeans'].errors['notWholeNumber']">
+                <span *ngIf="online_form.controls['n_kMeans'].errors['min']"> Minimum k value is 2. </span>
+                <span *ngIf="online_form.controls['n_kMeans'].errors['max']"> Maximum k value is 10. </span>
+                <span *ngIf="online_form.controls['n_kMeans'].errors['notWholeNumber']">
                   Please enter a whole number.
                 </span>
               </div>
@@ -184,20 +148,12 @@
               <label for="eps_dbscan">Epsilon</label>
               <input class="inputAlgo" type="number" formControlName="eps_dbscan" id="eps_dbscan" min="0.01" max="20"
                 step="0.01" />
-              <div class="error_message" *ngIf="
-                  form.controls['eps_dbscan'].errors &&
-                  form.controls['eps_dbscan'].touched
-                ">
-                <span *ngIf="form.controls['eps_dbscan'].errors['required']">
-                  Epsilon is required!
-                </span>
-                <span *ngIf="form.controls['eps_dbscan'].errors['min']">
-                  Minimum eps value is 0.01.
-                </span>
-                <span *ngIf="form.controls['eps_dbscan'].errors['max']">
-                  Maximum eps value is 10.
-                </span>
-                <span *ngIf="form.controls['eps_dbscan'].errors['tooManyDecimals']">
+              <div class="error_message"
+                *ngIf="online_form.controls['eps_dbscan'].errors && online_form.controls['eps_dbscan'].touched">
+                <span *ngIf="online_form.controls['eps_dbscan'].errors['required']"> Epsilon is required! </span>
+                <span *ngIf="online_form.controls['eps_dbscan'].errors['min']"> Minimum eps value is 0.01. </span>
+                <span *ngIf="online_form.controls['eps_dbscan'].errors['max']"> Maximum eps value is 10. </span>
+                <span *ngIf="online_form.controls['eps_dbscan'].errors['tooManyDecimals']">
                   Epsilon can have at most 4 decimal places.
                 </span>
               </div>
@@ -206,22 +162,14 @@
               <label for="minPts_dbscan">Minimum Points</label>
               <input class="inputAlgo" type="number" formControlName="minPts_dbscan" id="minPts_dbscan" min="2"
                 max="2503" />
-              <div class="error_message" *ngIf="
-                  form.controls['minPts_dbscan'].errors &&
-                  form.controls['minPts_dbscan'].touched
-                ">
-                <span *ngIf="form.controls['minPts_dbscan'].errors['required']">
+              <div class="error_message"
+                *ngIf="online_form.controls['minPts_dbscan'].errors && online_form.controls['minPts_dbscan'].touched">
+                <span *ngIf="online_form.controls['minPts_dbscan'].errors['required']">
                   Minimum Points is required!
                 </span>
-                <span *ngIf="form.controls['minPts_dbscan'].errors['min']">
-                  Minimum minPts value is 2.
-                </span>
-                <span *ngIf="form.controls['minPts_dbscan'].errors['max']">
-                  Maximum minPts value is 2503.
-                </span>
-                <span *ngIf="
-                    form.controls['minPts_dbscan'].errors['notWholeNumber']
-                  ">
+                <span *ngIf="online_form.controls['minPts_dbscan'].errors['min']"> Minimum minPts value is 2. </span>
+                <span *ngIf="online_form.controls['minPts_dbscan'].errors['max']"> Maximum minPts value is 2503. </span>
+                <span *ngIf="online_form.controls['minPts_dbscan'].errors['notWholeNumber']">
                   Please enter a whole number.
                 </span>
               </div>
@@ -232,20 +180,14 @@
             <div class="input-container">
               <label for="n_agnes">Number of Clusters</label>
               <input class="inputAlgo" type="number" formControlName="n_agnes" id="n_agnes" min="2" max="10" />
-              <div class="error_message" *ngIf="
-                  form.controls['n_agnes'].errors &&
-                  form.controls['n_agnes'].touched
-                ">
-                <span *ngIf="form.controls['n_agnes'].errors['required']">
+              <div class="error_message"
+                *ngIf="online_form.controls['n_agnes'].errors && online_form.controls['n_agnes'].touched">
+                <span *ngIf="online_form.controls['n_agnes'].errors['required']">
                   Number of Clusters is required!
                 </span>
-                <span *ngIf="form.controls['n_agnes'].errors['min']">
-                  Minimum value is 2.
-                </span>
-                <span *ngIf="form.controls['n_agnes'].errors['max']">
-                  Maximum value is 10.
-                </span>
-                <span *ngIf="form.controls['n_agnes'].errors['notWholeNumber']">
+                <span *ngIf="online_form.controls['n_agnes'].errors['min']"> Minimum value is 2. </span>
+                <span *ngIf="online_form.controls['n_agnes'].errors['max']"> Maximum value is 10. </span>
+                <span *ngIf="online_form.controls['n_agnes'].errors['notWholeNumber']">
                   Please enter a whole number.
                 </span>
               </div>
@@ -253,195 +195,46 @@
             <div class="input-container"></div>
           </div>
         </div>
-        <button class="experiment_btn" type="submit" style="margin-top: 10px;"
+        <button class="experiment_btn" type="submit" style="margin-top: 10px"
           [style.color]="selectedOnlineButtonIndex === 0 ? 'orange' : 'white'">
-          <ng-container *ngIf="!isLoadingOnline">
-            Run
-          </ng-container>
+          <ng-container *ngIf="!isLoadingOnline"> Run </ng-container>
           <span *ngIf="isLoadingOnline" class="rotating">⟳</span>
         </button>
       </form>
     </div>
     <div *ngIf="activeTab === 'tab3'">
       <a class="close-button btn" (click)="toggleSidebar()">X</a>
-      <h1 style="color: #212529;">Work</h1>
-      <p style="color: #212529; width: 400px;">
-        Welcome to the workspace, where you can import archaeological datasets
-        from Vienna in the form of CSV files and export your clustering results
-        in the same format. Start by selecting a dataset and choosing a
-        clustering algorithm.
+      <h1 style="color: #212529">Work</h1>
+      <p style="color: #212529; width: 400px">
+        Welcome to the workspace, where you can import archaeological datasets from Vienna in the form of CSV files and
+        export your clustering results in the same format. Start by selecting a dataset and choosing a clustering
+        algorithm.
       </p>
-      <input type="file" #csvInput style="display: none;" (change)="import($event)" />
-      <button class="experiment_btn" style="margin-top: 10px;" (click)="csvInput.click()">
-        Import
-      </button>
-      <form id="online_form" [formGroup]="work_form" (ngSubmit)="workSubmit(0)">
-        <p style="margin-bottom: 5px;">Data</p>
-        <select id="dataset_s" class="inputAlgo" formControlName="selectedDatasetControl" style="margin-bottom: 5px;">
-          <option value="" disabled>Select a dataset</option>
+      <input type="file" #csvInput style="display: none" (change)="import($event)" />
+      <button class="experiment_btn" style="margin-top: 10px" (click)="csvInput.click()">Import</button>
+      <form id="online_form" [formGroup]="workSidebar_form" (ngSubmit)="workSubmit(0)">
+        <p style="margin-bottom: 5px">Data</p>
+        <select id="dataset_s" class="inputAlgo" formControlName="selectedDatasetControl" style="margin-bottom: 5px">
           <option selected *ngFor="let fileName of fileNames" [value]="fileName">
             {{ fileName }}
           </option>
         </select>
         <div class="error_message" *ngIf="
-            work_form.controls['selectedDatasetControl'].touched &&
-            work_form.controls['selectedDatasetControl'].errors
+            workSidebar_form.controls['selectedDatasetControl'].touched &&
+            workSidebar_form.controls['selectedDatasetControl'].errors
           ">
-          <span *ngIf="
-              work_form.controls['selectedDatasetControl'].errors['required']
-            ">
+          <span *ngIf="workSidebar_form.controls['selectedDatasetControl'].errors['required']">
             Dataset selection is required!
           </span>
         </div>
-        <div *ngIf="work_form.get('selectedDatasetControl').value !== ''" class="checkbox-column">
-          <label for="funde">
-            <input id="funde" type="checkbox" formControlName="FUNDE" />
-            FUNDE
-          </label>
-          <label for="datierung">
-            <input id="datierung" type="checkbox" formControlName="DATIERUNG" />
-            DATIERUNG
-          </label>
-          <label for="bez">
-            <input id="bez" type="checkbox" formControlName="BEZ" />
-            BEZ
-          </label>
-          <label for="fundkategorie">
-            <input id="fundkategorie" type="checkbox" formControlName="FUNDKATEGORIE" />
-            FUNDKATEGORIE
-          </label>
-          <span class="error_message2" *ngIf="work_form.hasError('atLeastTwoRequired')">
-            Check at least two options.
-          </span>
-        </div>
-        <p style="margin-bottom: 5px;">Clustering</p>
-        <select id="clustering_s" class="inputAlgo" formControlName="selectedAlgoControl" style="margin-bottom: 5px;">
-          <option value="" disabled>Select an algorithm</option>
-          <option value="kmeans">k-Means</option>
-          <option value="dbscan">DBSCAN</option>
-          <option value="agnes">AGNES</option>
-        </select>
-        <div class="error_message" *ngIf="
-            work_form.controls['selectedAlgoControl'].touched &&
-            work_form.controls['selectedAlgoControl'].errors
-          ">
-          <span *ngIf="work_form.controls['selectedAlgoControl'].errors['required']">
-            Clustering algorithm selection is required!
-          </span>
-        </div>
-        <div class="column-container">
-          <div *ngIf="work_form.get('selectedAlgoControl').value === 'kmeans'" class="row dbscan2columns">
-            <div class="input-container">
-              <label for="n_kMeans">Number of Clusters</label>
-              <input class="inputAlgo" type="number" formControlName="n_kMeans" id="n_kMeans" min="2" max="10" />
-              <div class="error_message" *ngIf="
-                  work_form.controls['n_kMeans'].errors &&
-                  work_form.controls['n_kMeans'].touched
-                ">
-                <span *ngIf="work_form.controls['n_kMeans'].errors['required']">
-                  Number of Clusters is required!
-                </span>
-                <span *ngIf="work_form.controls['n_kMeans'].errors['min']">
-                  Minimum k value is 2.
-                </span>
-                <span *ngIf="work_form.controls['n_kMeans'].errors['max']">
-                  Maximum k value is 10.
-                </span>
-                <span *ngIf="
-                    work_form.controls['n_kMeans'].errors['notWholeNumber']
-                  ">
-                  Please enter a whole number.
-                </span>
-              </div>
-            </div>
-            <div class="input-container"></div>
-          </div>
-          <div *ngIf="work_form.get('selectedAlgoControl').value === 'dbscan'" class="row dbscan2columns">
-            <div class="input-container">
-              <label for="eps_dbscan">Epsilon</label>
-              <input class="inputAlgo" type="number" formControlName="eps_dbscan" id="eps_dbscan" min="0.01" max="20"
-                step="0.01" />
-              <div class="error_message" *ngIf="
-                  work_form.controls['eps_dbscan'].errors &&
-                  work_form.controls['eps_dbscan'].touched
-                ">
-                <span *ngIf="work_form.controls['eps_dbscan'].errors['required']">
-                  Epsilon is required!
-                </span>
-                <span *ngIf="work_form.controls['eps_dbscan'].errors['min']">
-                  Minimum eps value is 0.01.
-                </span>
-                <span *ngIf="work_form.controls['eps_dbscan'].errors['max']">
-                  Maximum eps value is 10.
-                </span>
-                <span *ngIf="
-                    work_form.controls['eps_dbscan'].errors['tooManyDecimals']
-                  ">
-                  Epsilon can have at most 4 decimal places.
-                </span>
-              </div>
-            </div>
-            <div class="input-container">
-              <label for="minPts_dbscan">Minimum Points</label>
-              <input class="inputAlgo" type="number" formControlName="minPts_dbscan" id="minPts_dbscan" min="2"
-                max="2503" />
-              <div class="error_message" *ngIf="
-                  work_form.controls['minPts_dbscan'].errors &&
-                  work_form.controls['minPts_dbscan'].touched
-                ">
-                <span *ngIf="work_form.controls['minPts_dbscan'].errors['required']">
-                  Minimum Points is required!
-                </span>
-                <span *ngIf="work_form.controls['minPts_dbscan'].errors['min']">
-                  Minimum minPts value is 2.
-                </span>
-                <span *ngIf="work_form.controls['minPts_dbscan'].errors['max']">
-                  Maximum minPts value is 2503.
-                </span>
-                <span *ngIf="
-                    work_form.controls['minPts_dbscan'].errors['notWholeNumber']
-                  ">
-                  Please enter a whole number.
-                </span>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="work_form.get('selectedAlgoControl').value === 'agnes'" class="row dbscan2columns">
-            <div class="input-container">
-              <label for="n_agnes">Number of Clusters</label>
-              <input class="inputAlgo" type="number" formControlName="n_agnes" id="n_agnes" min="2" max="10" />
-              <div class="error_message" *ngIf="
-                  work_form.controls['n_agnes'].errors &&
-                  work_form.controls['n_agnes'].touched
-                ">
-                <span *ngIf="work_form.controls['n_agnes'].errors['required']">
-                  Number of Clusters is required!
-                </span>
-                <span *ngIf="work_form.controls['n_agnes'].errors['min']">
-                  Minimum value is 2.
-                </span>
-                <span *ngIf="work_form.controls['n_agnes'].errors['max']">
-                  Maximum value is 10.
-                </span>
-                <span *ngIf="work_form.controls['n_agnes'].errors['notWholeNumber']">
-                  Please enter a whole number.
-                </span>
-              </div>
-            </div>
-            <div class="input-container"></div>
-          </div>
-        </div>
-        <button class="experiment_btn" type="submit" style="margin-top: 10px;"
+
+        <button class="experiment_btn" type="submit" style="margin-top: 10px"
           [style.color]="selectedOnlineButtonIndex === 0 ? 'orange' : 'white'">
-          <ng-container *ngIf="!isLoadingOnline">
-            Start
-          </ng-container>
+          <ng-container *ngIf="!isLoadingOnline"> Start </ng-container>
           <span *ngIf="isLoadingOnline" class="rotating">⟳</span>
         </button>
       </form>
-      <button class="experiment_btn" style="margin-top: 10px;" (click)="export()">
-        Export
-      </button>
+      <button class="experiment_btn" style="margin-top: 10px" (click)="export()">Export</button>
     </div>
   </div>
   <!-- MAIN -->
@@ -456,9 +249,7 @@
               <tr>
                 <th class="position-relative">
                   Map of Discovery Sites
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -474,9 +265,7 @@
               <tr>
                 <th class="position-relative">
                   Districts
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -490,9 +279,7 @@
               <tr>
                 <th class="position-relative">
                   Help
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -513,9 +300,7 @@
                   {{ header }}
                 </th>
                 <th class="position-relative">
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -543,9 +328,7 @@
               <tr>
                 <th class="position-relative">
                   FUNDE (k-Means) PCA
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -561,9 +344,7 @@
               <tr>
                 <th class="position-relative">
                   FUNDE (DBSCAN) PCA
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -579,9 +360,7 @@
               <tr>
                 <th class="position-relative">
                   FUNDE (AGNES) PCA
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -597,9 +376,7 @@
               <tr>
                 <th class="position-relative">
                   FUNDE (k-Means) UMAP
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -615,9 +392,7 @@
               <tr>
                 <th class="position-relative">
                   FUNDE (DBSCAN) UMAP
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -633,9 +408,7 @@
               <tr>
                 <th class="position-relative">
                   FUNDE (AGNES) UMAP
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -652,9 +425,7 @@
               <tr>
                 <th class="position-relative">
                   BEZ, DATIERUNG (k-Means)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -670,9 +441,7 @@
               <tr>
                 <th class="position-relative">
                   BEZ, DATIERUNG (DBSCAN)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -688,9 +457,7 @@
               <tr>
                 <th class="position-relative">
                   BEZ, DATIERUNG (AGNES)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -707,9 +474,7 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDKATEGORIE (k-Means)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -725,9 +490,7 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDKATEGORIE (DBSCAN)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -743,9 +506,7 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDKATEGORIE (AGNES)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -762,9 +523,7 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE (k-Means)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -781,13 +540,9 @@
                 <th class="position-relative">
                   <span>
                     BEZ, FUNDE (DBSCAN)
-                    <span style="color: orange;">
-                      - Only 10 out of 149 clusters is visualized!
-                    </span>
+                    <span style="color: orange"> - Only 10 out of 149 clusters is visualized! </span>
                   </span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -803,9 +558,7 @@
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE (AGNES)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -816,17 +569,13 @@
           </div>
         </div>
         <!-- BEZ FUNDE DATIERUNG -->
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === 'BezFundeDatierung_kMeans' && export2_CsvData
-          ">
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierung_kMeans' && export2_CsvData">
           <table>
             <thead>
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG (k-Means)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -836,17 +585,13 @@
               [y_title]="'DATIERUNG'" [z_title]="'BEZ'" [test]="'offline'"></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === 'BezFundeDatierung_DBSCAN' && export2_CsvData
-          ">
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierung_DBSCAN' && export2_CsvData">
           <table>
             <thead>
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG (DBSCAN)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -856,17 +601,13 @@
               [y_title]="'DATIERUNG'" [z_title]="'BEZ'" [test]="'offline'"></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === 'BezFundeDatierung_AGNES' && export2_CsvData
-          ">
+        <div class="item scrollable-content" *ngIf="item['content'] === 'BezFundeDatierung_AGNES' && export2_CsvData">
           <table>
             <thead>
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG (AGNES)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -877,18 +618,14 @@
           </div>
         </div>
         <!-- BEZ FUNDE DATIERUNG FUNDKATEGORIE -->
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === 'BezFundeDatierungFundkategorie_kMeans' &&
-            export2_CsvData
-          ">
+        <div class="item scrollable-content"
+          *ngIf="item['content'] === 'BezFundeDatierungFundkategorie_kMeans' && export2_CsvData">
           <table>
             <thead>
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (k-Means)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -899,18 +636,14 @@
               [test]="'offline'"></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === 'BezFundeDatierungFundkategorie_DBSCAN' &&
-            export2_CsvData
-          ">
+        <div class="item scrollable-content"
+          *ngIf="item['content'] === 'BezFundeDatierungFundkategorie_DBSCAN' && export2_CsvData">
           <table>
             <thead>
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (DBSCAN)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -921,18 +654,14 @@
               [test]="'offline'"></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === 'BezFundeDatierungFundkategorie_AGNES' &&
-            export2_CsvData
-          ">
+        <div class="item scrollable-content"
+          *ngIf="item['content'] === 'BezFundeDatierungFundkategorie_AGNES' && export2_CsvData">
           <table>
             <thead>
               <tr>
                 <th class="position-relative">
                   BEZ, FUNDE, DATIERUNG, FUNDKATEGORIE (AGNES)
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -946,33 +675,25 @@
 
         <!-- ONLINE -->
         <div class="item scrollable-content" *ngIf="
-            item['content'] === '2D_Online_kMeans' ||
-            (item['content'] === '3D4D_Online_kMeans' && export2_CsvData)
+            item['content'] === '2D_Online_kMeans' || (item['content'] === '3D4D_Online_kMeans' && export2_CsvData)
           ">
           <table>
             <thead>
               <tr>
                 <th *ngIf="boxCount === 2" class="position-relative">
                   {{ o_x_title }}, {{ o_y_title }} (k-Means)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <span style="color: orange">- Limited!</span>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
                 <th *ngIf="boxCount === 3" class="position-relative">
                   {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (k-Means)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <span style="color: orange">- Limited!</span>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
                 <th *ngIf="boxCount === 4" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }},
-                  {{ o_d_title }} (k-Means)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }}, {{ o_d_title }} (k-Means)
+                  <span style="color: orange">- Limited!</span>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -993,33 +714,25 @@
           </div>
         </div>
         <div class="item scrollable-content" *ngIf="
-            item['content'] === '2D_Online_DBSCAN' ||
-            (item['content'] === '3D4D_Online_DBSCAN' && export2_CsvData)
+            item['content'] === '2D_Online_DBSCAN' || (item['content'] === '3D4D_Online_DBSCAN' && export2_CsvData)
           ">
           <table>
             <thead>
               <tr>
                 <th *ngIf="boxCount === 2" class="position-relative">
                   {{ o_x_title }}, {{ o_y_title }} (DBSCAN)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <span style="color: orange">- Limited!</span>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
                 <th *ngIf="boxCount === 3" class="position-relative">
                   {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (DBSCAN)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <span style="color: orange">- Limited!</span>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
                 <th *ngIf="boxCount === 4" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }},
-                  {{ o_d_title }} (DBSCAN)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }}, {{ o_d_title }} (DBSCAN)
+                  <span style="color: orange">- Limited!</span>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -1039,34 +752,25 @@
               [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
           </div>
         </div>
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === '2D_Online_AGNES' ||
-            (item['content'] === '3D4D_Online_AGNES' && export2_CsvData)
-          ">
+        <div class="item scrollable-content"
+          *ngIf="item['content'] === '2D_Online_AGNES' || (item['content'] === '3D4D_Online_AGNES' && export2_CsvData)">
           <table>
             <thead>
               <tr>
                 <th *ngIf="boxCount === 2" class="position-relative">
                   {{ o_x_title }}, {{ o_y_title }} (AGNES)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <span style="color: orange">- Limited!</span>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
                 <th *ngIf="boxCount === 3" class="position-relative">
                   {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (AGNES)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  <span style="color: orange">- Limited!</span>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
                 <th *ngIf="boxCount === 4" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }},
-                  {{ o_d_title }} (AGNES)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
+                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }}, {{ o_d_title }} (AGNES)
+                  <span style="color: orange">- Limited!</span>
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
             </thead>
@@ -1088,150 +792,9 @@
         </div>
 
         <!-- WORK -->
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === '2D_Work_kMeans' ||
-            item['content'] === '3D4D_Work_kMeans'
-          ">
-          <table>
-            <thead>
-              <tr>
-                <th *ngIf="boxCount === 2" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }} (k-Means)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
-                </th>
-                <th *ngIf="boxCount === 3" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (k-Means)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
-                </th>
-                <th *ngIf="boxCount === 4" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }},
-                  {{ o_d_title }} (k-Means)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
-                </th>
-              </tr>
-            </thead>
-          </table>
-          <div *ngIf="boxCount === 2" class="graph">
-            <app-scatter-chart [csvData]="workCsvData" [x]="o_x_column" [y]="o_y_column" [points]="-1"
-              [points_arr]="kMeans_points" [x_title]="o_x_title" [y_title]="o_y_title"></app-scatter-chart>
-          </div>
-          <div *ngIf="boxCount === 3" class="graph">
-            <app-highcharts3d [csvData]="workCsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [points]="-1"
-              [points_arr]="kMeans_points" [x_title]="o_x_title" [y_title]="o_y_title"
-              [z_title]="o_z_title"></app-highcharts3d>
-          </div>
-          <div *ngIf="boxCount === 4" class="graph">
-            <app-highcharts3d [csvData]="workCsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column"
-              [d]="o_d_column" [points]="-1" [points_arr]="kMeans_points" [x_title]="o_x_title" [y_title]="o_y_title"
-              [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
-          </div>
-        </div>
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === '2D_Work_DBSCAN' ||
-            item['content'] === '3D4D_Work_DBSCAN'
-          ">
-          <table>
-            <thead>
-              <tr>
-                <th *ngIf="boxCount === 2" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }} (DBSCAN)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
-                </th>
-                <th *ngIf="boxCount === 3" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (DBSCAN)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
-                </th>
-                <th *ngIf="boxCount === 4" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }},
-                  {{ o_d_title }} (DBSCAN)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
-                </th>
-              </tr>
-            </thead>
-          </table>
-          <div *ngIf="boxCount === 2" class="graph">
-            <app-scatter-chart [csvData]="workCsvData" [x]="o_x_column" [y]="o_y_column" [points]="-1"
-              [points_arr]="DBSCAN_points" [x_title]="o_x_title" [y_title]="o_y_title"></app-scatter-chart>
-          </div>
-          <div *ngIf="boxCount === 3" class="graph">
-            <app-highcharts3d [csvData]="workCsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [points]="-1"
-              [points_arr]="DBSCAN_points" [x_title]="o_x_title" [y_title]="o_y_title"
-              [z_title]="o_z_title"></app-highcharts3d>
-          </div>
-          <div *ngIf="boxCount === 4" class="graph">
-            <app-highcharts3d [csvData]="workCsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column"
-              [d]="o_d_column" [points]="-1" [points_arr]="DBSCAN_points" [x_title]="o_x_title" [y_title]="o_y_title"
-              [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
-          </div>
-        </div>
-        <div class="item scrollable-content" *ngIf="
-            item['content'] === '2D_Work_AGNES' ||
-            item['content'] === '3D4D_Work_AGNES'
-          ">
-          <table>
-            <thead>
-              <tr>
-                <th *ngIf="boxCount === 2" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }} (AGNES)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
-                </th>
-                <th *ngIf="boxCount === 3" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }} (AGNES)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
-                </th>
-                <th *ngIf="boxCount === 4" class="position-relative">
-                  {{ o_x_title }}, {{ o_y_title }}, {{ o_z_title }},
-                  {{ o_d_title }} (AGNES)
-                  <span style="color: orange;">- Limited!</span>
-                  <button class="absolute-right" (click)="removeWindow(item)">
-                    X
-                  </button>
-                </th>
-              </tr>
-            </thead>
-          </table>
-          <div *ngIf="boxCount === 2" class="graph">
-            <app-scatter-chart [csvData]="workCsvData" [x]="o_x_column" [y]="o_y_column" [points]="-1"
-              [points_arr]="AGNES_points" [x_title]="o_x_title" [y_title]="o_y_title"></app-scatter-chart>
-          </div>
-          <div *ngIf="boxCount === 3" class="graph">
-            <app-highcharts3d [csvData]="workCsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column" [points]="-1"
-              [points_arr]="AGNES_points" [x_title]="o_x_title" [y_title]="o_y_title"
-              [z_title]="o_z_title"></app-highcharts3d>
-          </div>
-          <div *ngIf="boxCount === 4" class="graph">
-            <app-highcharts3d [csvData]="workCsvData" [x]="o_x_column" [y]="o_y_column" [z]="o_z_column"
-              [d]="o_d_column" [points]="-1" [points_arr]="AGNES_points" [x_title]="o_x_title" [y_title]="o_y_title"
-              [z_title]="o_z_title" [d_title]="o_d_title"></app-highcharts3d>
-          </div>
-        </div>
         <!-- CSV Edit-->
         <div class="scrollable-content no-drag" *ngIf="item['content'] === 'CSV_Edit'">
-          <form id="csv_form" [formGroup]="csv_form" (ngSubmit)="csvAddRow()">
+          <form id="csv_form" [formGroup]="workTable_form" (ngSubmit)="csvAddRow()">
             <table>
               <thead>
                 <tr>
@@ -1242,78 +805,63 @@
                       </p>
                     </a>
                   </th>
-                  <th class="position-relative">
-                    N
-                  </th>
+                  <th class="position-relative">N</th>
                   <th class="position-relative" *ngFor="let header of workCsvData[0]">
                     {{ header }}
                   </th>
                   <th class="position-relative">
-                    <button class="absolute-right" (click)="removeWindow(item)">
-                      X
-                    </button>
+                    <button class="absolute-right" (click)="removeWindow(item)">X</button>
                   </th>
                 </tr>
                 <tr *ngIf="!isEditMode">
                   <th style="color: green">Add</th>
                   <th>{{ getLastRowNumber() + 1 }}</th>
                   <th>
-                    <input formControlName="addObjectId" class="add" type="text" />
+                    <input formControlName="addObjectId" class="add" type="text" style="background-color: #ced4da"
+                      readonly />
                   </th>
                   <th>
                     <input formControlName="addLon" class="add" type="text" placeholder="Lon" />
-                    <input formControlName="addLat" class="add" type="text" placeholder="Lat"
-                      style="margin-top: 5px;" />
+                    <input formControlName="addLat" class="add" type="text" placeholder="Lat" style="margin-top: 5px" />
                   </th>
                   <th>
                     <select formControlName="selectedBez" class="add position-relative">
-                      <option *ngFor="
-                          let entry of mappingService.BEZ_MAPPING | keyvalue
-                        " [value]="entry.key">
-                        {{ entry.key + ' ' + entry.value }}
+                      <option *ngFor="let entry of sortedBezMapping" [value]="entry.key">
+                        {{ entry.key + " " + entry.value }}
                       </option>
                     </select>
                   </th>
                   <th>
-                    <input formControlName="addStrasse" class="add" type="text" placeholder="Straße" />
+                    <input style="width: 100%" formControlName="addStrasse" class="add" type="text"
+                      placeholder="Straße" />
                   </th>
                   <th>
-                    <input formControlName="addNummer" class="add" type="text" placeholder="Nummer" />
+                    <input style="width: 100%" formControlName="addNummer" class="add" type="text"
+                      placeholder="Nummer" />
                   </th>
                   <th>
                     <input formControlName="addExtra" class="add" type="text" placeholder="Extra" />
                   </th>
                   <th>
                     <select formControlName="selectedFundkategorie" class="add position-relative">
-                      <option *ngFor="
-                          let entry of mappingService.FUNDKATEGORIE_MAPPING
-                            | keyvalue
-                        " [value]="entry.key">
-                        {{ entry.key + ' ' + entry.value }}
+                      <option *ngFor="let entry of sortedFundkategorieMapping" [value]="entry.key">
+                        {{ entry.key + " " + entry.value }}
                       </option>
                     </select>
                   </th>
                   <th>
-                    <select formControlName="selectedFunde" class="add position-relative">
-                      <option *ngFor="
-                          let entry of mappingService.FUNDE_MAPPING | keyvalue
-                        " [value]="entry.key">
-                        {{ entry.key + ' ' + entry.value }}
-                      </option>
-                    </select>
+                    <input formControlName="addFunde" class="add" type="text" placeholder="obj1 obj2 obj3" />
                   </th>
                   <th>
                     <select formControlName="selectedDatierung" class="add position-relative">
-                      <option *ngFor="
-                          let entry of mappingService.DATIERUNG_MAPPING
-                            | keyvalue
-                        " [value]="entry.key">
-                        {{ entry.key + ' ' + entry.value }}
+                      <option *ngFor="let entry of sortedDatierungMapping" [value]="entry.key">
+                        {{ entry.key + " " + entry.value }}
                       </option>
                     </select>
                   </th>
+                  <th>?</th>
                   <th class="position-relative">
-                    <button class="btn_edit" style="color: green; font-size: 30px;" type="submit">
+                    <button class="btn_edit" style="color: green; font-size: 30px" type="submit">
                       <fa-icon [icon]="faAdd"></fa-icon>
                     </button>
                   </th>
@@ -1323,7 +871,7 @@
                 <ng-container *ngFor="let row of workCsvData; let i = index">
                   <tr *ngIf="i > 0">
                     <td>
-                      <a *ngIf="!isEditMode" class="btn_edit" style="color: orange;" (click)="
+                      <!-- <a *ngIf="!isEditMode" class="btn_edit" style="color: orange;" (click)="
                           csvCopyRow(
                             row[workCsvData[0].indexOf('OBJECTID')]
                           )
@@ -1331,7 +879,7 @@
                         <p>
                           <fa-icon [icon]="faEditSingle"></fa-icon>
                         </p>
-                      </a>
+                      </a> -->
                     </td>
                     <td>{{ i }}</td>
                     <ng-container *ngFor="let header of workCsvData[0]; let j = index">
@@ -1353,12 +901,13 @@
                         {{ this.mappingService.mapDatierungString(row[j]) }}
                       </td>
                       <!-- other columns of clustering -->
-                      <td *ngIf="header === 'Clustering'">{{ row[j] }}</td>
+                      <td *ngIf="header === 'k-means(FUNDE)'">{{ row[j] }}</td>
+                      <td *ngIf="header === 'dbscan(FUNDE)'">{{ row[j] }}</td>
+                      <td *ngIf="header === 'agnes(FUNDE)'">{{ row[j] }}</td>
                     </ng-container>
                     <td>
-                      <a *ngIf="!isEditMode" class="btn_edit" style="color: red;" (click)="
-                        csvDeleteRow(row[workCsvData[0].indexOf('OBJECTID')])
-                        ">
+                      <a *ngIf="!isEditMode" class="btn_edit" style="color: red"
+                        (click)="csvDeleteRow(row[workCsvData[0].indexOf('OBJECTID')])">
                         <p>
                           <fa-icon [icon]="faDelete"></fa-icon>
                         </p>
