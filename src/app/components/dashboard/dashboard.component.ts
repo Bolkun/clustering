@@ -283,7 +283,7 @@ export class DashboardComponent implements OnInit {
     this.workCsvData = rawData;
 
     this.workTable_form = this.fb.group({
-      addObjectId: [this.getLastObjectId() + 1, [Validators.required, WholeNumberValidator()]],
+      addObjectId: [this.getHighestObjectId() + 1, [Validators.required, WholeNumberValidator()]],
       addLon: ['16.372476253911756', [Validators.required]],
       addLat: ['48.2091131160875', [Validators.required]],
       selectedBez: ['1', [Validators.required]],
@@ -612,7 +612,7 @@ export class DashboardComponent implements OnInit {
           this.processCsvData(this.importCsvData);
         }
         this.dashboard = [
-          //{ cols: 6, rows: 2, y: 0, x: 0, content: '2D_Work_kMeans' },
+          { cols: 6, rows: 2, y: 0, x: 0, content: 'Map_Edit' },
           { cols: 6, rows: 2, y: 2, x: 0, content: 'CSV_Edit' },
         ];
 
@@ -640,7 +640,7 @@ export class DashboardComponent implements OnInit {
     ];
     this.workCsvData.push(newRow);
     this.workTable_form.patchValue({
-      addObjectId: this.getLastObjectId() + 1,
+      addObjectId: this.getHighestObjectId() + 1,
     });
   }
 
@@ -679,10 +679,10 @@ export class DashboardComponent implements OnInit {
     return this.workCsvData.length - 1;
   }
 
-  getLastObjectId(): number {
-    const lastRow = this.workCsvData[this.workCsvData.length - 1];
+  getHighestObjectId(): number {
     const objectIdIndex = this.workCsvData[0].indexOf('OBJECTID');
-    return parseInt(lastRow[objectIdIndex], 10);
+    const objectIds = this.workCsvData.slice(1).map((row) => parseInt(row[objectIdIndex], 10));
+    return Math.max(...objectIds);
   }
 
   getColumnIndex(columnName: string, csvData: any): number {

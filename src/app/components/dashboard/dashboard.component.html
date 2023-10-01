@@ -792,6 +792,22 @@
         </div>
 
         <!-- WORK -->
+        <!-- Map Edit -->
+        <div class="item scrollable-content" *ngIf="item['content'] === 'Map_Edit'">
+          <table>
+            <thead>
+              <tr>
+                <th class="position-relative">
+                  Map of Discovery Sites
+                  <button class="absolute-right" (click)="removeWindow(item)">X</button>
+                </th>
+              </tr>
+            </thead>
+          </table>
+          <div id="mapHere">
+            <app-map [csvData]="workCsvData"></app-map>
+          </div>
+        </div>
         <!-- CSV Edit-->
         <div class="scrollable-content no-drag" *ngIf="item['content'] === 'CSV_Edit'">
           <form id="csv_form" [formGroup]="workTable_form" (ngSubmit)="csvAddRow()">
