@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core'
-import { FormControl } from '@angular/forms';
 // https://fontawesome.com/v4/icons
 import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { faSign } from '@fortawesome/free-solid-svg-icons'
@@ -14,10 +13,10 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { faDatabase } from '@fortawesome/free-solid-svg-icons'
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { faLaptop } from '@fortawesome/free-solid-svg-icons'
-import { faClone } from '@fortawesome/free-solid-svg-icons';
-import { faPencilSquare } from '@fortawesome/free-solid-svg-icons';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { faClone } from '@fortawesome/free-solid-svg-icons'
+import { faPencilSquare } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 import {
   FormBuilder,
   FormGroup,
@@ -82,7 +81,7 @@ export class DashboardComponent implements OnInit {
   // Sidebar
   activeTab: null | string = 'tab2'
   isContentFlex: boolean = true
-  isEditMode: boolean = false;
+  isEditMode: boolean = false
   selectedOfflineButtonIndex: number | null = null
   selectedOnlineButtonIndex: number | null = null
   selectedWorkButtonIndex: number | null = null
@@ -108,7 +107,6 @@ export class DashboardComponent implements OnInit {
   faEditSingle = faClone
   faDelete = faTrash
   faAdd = faPlusSquare
-
   // Grid
   options: GridsterConfig
   dashboard: GridsterItem[]
@@ -117,6 +115,8 @@ export class DashboardComponent implements OnInit {
   exportCsvData: string[][]
   export2_CsvData: string[][]
   workCsvData: string[][]
+  // Files
+  fileNames: string[] = ['work_archaelogical_sites_of_wien_800.csv']
   // Online
   boxCount: any
   o_x_title: any
@@ -138,7 +138,6 @@ export class DashboardComponent implements OnInit {
   isLoading4 = false
   isLoading5 = false
   isLoadingOnline = false
-  fileNames: string[] = ['work_archaelogical_sites_of_wien.csv'];
 
   constructor(
     private fb: FormBuilder,
@@ -253,7 +252,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.toggleContentDisplay() // hide sidebar by default
+    this.toggleSidebar()
     // Load Data
     this.loadCsvData()
     this.loadExportCsvData()
@@ -261,34 +260,26 @@ export class DashboardComponent implements OnInit {
     this.loadWorkCsvData()
     // Test
     this.toggleWorkMenu()
-    this.work(0);
+    this.workSubmit(0)
   }
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-
-    if (!input?.files?.[0]) {
-      return;
-    }
-
-    const file: File = input.files[0];
-    if (file) {
-      this.fileNames[0] = file.name;
-      this.isLoadingOnline = false;
-    }
-    const reader: FileReader = new FileReader();
-
-    reader.readAsText(file);
-
-    reader.onload = (e) => {
-      const csv = reader.result as string;
-      this.processCsvData(csv);
-    };
+  // Index page
+  startViewDisplay() {
+    this.selectedOfflineButtonIndex = null
+    this.selectedOnlineButtonIndex = null
+    this.selectedWorkButtonIndex = null
+    this.dashboard = [
+      { cols: 2, rows: 4, y: 0, x: 0, content: 'Item 4' }, // Map of Points
+      { cols: 1, rows: 4, y: 0, x: 2, content: 'Item 5' }, // Map of Bezirke
+      { cols: 1, rows: 4, y: 0, x: 3, content: 'Item Help' }, // Help
+      { cols: 4, rows: 4, y: 4, x: 0, content: 'Item 6' }, // CSV Data
+    ]
   }
 
-  processCsvData(csv: string) {
-    // Your CSV processing logic here
-    //console.log(csv);
+  // Sidebar
+  toggleSidebar(): void {
+    this.isContentFlex = !this.isContentFlex
+    this.activeTab = null
   }
 
   toggleOfflineMenu(): void {
@@ -318,40 +309,115 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  toggleContentDisplay(): void {
-    this.isContentFlex = !this.isContentFlex
-    this.activeTab = null
+  // Load data
+  loadCsvData() {
+    this.http
+      .get(
+        'assets/csv/data_preparation/cleaned_archaelogical_sites_of_wien.csv',
+        { responseType: 'text' },
+      )
+      .subscribe((data) => {
+        const rawData = this.csvTo2DArray(data, ',', [
+          0,
+          1,
+          2,
+          4,
+          5,
+          6,
+          7,
+          9,
+          10,
+        ])
+        const fundKategorieMappedData = this.mappingService.mapFundKategorie(
+          rawData,
+        )
+        this.csvData = this.mappingService.mapDatierung(fundKategorieMappedData)
+        // const bezMappedData = this.mappingService.mapBez(fundKategorieMappedData);
+        // this.csvData = this.mappingService.mapDatierung(bezMappedData);
+      })
   }
 
-  toggleCSVEdit(): void {
-    this.isEditMode = !this.isEditMode;
+  loadExportCsvData() {
+    this.http
+      .get('assets/csv/export/export_archaelogical_sites_of_wien.csv', {
+        responseType: 'text',
+      })
+      .subscribe((data) => {
+        const columnsToKeep = Array.from({ length: 33 }, (_, i) => i) // 33 columns
+        const rawData = this.csvTo2DArray(data, ',', columnsToKeep)
+        // const fundKategorieMappedData = this.mappingService.mapFundKategorie(rawData);
+        // const bezMappedData = this.mappingService.mapBez(fundKategorieMappedData);
+        // this.exportCsvData = this.mappingService.mapDatierung(bezMappedData);
+        this.exportCsvData = rawData
+      })
   }
 
-  startViewDisplay() {
-    this.selectedOfflineButtonIndex = null
-    this.selectedOnlineButtonIndex = null
-    this.selectedWorkButtonIndex = null
-    this.dashboard = [
-      { cols: 2, rows: 4, y: 0, x: 0, content: 'Item 4' }, // Map of Points
-      { cols: 1, rows: 4, y: 0, x: 2, content: 'Item 5' }, // Map of Bezirke
-      { cols: 1, rows: 4, y: 0, x: 3, content: 'Item Help' }, // Help
-      { cols: 4, rows: 4, y: 4, x: 0, content: 'Item 6' }, // CSV Data
-    ]
+  load2_ExportCsvData() {
+    this.http
+      .get('assets/csv/export/2_export_archaelogical_sites_of_wien.csv', {
+        responseType: 'text',
+      })
+      .subscribe((data) => {
+        const columnsToKeep = Array.from({ length: 22 }, (_, i) => i) // 22 columns
+        const rawData = this.csvTo2DArray(data, ',', columnsToKeep)
+        this.export2_CsvData = rawData
+      })
   }
 
-  removeItem(item: GridsterItem) {
-    const index = this.dashboard.indexOf(item)
-    if (index > -1) {
-      this.dashboard.splice(index, 1)
-    }
+  loadWorkCsvData() {
+    this.http
+      .get('assets/csv/work/work_archaelogical_sites_of_wien_800.csv', {
+        responseType: 'text',
+      })
+      .subscribe((data) => {
+        let columnsToKeep = []
+        let rawData: any
+        if (this.fileNames[0] == 'work_archaelogical_sites_of_wien_800.csv') {
+          columnsToKeep = Array.from({ length: 9 }, (_, i) => i)
+          rawData = this.csvTo2DArray(data, ',', columnsToKeep)
+          this.workCsvData = rawData.slice(0, 801)
+        } else {
+          columnsToKeep = Array.from({ length: 10 }, (_, i) => i)
+          rawData = this.csvTo2DArray(data, ',', columnsToKeep)
+          this.workCsvData = rawData
+        }
+        this.csv_form = this.fb.group({
+          addObjectId: [
+            this.getLastObjectId() + 1,
+            [Validators.required, WholeNumberValidator()],
+          ],
+          addLon: ['16.372476253911756', [Validators.required]],
+          addLat: ['48.2091131160875', [Validators.required]],
+          selectedBez: ['1', [Validators.required]],
+          addStrasse: ['Stephansplatz'],
+          addNummer: ['8'], // münze, keramik
+          addExtra: [''],
+          selectedFundkategorie: ['1', [Validators.required]],
+          selectedFunde: ['1', [Validators.required]],
+          selectedDatierung: ['1', [Validators.required]],
+        })
+      })
   }
 
-  spinnerAsync(): Promise<any> {
-    return new Promise((resolve) => {
-      setTimeout(resolve, 2000) // For demonstration purposes, a delay of 2 seconds
-    })
+  csvTo2DArray(
+    csv: string,
+    delimiter: string = ',',
+    columnsToKeep: number[] = [],
+  ): string[][] {
+    let lines = csv.split('\n')
+    // Filter out any empty lines or lines with only delimiters
+    lines = lines.filter(
+      (line) =>
+        line.trim() !== '' &&
+        line.split(delimiter).some((cell) => cell.trim() !== ''),
+    )
+    // Convert the filtered lines to a 2D array and add row numeration
+    return lines.map((line) =>
+      line.split(delimiter).filter((_, index) => columnsToKeep.includes(index)),
+    )
   }
 
+  // Offline
   setSelectedButton(index: number): void {
     // Clear buttons off Online test
     this.selectedOnlineButtonIndex = null
@@ -492,252 +558,8 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  loadCsvData() {
-    this.http
-      .get(
-        'assets/csv/data_preparation/cleaned_archaelogical_sites_of_wien.csv',
-        { responseType: 'text' },
-      )
-      .subscribe((data) => {
-        const rawData = this.csvTo2DArray(data, ',', [
-          0,
-          1,
-          2,
-          4,
-          5,
-          6,
-          7,
-          9,
-          10,
-        ])
-        const fundKategorieMappedData = this.mappingService.mapFundKategorie(
-          rawData,
-        )
-        this.csvData = this.mappingService.mapDatierung(fundKategorieMappedData)
-        // const bezMappedData = this.mappingService.mapBez(fundKategorieMappedData);
-        // this.csvData = this.mappingService.mapDatierung(bezMappedData);
-      })
-  }
-
-  loadExportCsvData() {
-    this.http
-      .get('assets/csv/export/export_archaelogical_sites_of_wien.csv', {
-        responseType: 'text',
-      })
-      .subscribe((data) => {
-        const columnsToKeep = Array.from({ length: 33 }, (_, i) => i) // 33 columns
-        const rawData = this.csvTo2DArray(data, ',', columnsToKeep)
-        // const fundKategorieMappedData = this.mappingService.mapFundKategorie(rawData);
-        // const bezMappedData = this.mappingService.mapBez(fundKategorieMappedData);
-        // this.exportCsvData = this.mappingService.mapDatierung(bezMappedData);
-        this.exportCsvData = rawData
-      })
-  }
-
-  load2_ExportCsvData() {
-    this.http
-      .get('assets/csv/export/2_export_archaelogical_sites_of_wien.csv', {
-        responseType: 'text',
-      })
-      .subscribe((data) => {
-        const columnsToKeep = Array.from({ length: 22 }, (_, i) => i) // 22 columns
-        const rawData = this.csvTo2DArray(data, ',', columnsToKeep)
-        this.export2_CsvData = rawData
-      })
-  }
-
-  loadWorkCsvData() {
-    this.http
-      .get('assets/csv/work/work_archaelogical_sites_of_wien.csv', {
-        responseType: 'text',
-      })
-      .subscribe((data) => {
-        let columnsToKeep = [];
-        let rawData: any
-        if (this.fileNames[0] == 'work_archaelogical_sites_of_wien.csv') {
-          columnsToKeep = Array.from({ length: 9 }, (_, i) => i)
-          rawData = this.csvTo2DArray(data, ',', columnsToKeep)
-          this.workCsvData = rawData.slice(0, 801);
-        } else {
-          columnsToKeep = Array.from({ length: 10 }, (_, i) => i)
-          rawData = this.csvTo2DArray(data, ',', columnsToKeep)
-          this.workCsvData = rawData
-        }
-        this.initializeForm();
-      });
-  }
-
-  initializeForm(): void {
-    this.csv_form = this.fb.group(
-      {
-        addObjectId: [this.getLastObjectId() + 1,
-        [
-          Validators.required,
-          WholeNumberValidator(),
-        ],
-        ],
-        addLon: ['16.372476253911756',
-          [
-            Validators.required,
-          ],
-        ],
-        addLat: ['48.2091131160875',
-          [
-            Validators.required,
-          ],
-        ],
-        selectedBez: ['1',
-          [
-            Validators.required,
-          ],
-        ],
-        addStrasse: ['Stephansplatz'],
-        addNummer: ['8'], // münze, keramik
-        addExtra: [''],
-        selectedFundkategorie: ['1',
-          [
-            Validators.required,
-          ],
-        ],
-        selectedFunde: ['1',
-          [
-            Validators.required,
-          ],
-        ],
-        selectedDatierung: ['1',
-          [
-            Validators.required,
-          ],
-        ],
-      }
-    )
-  }
-
-  getLastRowNumber() {
-    return this.workCsvData.length - 1;
-  }
-
-  getLastObjectId(): number {
-    const lastRow = this.workCsvData[this.workCsvData.length - 1];
-    const objectIdIndex = this.workCsvData[0].indexOf('OBJECTID');
-    return parseInt(lastRow[objectIdIndex], 10);
-  }
-
-  csvTo2DArray(
-    csv: string,
-    delimiter: string = ',',
-    columnsToKeep: number[] = [],
-  ): string[][] {
-    let lines = csv.split('\n')
-    // Filter out any empty lines or lines with only delimiters
-    lines = lines.filter(
-      (line) =>
-        line.trim() !== '' &&
-        line.split(delimiter).some((cell) => cell.trim() !== ''),
-    )
-    // Convert the filtered lines to a 2D array and add row numeration
-    return lines.map((line) =>
-      line.split(delimiter).filter((_, index) => columnsToKeep.includes(index)),
-    )
-  }
-
-  capitalizeEachWord(value: string): string {
-    if (!value) {
-      return ''
-    }
-    return value
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ')
-  }
-
-  getCurrentDatetime(): string {
-    const now = new Date();
-    return now.getFullYear() +
-      ("0" + (now.getMonth() + 1)).slice(-2) +
-      ("0" + now.getDate()).slice(-2) + "_" +
-      ("0" + now.getHours()).slice(-2) +
-      ("0" + now.getMinutes()).slice(-2) +
-      ("0" + now.getSeconds()).slice(-2);
-  }
-
-  exportCsv() {
-    const csvContent = this.arrayToCsv(this.workCsvData)
-    const blob = new Blob([csvContent], { type: 'text/csv' })
-    const url = window.URL.createObjectURL(blob)
-
-    const anchor = document.createElement('a')
-    const currentDatetime = this.getCurrentDatetime();
-    anchor.href = url
-    anchor.download = `${currentDatetime}_data.csv`;
-    anchor.click()
-
-    window.URL.revokeObjectURL(url)
-  }
-
-  arrayToCsv(data: string[][]): string {
-    return data.map((row) => row.join(',')).join('\n')
-  }
-
-  getColumnIndex(columnName: string, csvData: any): number {
-    return csvData[0].indexOf(columnName)
-  }
-
-  mapCsvColumns(name: string, csvData: any) {
-    if (name === 'FUNDE') return this.getColumnIndex('FUNDE', csvData)
-    if (name === 'BEZ') return this.getColumnIndex('BEZ', csvData)
-    if (name === 'DATIERUNG') return this.getColumnIndex('DATIERUNG', csvData)
-    if (name === 'FUNDKATEGORIE') return this.getColumnIndex('FUNDKATEGORIE', csvData)
-    return null
-  }
-
-  setCorrectAxis(form: any, boxCount: any) {
-    if (boxCount == 2) {
-      if (form['BEZ'] && form['DATIERUNG']) {
-        // x=BEZ, y=DATIERUNG
-        this.o_x_title = 'BEZ'
-        this.o_y_title = 'DATIERUNG'
-      } else if (form['BEZ'] && form['FUNDE']) {
-        // x=BEZ, y=FUNDE
-        this.o_x_title = 'BEZ'
-        this.o_y_title = 'FUNDE'
-      } else if (form['BEZ'] && form['FUNDKATEGORIE']) {
-        // x=BEZ, y=FUNDKATEGORIE
-        this.o_x_title = 'BEZ'
-        this.o_y_title = 'FUNDKATEGORIE'
-      }
-    }
-  }
-
-  getLeafIndices(cluster: { isLeaf: any; index: any; children: any }) {
-    let indices: any[] = []
-    if (cluster.isLeaf) {
-      indices.push(cluster.index)
-    } else {
-      for (let child of cluster.children) {
-        indices = indices.concat(this.getLeafIndices(child))
-      }
-    }
-    return indices
-  }
-
-  findHeightForClusters(
-    cluster: { height: any; cut: (arg0: any) => any },
-    numClusters: any,
-  ) {
-    const max = cluster.height
-    const min = 0
-    const step = 0.01
-    for (let height = max; height >= min; height -= step) {
-      const clustersAtHeight = cluster.cut(height)
-      if (clustersAtHeight.length === numClusters) {
-        return height
-      }
-    }
-    return max // Default to max if not found
-  }
-
-  submit(index: number) {
+  // Online
+  onlineSubmit(index: number) {
     this.isLoadingOnline = true
     this.spinnerAsync().then(() => {
       if (this.form.valid) {
@@ -757,10 +579,22 @@ export class DashboardComponent implements OnInit {
         this.o_z_title = checkedBoxes[2]
         this.o_d_title = checkedBoxes[3]
         this.setCorrectAxis(this.form.value, this.boxCount) // Based on offline graphs
-        this.o_x_column = this.mapCsvColumns(this.o_x_title, this.export2_CsvData)
-        this.o_y_column = this.mapCsvColumns(this.o_y_title, this.export2_CsvData)
-        this.o_z_column = this.mapCsvColumns(this.o_z_title, this.export2_CsvData)
-        this.o_d_column = this.mapCsvColumns(this.o_d_title, this.export2_CsvData)
+        this.o_x_column = this.mapCsvColumns(
+          this.o_x_title,
+          this.export2_CsvData,
+        )
+        this.o_y_column = this.mapCsvColumns(
+          this.o_y_title,
+          this.export2_CsvData,
+        )
+        this.o_z_column = this.mapCsvColumns(
+          this.o_z_title,
+          this.export2_CsvData,
+        )
+        this.o_d_column = this.mapCsvColumns(
+          this.o_d_title,
+          this.export2_CsvData,
+        )
         if (this.boxCount === 2) {
           this.dashboard = [
             { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Online_kMeans' },
@@ -856,7 +690,53 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  work(index: number) {
+  // Work
+  import(event: Event) {
+    const input = event.target as HTMLInputElement
+
+    if (!input?.files?.[0]) {
+      return
+    }
+
+    const file: File = input.files[0]
+    if (file) {
+      this.fileNames[0] = file.name
+
+      // const columnsToKeep = Array.from({ length: 10 }, (_, i) => i)
+      // const rawData = this.csvTo2DArray(data, ',', columnsToKeep)
+      // this.workCsvData = rawData
+
+      this.isLoadingOnline = false
+    }
+    const reader: FileReader = new FileReader()
+
+    reader.readAsText(file)
+
+    reader.onload = (e) => {
+      const csv = reader.result as string
+      // process csv data
+    }
+  }
+
+  export() {
+    const exportArrayToCsv = (data: string[][]): string => {
+      return data.map((row) => row.join(',')).join('\n')
+    }
+
+    const csvContent = exportArrayToCsv(this.workCsvData)
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+
+    const anchor = document.createElement('a')
+    const currentDatetime = this.getCurrentDatetime()
+    anchor.href = url
+    anchor.download = `${currentDatetime}_data.csv`
+    anchor.click()
+
+    window.URL.revokeObjectURL(url)
+  }
+
+  workSubmit(index: number) {
     this.isLoadingOnline = true
     this.spinnerAsync().then(() => {
       if (this.work_form.valid) {
@@ -884,33 +764,33 @@ export class DashboardComponent implements OnInit {
           if (this.work_form.get('selectedAlgoControl').value === 'kmeans') {
             this.dashboard = [
               { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Work_kMeans' },
-              { cols: 6, rows: 2, y: 2, x: 0, content: 'CSV_Edit' }
+              { cols: 6, rows: 2, y: 2, x: 0, content: 'CSV_Edit' },
             ]
           }
           if (this.work_form.get('selectedAlgoControl').value === 'dbscan') {
             this.dashboard = [
-              { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Work_DBSCAN' }
+              { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Work_DBSCAN' },
             ]
           }
           if (this.work_form.get('selectedAlgoControl').value === 'agnes') {
             this.dashboard = [
-              { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Work_AGNES' }
+              { cols: 6, rows: 2, y: 0, x: 0, content: '2D_Work_AGNES' },
             ]
           }
         } else {
           if (this.work_form.get('selectedAlgoControl').value === 'kmeans') {
             this.dashboard = [
-              { cols: 6, rows: 2, y: 0, x: 0, content: '3D4D_Work_kMeans' }
+              { cols: 6, rows: 2, y: 0, x: 0, content: '3D4D_Work_kMeans' },
             ]
           }
           if (this.work_form.get('selectedAlgoControl').value === 'dbscan') {
             this.dashboard = [
-              { cols: 6, rows: 2, y: 0, x: 0, content: '3D4D_Work_DBSCAN' }
+              { cols: 6, rows: 2, y: 0, x: 0, content: '3D4D_Work_DBSCAN' },
             ]
           }
           if (this.work_form.get('selectedAlgoControl').value === 'agnes') {
             this.dashboard = [
-              { cols: 6, rows: 2, y: 0, x: 0, content: '3D4D_Work_AGNES' }
+              { cols: 6, rows: 2, y: 0, x: 0, content: '3D4D_Work_AGNES' },
             ]
           }
         }
@@ -930,10 +810,15 @@ export class DashboardComponent implements OnInit {
 
         // kMeans
         if (this.work_form.get('selectedAlgoControl').value === 'kmeans') {
-          const output = kmeans(data, this.work_form.value.n_kMeans, undefined, 300)
+          const output = kmeans(
+            data,
+            this.work_form.value.n_kMeans,
+            undefined,
+            300,
+          )
           this.kMeans_points = this.workCsvData
             .filter((_, index) => index !== 0) // Skip the first row
-            .map((_, rowIndex) => String(output.indexes[rowIndex]));
+            .map((_, rowIndex) => String(output.indexes[rowIndex]))
         }
 
         // DBSCAN
@@ -987,36 +872,49 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  csv_addOrEdit(index: number) {
-    const formValues = this.csv_form.value;
+  csvDisplayMenu(): void {
+    this.isEditMode = !this.isEditMode
+  }
+
+  csvAddRow() {
+    const formValues = this.csv_form.value
     const newRow = [
       formValues.addObjectId,
-      "POINT (" + formValues.addLon + " " + formValues.addLat + ")",
+      'POINT (' + formValues.addLon + ' ' + formValues.addLat + ')',
       formValues.selectedBez,
       formValues.addStrasse,
       formValues.addNummer,
       formValues.addExtra,
       formValues.selectedFundkategorie,
       formValues.selectedFunde,
-      formValues.selectedDatierung
-    ];
-    this.workCsvData.push(newRow);
+      formValues.selectedDatierung,
+    ]
+    this.workCsvData.push(newRow)
     this.csv_form.patchValue({
-      addObjectId: this.getLastObjectId() + 1
-    });
+      addObjectId: this.getLastObjectId() + 1,
+    })
   }
 
-  removeData(objectIdToRemove: string): void {
-    const userConfirmed = window.confirm(`Are you sure you want to delete OBJECTID=${objectIdToRemove}?`);
+  csvDeleteRow(objectIdToRemove: string): void {
+    const userConfirmed = window.confirm(
+      `Are you sure you want to delete OBJECTID=${objectIdToRemove}?`,
+    )
     if (userConfirmed) {
-      this.workCsvData = this.workCsvData.filter(row => row[this.workCsvData[0].indexOf('OBJECTID')] !== objectIdToRemove);
+      this.workCsvData = this.workCsvData.filter(
+        (row) =>
+          row[this.workCsvData[0].indexOf('OBJECTID')] !== objectIdToRemove,
+      )
     }
   }
 
-  copyDataSingle(objectIdToEdit: string): void {
-    const rowToEdit = this.workCsvData.find(row => row[this.workCsvData[0].indexOf('OBJECTID')] == objectIdToEdit);
+  csvCopyRow(objectIdToEdit: string): void {
+    const rowToEdit = this.workCsvData.find(
+      (row) => row[this.workCsvData[0].indexOf('OBJECTID')] == objectIdToEdit,
+    )
     if (rowToEdit) {
-      const lonLatMatches = rowToEdit[this.workCsvData[0].indexOf('SHAPE')].match(/POINT \((\d+\.\d+) (\d+\.\d+)\)/);
+      const lonLatMatches = rowToEdit[
+        this.workCsvData[0].indexOf('SHAPE')
+      ].match(/POINT \((\d+\.\d+) (\d+\.\d+)\)/)
       this.csv_form.setValue({
         addObjectId: rowToEdit[this.workCsvData[0].indexOf('OBJECTID')],
         addLon: lonLatMatches ? lonLatMatches[1] : '',
@@ -1025,13 +923,119 @@ export class DashboardComponent implements OnInit {
         addStrasse: rowToEdit[this.workCsvData[0].indexOf('STRNAM')],
         addNummer: rowToEdit[this.workCsvData[0].indexOf('HNR')],
         addExtra: rowToEdit[this.workCsvData[0].indexOf('HNR_BIS')],
-        selectedFundkategorie: rowToEdit[this.workCsvData[0].indexOf('FUNDKATEGORIE')],
+        selectedFundkategorie:
+          rowToEdit[this.workCsvData[0].indexOf('FUNDKATEGORIE')],
         selectedFunde: rowToEdit[this.workCsvData[0].indexOf('FUNDE')],
-        selectedDatierung: rowToEdit[this.workCsvData[0].indexOf('DATIERUNG')]
-      });
+        selectedDatierung: rowToEdit[this.workCsvData[0].indexOf('DATIERUNG')],
+      })
     } else {
-      console.error('Row with OBJECTID', objectIdToEdit, 'not found');
+      console.error('Row with OBJECTID', objectIdToEdit, 'not found')
     }
   }
 
+  // HELPERS
+  getLastRowNumber() {
+    return this.workCsvData.length - 1
+  }
+
+  getLastObjectId(): number {
+    const lastRow = this.workCsvData[this.workCsvData.length - 1]
+    const objectIdIndex = this.workCsvData[0].indexOf('OBJECTID')
+    return parseInt(lastRow[objectIdIndex], 10)
+  }
+
+  getColumnIndex(columnName: string, csvData: any): number {
+    return csvData[0].indexOf(columnName)
+  }
+
+  mapCsvColumns(name: string, csvData: any) {
+    if (name === 'FUNDE') return this.getColumnIndex('FUNDE', csvData)
+    if (name === 'BEZ') return this.getColumnIndex('BEZ', csvData)
+    if (name === 'DATIERUNG') return this.getColumnIndex('DATIERUNG', csvData)
+    if (name === 'FUNDKATEGORIE')
+      return this.getColumnIndex('FUNDKATEGORIE', csvData)
+    return null
+  }
+
+  setCorrectAxis(form: any, boxCount: any) {
+    if (boxCount == 2) {
+      if (form['BEZ'] && form['DATIERUNG']) {
+        // x=BEZ, y=DATIERUNG
+        this.o_x_title = 'BEZ'
+        this.o_y_title = 'DATIERUNG'
+      } else if (form['BEZ'] && form['FUNDE']) {
+        // x=BEZ, y=FUNDE
+        this.o_x_title = 'BEZ'
+        this.o_y_title = 'FUNDE'
+      } else if (form['BEZ'] && form['FUNDKATEGORIE']) {
+        // x=BEZ, y=FUNDKATEGORIE
+        this.o_x_title = 'BEZ'
+        this.o_y_title = 'FUNDKATEGORIE'
+      }
+    }
+  }
+
+  getLeafIndices(cluster: { isLeaf: any; index: any; children: any }) {
+    let indices: any[] = []
+    if (cluster.isLeaf) {
+      indices.push(cluster.index)
+    } else {
+      for (let child of cluster.children) {
+        indices = indices.concat(this.getLeafIndices(child))
+      }
+    }
+    return indices
+  }
+
+  findHeightForClusters(
+    cluster: { height: any; cut: (arg0: any) => any },
+    numClusters: any,
+  ) {
+    const max = cluster.height
+    const min = 0
+    const step = 0.01
+    for (let height = max; height >= min; height -= step) {
+      const clustersAtHeight = cluster.cut(height)
+      if (clustersAtHeight.length === numClusters) {
+        return height
+      }
+    }
+    return max // Default to max if not found
+  }
+
+  capitalizeEachWord(value: string): string {
+    if (!value) {
+      return ''
+    }
+    return value
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ')
+  }
+
+  getCurrentDatetime(): string {
+    const now = new Date()
+    return (
+      now.getFullYear() +
+      ('0' + (now.getMonth() + 1)).slice(-2) +
+      ('0' + now.getDate()).slice(-2) +
+      '_' +
+      ('0' + now.getHours()).slice(-2) +
+      ('0' + now.getMinutes()).slice(-2) +
+      ('0' + now.getSeconds()).slice(-2)
+    )
+  }
+
+  removeWindow(item: GridsterItem) {
+    const index = this.dashboard.indexOf(item)
+    if (index > -1) {
+      this.dashboard.splice(index, 1)
+    }
+  }
+
+  spinnerAsync(): Promise<any> {
+    return new Promise((resolve) => {
+      setTimeout(resolve, 2000) // For demonstration purposes, a delay of 2 seconds
+    })
+  }
 }
