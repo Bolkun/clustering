@@ -284,7 +284,7 @@ export class DashboardComponent implements OnInit {
 
     this.workTable_form = this.fb.group({
       addObjectId: [this.getHighestObjectId() + 1, [Validators.required, WholeNumberValidator()]],
-      addLon: ['16.389117526274642', [Validators.required]],  // 4548694
+      addLon: ['16.389117526274642', [Validators.required]], // 4548694
       addLat: ['48.31638035732793', [Validators.required]],
       selectedBez: ['21', [Validators.required]],
       addStrasse: ['Stammersdorf'],

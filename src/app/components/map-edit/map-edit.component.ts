@@ -94,6 +94,7 @@ export class MapEditComponent implements AfterViewInit, OnChanges {
         fundkategorie: row[fundkategorieIndex],
         funde: row[fundeIndex],
         datierung: row[datierungIndex],
+        cluster: row[this.clusterColumn],
       };
     });
   }
