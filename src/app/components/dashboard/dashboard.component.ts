@@ -284,15 +284,15 @@ export class DashboardComponent implements OnInit {
 
     this.workTable_form = this.fb.group({
       addObjectId: [this.getHighestObjectId() + 1, [Validators.required, WholeNumberValidator()]],
-      addLon: ['16.372476253911756', [Validators.required]],
-      addLat: ['48.2091131160875', [Validators.required]],
-      selectedBez: ['1', [Validators.required]],
-      addStrasse: ['Stephansplatz'],
-      addNummer: ['8'], // münze, keramik
+      addLon: ['16.389117526274642', [Validators.required]],  // 4548694
+      addLat: ['48.31638035732793', [Validators.required]],
+      selectedBez: ['21', [Validators.required]],
+      addStrasse: ['Stammersdorf'],
+      addNummer: [''], // münze, keramik
       addExtra: [''],
-      selectedFundkategorie: ['1', [Validators.required]],
+      selectedFundkategorie: ['3', [Validators.required]],
       addFunde: ['münze', [Validators.required]],
-      selectedDatierung: ['1', [Validators.required]],
+      selectedDatierung: ['32', [Validators.required]],
     });
   }
 
@@ -664,7 +664,7 @@ export class DashboardComponent implements OnInit {
       formValues.addFunde,
       formValues.selectedDatierung,
     ];
-    this.workCsvData.push(newRow);
+    this.workCsvData = [...this.workCsvData, newRow];
     this.workTable_form.patchValue({
       addObjectId: this.getHighestObjectId() + 1,
     });
