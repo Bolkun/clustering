@@ -1,0 +1,17 @@
+igx-geographic-map {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.tooltip-content {
+  background-color: white;
+  padding: 5px;
+  color: #212529;
+  font-family: "Exo", sans-serif;
+  font-size: 14px;
+}
+
+span {
+  font-weight: bold;
+}

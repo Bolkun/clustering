@@ -297,11 +297,37 @@ export class DashboardComponent implements OnInit {
   }
 
   csvTo2DArray(csv: string, delimiter: string = ',', columnsToKeep: number[] = []): string[][] {
-    let lines = csv.split('\n');
-    // Filter out any empty lines or lines with only delimiters
-    lines = lines.filter((line) => line.trim() !== '' && line.split(delimiter).some((cell) => cell.trim() !== ''));
-    // Convert the filtered lines to a 2D array and add row numeration
-    return lines.map((line) => line.split(delimiter).filter((_, index) => columnsToKeep.includes(index)));
+    let rows = [];
+    let row = [];
+    let cell = '';
+    let insideQuotes = false;
+
+    // Skip delimeter by cell styrting with double quates as its from type text
+    for (let char of csv) {
+      if (char === '"') {
+        insideQuotes = !insideQuotes;
+      } else if (char === delimiter && !insideQuotes) {
+        row.push(cell);
+        cell = '';
+      } else if (char === '\n' && !insideQuotes) {
+        row.push(cell);
+        if (row.some((cell) => cell.trim() !== '')) {
+          rows.push(row.filter((_, index) => columnsToKeep.includes(index)));
+        }
+        cell = '';
+        row = [];
+      } else {
+        cell += char;
+      }
+    }
+
+    // handle the last row if there was no newline at the end of the csv
+    if (cell.trim() !== '' || row.length > 0) {
+      row.push(cell);
+      rows.push(row.filter((_, index) => columnsToKeep.includes(index)));
+    }
+
+    return rows;
   }
 
   // Offline

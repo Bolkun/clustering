@@ -16,6 +16,7 @@ import { IgxGeographicMapModule } from "igniteui-angular-maps";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IgxLegendModule, IgxDataChartCoreModule, IgxDataChartScatterModule, IgxDataChartScatterCoreModule, IgxDataChartInteractivityModule, IgxDataChartAnnotationModule, IgxItemToolTipLayerModule } from 'igniteui-angular-charts';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { MapEditComponent } from './components/map-edit/map-edit.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HighchartsChartModule } from 'highcharts-angular';
     DashboardComponent,
     MapComponent,
     ScatterChartComponent,
-    Highcharts3dComponent
+    Highcharts3dComponent,
+    MapEditComponent
   ],
   imports: [
     BrowserModule,
