@@ -16,6 +16,11 @@ A web app designed to conduct both offline and online clustering experiments usi
 
 Clustering is based on a combination of the columns: BEZ, FUNDE, DATIERUNG and FUNDKATEGORIE.
 
+**Work:**
+- In the sidebar, click <Start> to work on a specific dataset that has already been clustered. After making changes, you can use <Export> to save the results as a CSV file. This allows you to import the file later and resume your work.
+- On the map, specific cluster groups can be hidden or displayed by clicking on the eye icon.
+- In the table view, the CSV <Edit> menu can be toggled by clicking on the pencil icon. The edit mode enables you to add new rows or delete existing ones.
+
 ## System
 
 - **Node.js**: 18.17.0
