@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 // https://fontawesome.com/v4/icons
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { faSign } from '@fortawesome/free-solid-svg-icons';
@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit {
   // Sidebar
   activeTab: null | string = 'tab2';
   isContentFlex: boolean = true;
-  isEditMode: boolean = false;
+  isTableEditMode: boolean = false;
   selectedOfflineButtonIndex: number | null = null;
   selectedOnlineButtonIndex: number | null = null;
   selectedWorkButtonIndex: number | null = null;
@@ -133,7 +133,12 @@ export class DashboardComponent implements OnInit {
   sortedDatierungMapping: any[];
   importCsvData: string = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient, public mappingService: MappingService) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    public mappingService: MappingService,
+    private cdRef: ChangeDetectorRef
+  ) {
     this.online_form = this.fb.group(
       {
         FUNDE: [false],
@@ -157,12 +162,12 @@ export class DashboardComponent implements OnInit {
       displayGrid: 'none',
       pushItems: false,
     };
-    this.dashboard = [
-      { cols: 2, rows: 4, y: 0, x: 0, content: 'Item 4' }, // Map of Points
-      { cols: 1, rows: 4, y: 0, x: 2, content: 'Item 5' }, // Map of Bezirke
-      { cols: 1, rows: 4, y: 0, x: 3, content: 'Item Help' }, // Help
-      { cols: 4, rows: 4, y: 4, x: 0, content: 'Item 6' }, // CSV Data
-    ];
+    // this.dashboard = [
+    //   { cols: 2, rows: 4, y: 0, x: 0, content: 'Item 4' }, // Map of Points
+    //   { cols: 1, rows: 4, y: 0, x: 2, content: 'Item 5' }, // Map of Bezirke
+    //   { cols: 1, rows: 4, y: 0, x: 3, content: 'Item Help' }, // Help
+    //   { cols: 4, rows: 4, y: 4, x: 0, content: 'Item 6' }, // CSV Data
+    // ];
   }
 
   ngOnInit(): void {
@@ -648,13 +653,13 @@ export class DashboardComponent implements OnInit {
   }
 
   csvDisplayMenu(): void {
-    this.isEditMode = !this.isEditMode;
+    this.isTableEditMode = !this.isTableEditMode;
   }
 
   csvAddRow() {
     const formValues = this.workTable_form.value;
     const newRow = [
-      formValues.addObjectId,
+      formValues.addObjectId.toString(),
       'POINT (' + formValues.addLon + ' ' + formValues.addLat + ')',
       formValues.selectedBez,
       formValues.addStrasse,
@@ -663,11 +668,13 @@ export class DashboardComponent implements OnInit {
       formValues.selectedFundkategorie,
       formValues.addFunde,
       formValues.selectedDatierung,
+      (1).toString(),
     ];
     this.workCsvData = [...this.workCsvData, newRow];
     this.workTable_form.patchValue({
       addObjectId: this.getHighestObjectId() + 1,
     });
+    this.cdRef.detectChanges();
   }
 
   csvDeleteRow(objectIdToRemove: string): void {

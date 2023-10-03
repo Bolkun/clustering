@@ -4,6 +4,8 @@ import { MarkerType } from 'igniteui-angular-charts';
 import { IgxSizeScaleComponent } from 'igniteui-angular-charts';
 import { TitleCasePipe } from '@angular/common';
 import { MappingService } from 'src/app/services/mapping.service';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-map-edit',
@@ -15,8 +17,12 @@ export class MapEditComponent implements AfterViewInit, OnChanges {
   @Input() csvData: string[][];
   @ViewChild('map') public map: IgxGeographicMapComponent;
   @ViewChild('tooltipTemplate', { static: true }) tooltipTemplate: TemplateRef<any>;
+  faClusterVisible = faEye;
+  faClusterNotVisible = faEyeSlash;
   clusterColumn: number;
   currentTooltipItem: any = null;
+  //uniqueClusterValues: string[];
+  visibleClusters: string[] = ['0', '1', '2', '3', '-1'];
 
   constructor(public titlecasePipe: TitleCasePipe, private mappingService: MappingService) {
     this.clusterColumn = 9;
@@ -46,24 +52,32 @@ export class MapEditComponent implements AfterViewInit, OnChanges {
     sizeScale.minimumValue = 3;
     sizeScale.maximumValue = 60;
 
-    const uniqueClusterValues = [...new Set(this.csvData.map((row) => row[this.clusterColumn]))];
+    const uniqueClusterValues = [...new Set(this.csvData.slice(1).map((row) => row[this.clusterColumn]))].sort(
+      (a, b) => {
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+      }
+    );
 
     uniqueClusterValues.forEach((clusterValue) => {
-      const filteredData = this.csvData.slice(1).filter((row) => row[this.clusterColumn] === clusterValue);
-      const processedData = this.processFilteredData(filteredData);
+      if (this.visibleClusters.includes(clusterValue)) {
+        const filteredData = this.csvData.slice(1).filter((row) => row[this.clusterColumn] === clusterValue);
+        const processedData = this.processFilteredData(filteredData);
 
-      // Create a new series for each cluster value
-      const series = new IgxGeographicProportionalSymbolSeriesComponent();
-      series.dataSource = processedData;
-      series.latitudeMemberPath = 'latitude';
-      series.longitudeMemberPath = 'longitude';
-      series.markerType = MarkerType.Circle;
-      series.markerBrush = this.getMarkerColor(clusterValue); // Color of the circle
-      series.markerOutline = this.getMarkerColor(clusterValue); // important!
-      series.radiusScale = sizeScale;
-      series.tooltipTemplate = this.tooltipTemplate;
+        // Create a new series for each cluster value
+        const series = new IgxGeographicProportionalSymbolSeriesComponent();
+        series.dataSource = processedData;
+        series.latitudeMemberPath = 'latitude';
+        series.longitudeMemberPath = 'longitude';
+        series.markerType = MarkerType.Circle;
+        series.markerBrush = this.getMarkerColor(clusterValue); // Color of the circle
+        series.markerOutline = this.getMarkerColor(clusterValue); // important!
+        series.radiusScale = sizeScale;
+        series.tooltipTemplate = this.tooltipTemplate;
 
-      this.map.series.add(series);
+        this.map.series.add(series);
+      }
     });
   }
 
@@ -99,6 +113,17 @@ export class MapEditComponent implements AfterViewInit, OnChanges {
     });
   }
 
+  toggleClusterVisibility(cluster: string) {
+    if (this.visibleClusters.includes(cluster)) {
+      // Hide cluster
+      this.visibleClusters = this.visibleClusters.filter((c) => c !== cluster);
+    } else {
+      // Show cluster
+      this.visibleClusters.push(cluster);
+    }
+    this.updateSeriesDataSource();
+  }
+
   // HELPERS
   private extractCoordinates(shapeString: string): { latitude: number; longitude: number } {
     const matches = shapeString.match(/POINT \((\d+\.\d+) (\d+\.\d+)\)/);
@@ -108,7 +133,7 @@ export class MapEditComponent implements AfterViewInit, OnChanges {
     };
   }
 
-  private getMarkerColor(clusterValue: string): string {
+  getMarkerColor(clusterValue: string): string {
     switch (clusterValue) {
       case '0':
         return 'orange';

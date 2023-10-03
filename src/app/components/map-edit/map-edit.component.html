@@ -31,3 +31,12 @@
 </ng-template>
 
 <igx-geographic-map #map height="340px" zoomable="true"></igx-geographic-map>
+
+<div class="overlay-left">
+  <h4>Legend</h4>
+  <div *ngFor="let cluster of ['0', '1', '2', '3', '-1']" (click)="toggleClusterVisibility(cluster)">
+    <fa-icon [icon]="visibleClusters.includes(cluster) ? faClusterVisible : faClusterNotVisible"
+      [style.color]="getMarkerColor(cluster)"></fa-icon>
+    Cluster {{cluster}}
+  </div>
+</div>

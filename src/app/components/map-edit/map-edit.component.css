@@ -15,3 +15,16 @@ igx-geographic-map {
 span {
   font-weight: bold;
 }
+
+.overlay-left {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1000;
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 200px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}

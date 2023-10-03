@@ -797,8 +797,12 @@
           <table>
             <thead>
               <tr>
+                <!-- <th class="position-relative" style="width: 45px;">
+                </th> -->
                 <th class="position-relative">
                   Map of Discovery Sites
+                </th>
+                <th class="position-relative">
                   <button class="absolute-right" (click)="removeWindow(item)">X</button>
                 </th>
               </tr>
@@ -815,7 +819,8 @@
               <thead>
                 <tr>
                   <th>
-                    <a class="btn_edit" [style.color]="isEditMode ? 'darkgrey' : 'orange'" (click)="csvDisplayMenu()">
+                    <a class="btn_edit" [style.color]="isTableEditMode ? 'darkgrey' : 'orange'"
+                      (click)="csvDisplayMenu()">
                       <p>
                         <fa-icon [icon]="faEdit"></fa-icon>
                       </p>
@@ -829,7 +834,7 @@
                     <button class="absolute-right" (click)="removeWindow(item)">X</button>
                   </th>
                 </tr>
-                <tr *ngIf="!isEditMode">
+                <tr *ngIf="!isTableEditMode">
                   <th style="color: green">Add</th>
                   <th>{{ getLastRowNumber() + 1 }}</th>
                   <th>
@@ -887,7 +892,7 @@
                 <ng-container *ngFor="let row of workCsvData; let i = index">
                   <tr *ngIf="i > 0">
                     <td>
-                      <!-- <a *ngIf="!isEditMode" class="btn_edit" style="color: orange;" (click)="
+                      <!-- <a *ngIf="!isTableEditMode" class="btn_edit" style="color: orange;" (click)="
                           csvCopyRow(
                             row[workCsvData[0].indexOf('OBJECTID')]
                           )
@@ -922,7 +927,7 @@
                       <td *ngIf="header === 'agnes(FUNDE)'">{{ row[j] }}</td>
                     </ng-container>
                     <td>
-                      <a *ngIf="!isEditMode" class="btn_edit" style="color: red"
+                      <a *ngIf="!isTableEditMode" class="btn_edit" style="color: red"
                         (click)="csvDeleteRow(row[workCsvData[0].indexOf('OBJECTID')])">
                         <p>
                           <fa-icon [icon]="faDelete"></fa-icon>

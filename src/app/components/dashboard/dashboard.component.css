@@ -142,15 +142,15 @@
   position: relative;
 }
 
-/* Hide the default checkbox */
-input[type="checkbox"] {
+/* Hide checkbox */
+.checkbox-column input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   width: 20px;
   height: 20px;
-  background-color: transparent; /* Background of the unchecked checkbox */
-  border: 1px solid grey; /* Border of the unchecked checkbox */
+  background-color: transparent;
+  border: 1px solid grey;
   position: relative;
   outline: none;
   cursor: pointer;
@@ -158,7 +158,7 @@ input[type="checkbox"] {
 }
 
 /* Add a checkmark symbol when checkbox is checked */
-input[type="checkbox"]:checked::before {
+.checkbox-column input[type="checkbox"]:checked::before {
   content: "";
   position: absolute;
   width: 6px;
@@ -171,9 +171,9 @@ input[type="checkbox"]:checked::before {
 }
 
 /* Change background color when checkbox is checked */
-input[type="checkbox"]:checked {
-  background-color: transparent; /* Color of the checked checkbox */
-  border-color: #212529; /* Border color of the checked checkbox */
+.checkbox-column input[type="checkbox"]:checked {
+  background-color: transparent;
+  border-color: #212529;
 }
 
 .checkbox-column input[type="checkbox"] {
