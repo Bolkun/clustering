@@ -206,9 +206,7 @@
       <a class="close-button btn" (click)="toggleSidebar()">X</a>
       <h1 style="color: #212529">Work</h1>
       <p style="color: #212529; width: 400px">
-        Welcome to the workspace, where you can import archaeological datasets from Vienna in the form of CSV files and
-        export your clustering results in the same format. Start by selecting a dataset and choosing a clustering
-        algorithm.
+        Welcome to the workspace! Here, you can load existing clustering experiments, add or delete archaeological findings. In the end, you can export the results as a CSV file and import it whenever you want to continue your work. Start by selecting a dataset.
       </p>
       <input type="file" #csvInput style="display: none" (change)="import($event)" />
       <button class="experiment_btn" style="margin-top: 10px" (click)="csvInput.click()">Import</button>
