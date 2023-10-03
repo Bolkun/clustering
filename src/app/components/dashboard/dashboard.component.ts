@@ -293,10 +293,10 @@ export class DashboardComponent implements OnInit {
       addLat: ['48.31638035732793', [Validators.required]],
       selectedBez: ['21', [Validators.required]],
       addStrasse: ['Stammersdorf'],
-      addNummer: [''], // münze, keramik
+      addNummer: [''],
       addExtra: [''],
       selectedFundkategorie: ['3', [Validators.required]],
-      addFunde: ['münze', [Validators.required]],
+      addFunde: ['münze keramik', [Validators.required]],
       selectedDatierung: ['32', [Validators.required]],
     });
   }
@@ -656,25 +656,98 @@ export class DashboardComponent implements OnInit {
     this.isTableEditMode = !this.isTableEditMode;
   }
 
-  csvAddRow() {
-    const formValues = this.workTable_form.value;
-    const newRow = [
-      formValues.addObjectId.toString(),
-      'POINT (' + formValues.addLon + ' ' + formValues.addLat + ')',
-      formValues.selectedBez,
-      formValues.addStrasse,
-      formValues.addNummer,
-      formValues.addExtra,
-      formValues.selectedFundkategorie,
-      formValues.addFunde,
-      formValues.selectedDatierung,
-      (1).toString(),
-    ];
-    this.workCsvData = [...this.workCsvData, newRow];
-    this.workTable_form.patchValue({
-      addObjectId: this.getHighestObjectId() + 1,
+  algoWordCombinationMajorityVoteWithinClusters(newFindings: string) {
+    // Split form value
+    const searchWords = newFindings.split(' ');
+
+    // Save unique cluster number in an array
+    const uniqueClusterValues = [...new Set(this.workCsvData.slice(1).map((row) => row[9]))].sort((a, b) => {
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
     });
-    this.cdRef.detectChanges();
+
+    // Save in var for each unique cluster word and its count number
+    const findingsCountByCluster: any = {};
+    uniqueClusterValues.forEach((cluster) => {
+      const rowsOfThisCluster = this.workCsvData.filter((row) => row[9] === cluster);
+      const wordsCount: any = {};
+      rowsOfThisCluster.forEach((row) => {
+        const words = row[7].split(' ');
+        // Filter searchwords from clusters
+        words.forEach((word) => {
+          if (searchWords.includes(word)) {
+            // Check if word is part of the searchWords
+            if (!wordsCount[word]) {
+              wordsCount[word] = 0;
+            }
+            wordsCount[word]++;
+          }
+        });
+      });
+      findingsCountByCluster[cluster] = wordsCount;
+    });
+    //console.log(findingsCountByCluster);
+
+    // If word not exist in one of the clusters, than add to -1 cluster
+    const allClustersEmpty = Object.values(findingsCountByCluster).every(
+      (wordCounts: any) => Object.keys(wordCounts).length === 0
+    );
+    if (allClustersEmpty) {
+      return '-1';
+    }
+
+    // Filter cluster with the highest length of wordsCount
+    let maxLength = Math.max(
+      ...Object.values(findingsCountByCluster).map((wordCount: any) => Object.keys(wordCount).length)
+    );
+    const filteredFindingsCountByCluster: any = {};
+    for (let cluster in findingsCountByCluster) {
+      if (Object.keys(findingsCountByCluster[cluster]).length === maxLength) {
+        filteredFindingsCountByCluster[cluster] = findingsCountByCluster[cluster];
+      }
+    }
+    //console.log(filteredFindingsCountByCluster);
+
+    // Sum all counts within each cluster and return highest cluster number
+    const clusterTotals: any = {};
+    for (let cluster in filteredFindingsCountByCluster) {
+      clusterTotals[cluster] = Object.values<number>(filteredFindingsCountByCluster[cluster]).reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
+    }
+
+    // Find the cluster with the maximum total count
+    const maxCluster = Object.keys(clusterTotals).reduce((a, b) => (clusterTotals[a] > clusterTotals[b] ? a : b));
+    //console.log(maxCluster);
+
+    return maxCluster.toString();
+  }
+
+  csvAddRow() {
+    if (this.workTable_form.valid) {
+      const formValues = this.workTable_form.value;
+      const newRow = [
+        formValues.addObjectId.toString(),
+        'POINT (' + formValues.addLon + ' ' + formValues.addLat + ')',
+        formValues.selectedBez,
+        formValues.addStrasse,
+        formValues.addNummer,
+        formValues.addExtra,
+        formValues.selectedFundkategorie,
+        formValues.addFunde,
+        formValues.selectedDatierung,
+        this.algoWordCombinationMajorityVoteWithinClusters(formValues.addFunde),
+      ];
+      this.workCsvData = [...this.workCsvData, newRow];
+      this.workTable_form.patchValue({
+        addObjectId: this.getHighestObjectId() + 1,
+      });
+      this.cdRef.detectChanges();
+    } else {
+      console.warn('Form is invalid');
+    }
   }
 
   csvDeleteRow(objectIdToRemove: string): void {
