@@ -206,7 +206,9 @@
       <a class="close-button btn" (click)="toggleSidebar()">X</a>
       <h1 style="color: #212529">Work</h1>
       <p style="color: #212529; width: 400px">
-        Welcome to the workspace! Here, you can load existing clustering experiments, add or delete archaeological findings. In the end, you can export the results as a CSV file and import it whenever you want to continue your work. Start by selecting a dataset.
+        Welcome to the workspace! Here, you can load existing clustering experiments, add or delete archaeological
+        findings. In the end, you can export the results as a CSV file and import it whenever you want to continue your
+        work. Start by selecting a dataset.
       </p>
       <input type="file" #csvInput style="display: none" (change)="import($event)" />
       <button class="experiment_btn" style="margin-top: 10px" (click)="csvInput.click()">Import</button>
@@ -878,7 +880,13 @@
                       </option>
                     </select>
                   </th>
-                  <th>?</th>
+                  <th>
+                    <select formControlName="selectedAlgo" class="add position-relative">
+                      <option value="algoWordCombinationMajorityVoteWithinClusters">Findings combination majority
+                      </option>
+                      <option value="algoLabelClusterMajority">Cluster labels majority</option>
+                    </select>
+                  </th>
                   <th class="position-relative">
                     <button class="btn_edit" style="color: green; font-size: 30px" type="submit">
                       <fa-icon [icon]="faAdd"></fa-icon>

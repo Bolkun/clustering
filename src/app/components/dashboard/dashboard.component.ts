@@ -298,6 +298,7 @@ export class DashboardComponent implements OnInit {
       selectedFundkategorie: ['3', [Validators.required]],
       addFunde: ['münze keramik', [Validators.required]],
       selectedDatierung: ['32', [Validators.required]],
+      selectedAlgo: ['algoWordCombinationMajorityVoteWithinClusters', [Validators.required]],
     });
   }
 
@@ -656,7 +657,7 @@ export class DashboardComponent implements OnInit {
     this.isTableEditMode = !this.isTableEditMode;
   }
 
-  algoWordCombinationMajorityVoteWithinClusters(newFindings: string) {
+  algoWordCombinationMajorityVoteWithinClusters(newFindings: string): string {
     // Split form value
     const searchWords = newFindings.split(' ');
 
@@ -725,9 +726,38 @@ export class DashboardComponent implements OnInit {
     return maxCluster.toString();
   }
 
+  algoLabelClusterMajority(): string {
+    // Save unique cluster number in an array
+    const uniqueClusterValues = [...new Set(this.workCsvData.slice(1).map((row) => row[9]))].sort((a, b) => {
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
+    });
+
+    // Save in var for each unique cluster number of rows
+    const clusterRowCount: { [cluster: string]: number } = {};
+    uniqueClusterValues.forEach((cluster) => {
+      const rowsOfThisCluster = this.workCsvData.filter((row) => row[9] === cluster);
+      clusterRowCount[cluster] = rowsOfThisCluster.length;
+    });
+    //console.log(clusterRowCount);
+
+    // Return the highest cluster number
+    const maxCluster = Object.keys(clusterRowCount).reduce((a, b) => (clusterRowCount[a] > clusterRowCount[b] ? a : b));
+    //console.log(maxCluster);
+
+    return maxCluster.toString();
+  }
+
   csvAddRow() {
     if (this.workTable_form.valid) {
+      let calcClusterNumber: string;
       const formValues = this.workTable_form.value;
+      if (formValues.selectedAlgo === 'algoWordCombinationMajorityVoteWithinClusters') {
+        calcClusterNumber = this.algoWordCombinationMajorityVoteWithinClusters(formValues.addFunde);
+      } else if (formValues.selectedAlgo === 'algoLabelClusterMajority') {
+        calcClusterNumber = this.algoLabelClusterMajority();
+      }
       const newRow = [
         formValues.addObjectId.toString(),
         'POINT (' + formValues.addLon + ' ' + formValues.addLat + ')',
@@ -738,7 +768,7 @@ export class DashboardComponent implements OnInit {
         formValues.selectedFundkategorie,
         formValues.addFunde,
         formValues.selectedDatierung,
-        this.algoWordCombinationMajorityVoteWithinClusters(formValues.addFunde),
+        calcClusterNumber,
       ];
       this.workCsvData = [...this.workCsvData, newRow];
       this.workTable_form.patchValue({
