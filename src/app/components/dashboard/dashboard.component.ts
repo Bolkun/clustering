@@ -162,12 +162,12 @@ export class DashboardComponent implements OnInit {
       displayGrid: 'none',
       pushItems: false,
     };
-    // this.dashboard = [
-    //   { cols: 2, rows: 4, y: 0, x: 0, content: 'Item 4' }, // Map of Points
-    //   { cols: 1, rows: 4, y: 0, x: 2, content: 'Item 5' }, // Map of Bezirke
-    //   { cols: 1, rows: 4, y: 0, x: 3, content: 'Item Help' }, // Help
-    //   { cols: 4, rows: 4, y: 4, x: 0, content: 'Item 6' }, // CSV Data
-    // ];
+    this.dashboard = [
+      { cols: 2, rows: 4, y: 0, x: 0, content: 'Item 4' }, // Map of Points
+      { cols: 1, rows: 4, y: 0, x: 2, content: 'Item 5' }, // Map of Bezirke
+      { cols: 1, rows: 4, y: 0, x: 3, content: 'Item Help' }, // Help
+      { cols: 4, rows: 4, y: 4, x: 0, content: 'Item 6' }, // CSV Data
+    ];
   }
 
   ngOnInit(): void {
@@ -182,8 +182,8 @@ export class DashboardComponent implements OnInit {
     this.sortedBezMapping = this.mappingService.sortMapping(this.mappingService.BEZ_MAPPING);
     this.sortedDatierungMapping = this.mappingService.sortMapping(this.mappingService.DATIERUNG_MAPPING);
     // Test
-    this.toggleWorkMenu();
-    this.workSubmit(0);
+    // this.toggleWorkMenu();
+    // this.workSubmit(0);
   }
 
   // Index page
