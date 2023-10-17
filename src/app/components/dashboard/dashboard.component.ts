@@ -182,8 +182,14 @@ export class DashboardComponent implements OnInit {
     this.sortedBezMapping = this.mappingService.sortMapping(this.mappingService.BEZ_MAPPING);
     this.sortedDatierungMapping = this.mappingService.sortMapping(this.mappingService.DATIERUNG_MAPPING);
     // Test
-    // this.toggleWorkMenu();
-    // this.workSubmit(0);
+    //this.toggleWorkMenu();
+    //this.workSubmit(0);
+    //this.loadAndLogData('kmeans_funde_2503.csv', 'k-means(FUNDE)'); // Mismatch Percentage: 29.56%
+    //this.loadAndLogData('dbscan_funde_2503.csv', 'dbscan(FUNDE)');  // Mismatch Percentage: 28.69%
+    //this.loadAndLogData('agnes_funde_2503.csv', 'agnes(FUNDE)');    // Mismatch Percentage: 26.09%
+    //this.loadAndLogData2('kmeans_funde_2503.csv', 'k-means(FUNDE)');// Mismatch Percentage: 31.28%
+    //this.loadAndLogData2('dbscan_funde_2503.csv', 'dbscan(FUNDE)'); // Mismatch Percentage: 53.94%
+    //this.loadAndLogData2('agnes_funde_2503.csv', 'agnes(FUNDE)');   // Mismatch Percentage: 26.09%
   }
 
   // Index page
@@ -280,6 +286,108 @@ export class DashboardComponent implements OnInit {
       .subscribe((data) => {
         this.processCsvData(data);
       });
+  }
+
+  loadAndLogData(file: string, cluster_column: string) {
+    this.test_loadWorkCsvData(file)
+      .then((data) => {
+        console.log('Original Data:', this.workCsvData);
+
+        // Create a deep copy of the original data
+        let original_data = JSON.parse(JSON.stringify(this.workCsvData));
+
+        // Assuming the first row contains column names
+        const headers = this.workCsvData[0];
+        const kmeansIndex = headers.indexOf(cluster_column);
+        const fundeIndex = headers.indexOf('FUNDE');
+        const objectidIndex = headers.indexOf('OBJECTID'); // Adjust the column name as needed
+
+        // Loop through each row starting from the second
+        for (let i = 1; i < this.workCsvData.length; i++) {
+          const fundeValue = this.workCsvData[i][fundeIndex];
+          const newClusterValue = this.algoWordCombinationMajorityVoteWithinClusters(fundeValue);
+          this.workCsvData[i][kmeansIndex] = newClusterValue;
+        }
+
+        console.log('Updated Data:', this.workCsvData);
+
+        let mismatches = 0;
+
+        // Comparing original_data and this.workCsvData
+        for (let i = 1; i < this.workCsvData.length; i++) {
+          if (original_data[i][kmeansIndex] !== this.workCsvData[i][kmeansIndex]) {
+            console.log(
+              `Row ${i} (objectid = ${this.workCsvData[i][objectidIndex]}): Original Cluster = ${original_data[i][kmeansIndex]}, New Cluster = ${this.workCsvData[i][kmeansIndex]}`
+            );
+            mismatches++;
+          }
+        }
+
+        const mismatchPercentage = (mismatches / (this.workCsvData.length - 1)) * 100;
+        console.log(`Mismatch Percentage: ${mismatchPercentage.toFixed(2)}%`);
+      })
+      .catch((error) => {
+        console.error('Error loading CSV data:', error);
+      });
+  }
+
+  loadAndLogData2(file: string, cluster_column: string) {
+    this.test_loadWorkCsvData(file)
+      .then((data) => {
+        console.log('Original Data:', this.workCsvData);
+
+        // Create a deep copy of the original data
+        let original_data = JSON.parse(JSON.stringify(this.workCsvData));
+
+        // Assuming the first row contains column names
+        const headers = this.workCsvData[0];
+        const kmeansIndex = headers.indexOf(cluster_column);
+        const fundeIndex = headers.indexOf('FUNDE');
+        const objectidIndex = headers.indexOf('OBJECTID'); // Adjust the column name as needed
+
+        // Loop through each row starting from the second
+        for (let i = 1; i < this.workCsvData.length; i++) {
+          const fundeValue = this.workCsvData[i][fundeIndex];
+          const newClusterValue = this.algoLabelClusterMajority();
+          this.workCsvData[i][kmeansIndex] = newClusterValue;
+        }
+
+        console.log('Updated Data:', this.workCsvData);
+
+        let mismatches = 0;
+
+        // Comparing original_data and this.workCsvData
+        for (let i = 1; i < this.workCsvData.length; i++) {
+          if (original_data[i][kmeansIndex] !== this.workCsvData[i][kmeansIndex]) {
+            console.log(
+              `Row ${i} (objectid = ${this.workCsvData[i][objectidIndex]}): Original Cluster = ${original_data[i][kmeansIndex]}, New Cluster = ${this.workCsvData[i][kmeansIndex]}`
+            );
+            mismatches++;
+          }
+        }
+
+        const mismatchPercentage = (mismatches / (this.workCsvData.length - 1)) * 100;
+        console.log(`Mismatch Percentage: ${mismatchPercentage.toFixed(2)}%`);
+      })
+      .catch((error) => {
+        console.error('Error loading CSV data:', error);
+      });
+  }
+
+  test_loadWorkCsvData(fileName: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.http.get('assets/csv/work/' + fileName, { responseType: 'text' }).subscribe(
+        (data) => {
+          let columnsToKeep = Array.from({ length: 10 }, (_, i) => i);
+          const rawData = this.csvTo2DArray(data, ',', columnsToKeep);
+          this.workCsvData = rawData;
+          resolve(rawData);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
   }
 
   processCsvData(data: string) {
