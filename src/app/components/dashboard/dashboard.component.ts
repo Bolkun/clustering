@@ -246,8 +246,6 @@ export class DashboardComponent implements OnInit {
         const rawData = this.csvTo2DArray(data, ',', [0, 1, 2, 4, 5, 6, 7, 9, 10]);
         const fundKategorieMappedData = this.mappingService.mapFundKategorie(rawData);
         this.csvData = this.mappingService.mapDatierung(fundKategorieMappedData);
-        // const bezMappedData = this.mappingService.mapBez(fundKategorieMappedData);
-        // this.csvData = this.mappingService.mapDatierung(bezMappedData);
       });
   }
 
@@ -259,9 +257,6 @@ export class DashboardComponent implements OnInit {
       .subscribe((data) => {
         const columnsToKeep = Array.from({ length: 33 }, (_, i) => i); // 33 columns
         const rawData = this.csvTo2DArray(data, ',', columnsToKeep);
-        // const fundKategorieMappedData = this.mappingService.mapFundKategorie(rawData);
-        // const bezMappedData = this.mappingService.mapBez(fundKategorieMappedData);
-        // this.exportCsvData = this.mappingService.mapDatierung(bezMappedData);
         this.exportCsvData = rawData;
       });
   }
@@ -637,19 +632,6 @@ export class DashboardComponent implements OnInit {
             return output.indexes.map(String)[rowIndex];
           });
 
-        // Alternative Lösung - jedoch gleiche Ergebnisse!
-        // const kmeans = new clustering.KMEANS();
-        // const kmeansClusters = kmeans.run(points, this.form.value.n_kMeans); // dataset, eps, minPts
-        // let output = new Array(this.export2_CsvData.length - 1).fill(-1); // Initialize the array with -1
-        // for (let i = 0; i < kmeansClusters.length; i++) {
-        //   for (let j = 0; j < kmeansClusters[i].length; j++) {
-        //     output[kmeansClusters[i][j]] = i;
-        //   }
-        // }
-        // this.kMeans_points = this.export2_CsvData
-        // .filter((_, index) => index !== 0)  // Skip the first row
-        // .map((_, rowIndex) => String(output[rowIndex]));
-
         // DBSCAN
         let data = points.slice(0, 800);
         const dbscan = new clustering.DBSCAN();
@@ -796,7 +778,6 @@ export class DashboardComponent implements OnInit {
       });
       findingsCountByCluster[cluster] = wordsCount;
     });
-    //console.log(findingsCountByCluster);
 
     // If word not exist in one of the clusters, than add to -1 cluster
     const allClustersEmpty = Object.values(findingsCountByCluster).every(
@@ -816,7 +797,6 @@ export class DashboardComponent implements OnInit {
         filteredFindingsCountByCluster[cluster] = findingsCountByCluster[cluster];
       }
     }
-    //console.log(filteredFindingsCountByCluster);
 
     // Sum all counts within each cluster and return highest cluster number
     const clusterTotals: any = {};
@@ -829,7 +809,6 @@ export class DashboardComponent implements OnInit {
 
     // Find the cluster with the maximum total count
     const maxCluster = Object.keys(clusterTotals).reduce((a, b) => (clusterTotals[a] > clusterTotals[b] ? a : b));
-    //console.log(maxCluster);
 
     return maxCluster.toString();
   }
@@ -848,11 +827,9 @@ export class DashboardComponent implements OnInit {
       const rowsOfThisCluster = this.workCsvData.filter((row) => row[9] === cluster);
       clusterRowCount[cluster] = rowsOfThisCluster.length;
     });
-    //console.log(clusterRowCount);
 
     // Return the highest cluster number
     const maxCluster = Object.keys(clusterRowCount).reduce((a, b) => (clusterRowCount[a] > clusterRowCount[b] ? a : b));
-    //console.log(maxCluster);
 
     return maxCluster.toString();
   }

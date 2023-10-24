@@ -82,7 +82,6 @@ export class ScatterChartComponent implements OnInit {
           fundkategorie_names: this.mappingService.mapFundKategorieString(
             row[fundkategorieIndex],
           ),
-          // funde: row[fundeIndex],
           funde_names: this.mappingService.mapFundeString(row[fundeIndex]),
           datierung: row[datierungIndex],
           datierung_names: this.mappingService.mapDatierungString(

@@ -21,7 +21,6 @@ export class MapEditComponent implements AfterViewInit, OnChanges {
   faClusterNotVisible = faEyeSlash;
   clusterColumn: number;
   currentTooltipItem: any = null;
-  //uniqueClusterValues: string[];
   visibleClusters: string[] = ['0', '1', '2', '3', '-1'];
 
   constructor(public titlecasePipe: TitleCasePipe, private mappingService: MappingService) {
