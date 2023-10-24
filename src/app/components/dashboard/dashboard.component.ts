@@ -177,7 +177,7 @@ export class DashboardComponent implements OnInit {
     this.loadExportCsvData();
     this.load2_ExportCsvData();
     this.loadWorkCsvData(this.fileNames[0]);
-    //Work
+    // Work
     this.sortedFundkategorieMapping = this.mappingService.sortMapping(this.mappingService.FUNDKATEGORIE_MAPPING);
     this.sortedBezMapping = this.mappingService.sortMapping(this.mappingService.BEZ_MAPPING);
     this.sortedDatierungMapping = this.mappingService.sortMapping(this.mappingService.DATIERUNG_MAPPING);
