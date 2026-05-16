@@ -390,4 +390,7 @@ td {
   #logo {
     display: none;
   }
+  .item {
+    display: block;
+  }
 }
