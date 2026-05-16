@@ -34,7 +34,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
   constructor(
     public titlecasePipe: TitleCasePipe,
     private mappingService: MappingService,
-  ) {}
+  ) { }
 
   public ngOnChanges(changes: SimpleChanges) {
     if (changes['csvData'] && !changes['csvData'].firstChange) {
@@ -48,30 +48,31 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   public ngAfterViewInit(): void {
+    const mapData = this.processCsvData();
+
+    const sizeScale = new IgxSizeScaleComponent();
+    sizeScale.minimumValue = 3;
+    sizeScale.maximumValue = 60;
+
+    const series = new IgxGeographicProportionalSymbolSeriesComponent();
+    series.dataSource = mapData;
+    series.latitudeMemberPath = 'latitude';
+    series.longitudeMemberPath = 'longitude';
+    series.markerType = MarkerType.Circle;
+    series.markerBrush = '#212529';
+    series.markerOutline = '#212529';
+    series.radiusScale = sizeScale;
+    series.tooltipTemplate = this.tooltipTemplate;
+
+    this.map.series.add(series);
+
+    // ✅ Vienna focus using windowRect (correct API)
     this.map.windowRect = {
-      left: 0.5442,
-      top: 0.34621,
-      width: 0.001,
-      height: 0.001,
-    } // Position to Vienna center
-
-    const mapData = this.processCsvData()
-
-    const sizeScale = new IgxSizeScaleComponent()
-    sizeScale.minimumValue = 3
-    sizeScale.maximumValue = 60
-
-    const series = new IgxGeographicProportionalSymbolSeriesComponent()
-    series.dataSource = mapData
-    series.latitudeMemberPath = 'latitude'
-    series.longitudeMemberPath = 'longitude'
-    series.markerType = MarkerType.Circle
-    series.markerBrush = '#212529' // Color of the circle
-    series.markerOutline = '#212529' // Color of the circle outline
-    series.radiusScale = sizeScale
-    series.tooltipTemplate = this.tooltipTemplate
-
-    this.map.series.add(series)
+      left: 0.52,
+      top: 0.33,
+      width: 0.03,
+      height: 0.03,
+    };
   }
 
   getColumnIndex(columnName: string): number {

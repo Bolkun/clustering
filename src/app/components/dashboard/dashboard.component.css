@@ -384,3 +384,10 @@ td {
 .rotating {
   animation: rotate 2s linear infinite;
 }
+
+/* Mobile */
+@media (max-width: 700px) {
+  #logo {
+    display: none;
+  }
+}
